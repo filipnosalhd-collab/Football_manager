@@ -8,7 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Russo+One&family=Roboto:wght@400;700;900&display=swap"
       rel="stylesheet"
     />
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.2/peerjs.min.js"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@400;500;600;700;800;900&display=swap");
 
@@ -2580,87 +2580,561 @@
         text-align: center;
       }
 
-      /* ==================== UPGRADE BUTTONS ==================== */
+      /* ==================== UPGRADE SCREEN ==================== */
+      .upgrade-container {
+        max-width: 1000px;
+        width: 95%;
+        margin: 0 auto;
+      }
+
+      .upgrade-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        justify-content: center;
+      }
+
+      .upgrade-tab {
+        padding: 0.8rem 2rem;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          rgba(255, 255, 255, 0.02) 100%
+        );
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        color: var(--silver);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .upgrade-tab:hover {
+        border-color: var(--gold);
+        color: white;
+      }
+
+      .upgrade-tab.active {
+        background: linear-gradient(
+          145deg,
+          rgba(255, 215, 0, 0.2) 0%,
+          rgba(255, 215, 0, 0.05) 100%
+        );
+        border-color: var(--gold);
+        color: var(--gold);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      }
+
+      .upgrade-players-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+        min-height: 300px;
+      }
+
+      .upgrade-player-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .upgrade-player-card:hover {
+        transform: translateY(-8px) scale(1.05);
+      }
+
+      .upgrade-player-card .player-card {
+        width: 120px !important;
+        height: 175px !important;
+      }
+
+      /* ==================== UPGRADE MODAL ==================== */
+      .upgrade-modal-content {
+        max-width: 550px;
+        background: linear-gradient(160deg, #0d1f15 0%, #0a1810 100%);
+        border-radius: 20px;
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      .upgrade-modal-header {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        padding: 1.5rem;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 215, 0, 0.1) 0%,
+          transparent 100%
+        );
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+      }
+
+      .upgrade-modal-header .player-card {
+        flex-shrink: 0;
+      }
+
+      .upgrade-player-info h2 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.3rem;
+        color: white;
+        margin-bottom: 0.3rem;
+      }
+
+      .upgrade-player-info p {
+        color: var(--silver);
+        font-size: 0.95rem;
+      }
+
+      .upgrade-section {
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .upgrade-section-title {
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .upgrade-section-title.stats {
+        color: var(--gold);
+      }
+
+      .upgrade-section-title.positions {
+        color: var(--neon-blue);
+      }
+
+      .upgrade-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+      }
+
       .upgrade-stat-btn {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.6rem 0.8rem;
-        background: rgba(255, 255, 255, 0.1);
-        border: 2px solid transparent;
-        border-radius: 8px;
+        padding: 0.7rem 1rem;
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.08) 0%,
+          rgba(255, 255, 255, 0.02) 100%
+        );
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
         color: white;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
       }
 
       .upgrade-stat-btn:hover:not(.maxed) {
-        background: rgba(255, 215, 0, 0.2);
+        background: linear-gradient(
+          145deg,
+          rgba(255, 215, 0, 0.15) 0%,
+          rgba(255, 215, 0, 0.05) 100%
+        );
         border-color: var(--gold);
+        transform: translateX(3px);
       }
 
       .upgrade-stat-btn.selected {
-        background: rgba(255, 215, 0, 0.3);
+        background: linear-gradient(
+          145deg,
+          rgba(255, 215, 0, 0.25) 0%,
+          rgba(255, 215, 0, 0.1) 100%
+        );
         border-color: var(--gold);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
       }
 
       .upgrade-stat-btn.maxed {
-        opacity: 0.5;
+        opacity: 0.4;
         cursor: not-allowed;
+        background: rgba(100, 100, 100, 0.1);
+      }
+
+      .upgrade-stat-btn .stat-info {
+        display: flex;
+        flex-direction: column;
       }
 
       .upgrade-stat-btn .upgrade-stat-name {
-        font-weight: bold;
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 600;
         font-size: 0.85rem;
       }
 
-      .upgrade-stat-btn .upgrade-stat-value {
-        color: var(--gold);
-        font-family: "Russo One", sans-serif;
+      .upgrade-stat-btn .upgrade-stat-max {
+        font-size: 0.7rem;
+        color: var(--neon-green);
       }
 
-      .upgrade-stat-btn .upgrade-stat-max {
-        color: #4ade80;
-        font-size: 0.7rem;
+      .upgrade-stat-btn .stat-values {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .upgrade-stat-btn .upgrade-stat-value {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1rem;
+        color: var(--gold);
+      }
+
+      .upgrade-stat-btn .stat-arrow {
+        color: var(--neon-green);
+        font-size: 0.8rem;
+      }
+
+      .upgrade-stat-btn .stat-new-value {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1rem;
+        color: var(--neon-green);
+      }
+
+      .upgrade-positions-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
       }
 
       .position-btn {
-        padding: 0.5rem 0.8rem;
-        background: rgba(255, 255, 255, 0.1);
-        border: 2px solid transparent;
-        border-radius: 6px;
+        padding: 0.6rem 1rem;
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.08) 0%,
+          rgba(255, 255, 255, 0.02) 100%
+        );
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
         color: white;
         cursor: pointer;
-        font-family: "Russo One", sans-serif;
-        font-size: 0.75rem;
-        transition: all 0.2s;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
       }
 
       .position-btn:hover:not(.current):not(:disabled) {
-        background: rgba(59, 130, 246, 0.3);
-        border-color: #3b82f6;
+        background: linear-gradient(
+          145deg,
+          rgba(0, 212, 255, 0.2) 0%,
+          rgba(0, 212, 255, 0.05) 100%
+        );
+        border-color: var(--neon-blue);
+        transform: scale(1.05);
       }
 
       .position-btn.selected {
-        background: rgba(59, 130, 246, 0.4);
-        border-color: #3b82f6;
+        background: linear-gradient(
+          145deg,
+          rgba(0, 212, 255, 0.3) 0%,
+          rgba(0, 212, 255, 0.1) 100%
+        );
+        border-color: var(--neon-blue);
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
       }
 
       .position-btn.current {
-        background: rgba(74, 222, 128, 0.3);
-        border-color: #4ade80;
+        background: linear-gradient(
+          145deg,
+          rgba(0, 255, 136, 0.2) 0%,
+          rgba(0, 255, 136, 0.05) 100%
+        );
+        border-color: var(--neon-green);
         cursor: default;
       }
 
       .position-btn.expensive {
-        border-color: rgba(255, 107, 107, 0.5);
+        border-color: rgba(239, 68, 68, 0.5);
       }
 
       .position-btn:disabled {
-        opacity: 0.7;
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .position-cost-info {
+        text-align: center;
+        margin-top: 0.8rem;
+        font-size: 0.8rem;
+        color: var(--silver);
+      }
+
+      .upgrade-cost-section {
+        padding: 1.2rem 1.5rem;
+        background: linear-gradient(
+          145deg,
+          rgba(255, 215, 0, 0.08) 0%,
+          rgba(255, 215, 0, 0.02) 100%
+        );
+        text-align: center;
+      }
+
+      .upgrade-cost-label {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 0.8rem;
+        color: var(--silver);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .upgrade-cost-value {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--gold);
+        margin: 0.3rem 0;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      }
+
+      .upgrade-effect {
+        font-size: 0.9rem;
+        color: var(--neon-green);
+      }
+
+      .upgrade-buttons {
+        display: flex;
+        gap: 0.8rem;
+        padding: 1.2rem 1.5rem;
+      }
+
+      .upgrade-buttons .menu-btn {
+        flex: 1;
+      }
+
+      .upgrade-buttons .btn-cancel {
+        background: linear-gradient(
+          145deg,
+          rgba(239, 68, 68, 0.2) 0%,
+          rgba(239, 68, 68, 0.05) 100%
+        ) !important;
+        border-color: rgba(239, 68, 68, 0.5) !important;
+      }
+
+      .upgrade-buttons .btn-cancel:hover {
+        background: linear-gradient(
+          145deg,
+          rgba(239, 68, 68, 0.3) 0%,
+          rgba(239, 68, 68, 0.1) 100%
+        ) !important;
       }
 
       /* ==================== ONLINE LOBBY ==================== */
+
+      /* ==================== SQUAD REVEAL ANIMATION ==================== */
+      .squad-reveal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, #0a1a10 0%, #061510 100%);
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .squad-reveal-title {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.5rem;
+        color: var(--gold);
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        animation: titlePulse 2s ease-in-out infinite;
+      }
+
+      @keyframes titlePulse {
+        0%,
+        100% {
+          opacity: 1;
+          text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        50% {
+          opacity: 0.8;
+          text-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+        }
+      }
+
+      .squad-reveal-position-label {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1rem;
+        color: var(--silver);
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .squad-reveal-card-container {
+        perspective: 1000px;
+        margin-bottom: 2rem;
+      }
+
+      .squad-reveal-card {
+        animation: cardReveal 0.8s ease-out forwards;
+        transform-style: preserve-3d;
+      }
+
+      @keyframes cardReveal {
+        0% {
+          transform: scale(0.3) rotateY(180deg);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.1) rotateY(90deg);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(1) rotateY(0deg);
+          opacity: 1;
+        }
+      }
+
+      .squad-reveal-card .player-card {
+        width: 180px !important;
+        height: 260px !important;
+      }
+
+      .squad-reveal-progress {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .squad-reveal-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .squad-reveal-dot.active {
+        background: var(--gold);
+        box-shadow: 0 0 10px var(--gold);
+      }
+
+      .squad-reveal-dot.done {
+        background: var(--neon-green);
+      }
+
+      /* Full squad display */
+      .squad-reveal-full {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        animation: fullSquadReveal 1s ease-out forwards;
+      }
+
+      @keyframes fullSquadReveal {
+        0% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .squad-reveal-formation {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .squad-reveal-row {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+      }
+
+      .squad-reveal-row .player-card {
+        width: 80px !important;
+        height: 115px !important;
+      }
+
+      .squad-reveal-row .card-overall {
+        font-size: 1.2rem !important;
+      }
+
+      .squad-reveal-row .card-position {
+        font-size: 0.5rem !important;
+      }
+
+      .squad-reveal-row .card-player-silhouette {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 1.2rem !important;
+      }
+
+      .squad-reveal-row .card-stats-mini {
+        display: none !important;
+      }
+
+      .squad-reveal-vs {
+        font-family: "Orbitron", sans-serif;
+        font-size: 2rem;
+        color: var(--gold);
+        margin: 1rem 0;
+        text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+      }
+
+      .squad-reveal-ready-btn {
+        margin-top: 1.5rem;
+        padding: 1rem 3rem;
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.1rem;
+        background: var(--gradient-gold);
+        border: none;
+        border-radius: 12px;
+        color: #1a1a1a;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+      }
+
+      .squad-reveal-ready-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+      }
+
+      .squad-reveal-waiting {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 1rem;
+        color: var(--silver);
+        margin-top: 1rem;
+        animation: waitingPulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes waitingPulse {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
       .lobby-container {
         max-width: 600px;
         width: 100%;
@@ -2802,6 +3276,52 @@
       <div class="mobile-block-footer">⚽ Football Manager Ultimate</div>
     </div>
 
+    <!-- ==================== SQUAD REVEAL OVERLAY ==================== -->
+    <div
+      class="squad-reveal-overlay"
+      id="squadRevealOverlay"
+      style="display: none"
+    >
+      <div class="squad-reveal-title" id="squadRevealTitle">TWÓJ SKŁAD</div>
+
+      <div class="squad-reveal-position-label" id="squadRevealPosition">
+        BRAMKARZ
+      </div>
+
+      <div class="squad-reveal-card-container" id="squadRevealCardContainer">
+        <!-- Single card reveal -->
+      </div>
+
+      <div class="squad-reveal-progress" id="squadRevealProgress">
+        <!-- Dots will be generated -->
+      </div>
+
+      <!-- Full squad display (shown after all cards) -->
+      <div class="squad-reveal-full" id="squadRevealFull">
+        <div class="squad-reveal-title" data-t="squadTitle">TWÓJ SKŁAD</div>
+        <div class="squad-reveal-formation" id="squadRevealFormation">
+          <!-- Formation rows will be generated -->
+        </div>
+        <div class="squad-reveal-vs">VS</div>
+        <div
+          class="squad-reveal-waiting"
+          id="squadRevealWaiting"
+          data-t="waitingForOpponent"
+        >
+          Oczekiwanie na przeciwnika...
+        </div>
+        <button
+          class="squad-reveal-ready-btn"
+          id="squadRevealReadyBtn"
+          onclick="confirmSquadReady()"
+          data-t="ready"
+          style="display: none"
+        >
+          GOTOWY!
+        </button>
+      </div>
+    </div>
+
     <!-- ==================== MAIN MENU ==================== -->
     <div class="screen active" id="mainMenu">
       <h1 class="game-title">
@@ -2851,7 +3371,11 @@
         >
           ⚽ ZAGRAJ MECZ
         </button>
-        <button class="menu-btn" onclick="showScreen('upgradeScreen')">
+        <button
+          class="menu-btn"
+          onclick="showScreen('upgradeScreen')"
+          data-t="upgrades"
+        >
           ⬆️ ULEPSZENIA
         </button>
         <button
@@ -2978,30 +3502,21 @@
 
     <!-- ==================== UPGRADE SCREEN ==================== -->
     <div class="screen" id="upgradeScreen">
-      <h1 class="game-title">⬆️ ULEPSZENIA ZAWODNIKÓW</h1>
+      <h1 class="game-title" data-t="upgradesTitle">
+        ⬆️ ULEPSZENIA ZAWODNIKÓW
+      </h1>
 
       <div class="account-panel" style="margin-bottom: 1rem">
         <div class="account-balance" id="upgradeBalance">€10,000</div>
       </div>
 
-      <div
-        class="upgrade-container"
-        style="max-width: 900px; width: 95%; margin: 0 auto"
-      >
-        <div
-          class="upgrade-tabs"
-          style="
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-          "
-        >
+      <div class="upgrade-container">
+        <div class="upgrade-tabs">
           <button
             class="upgrade-tab active"
             data-tab="squad"
             onclick="switchUpgradeTab('squad')"
+            data-t="squadTab"
           >
             📋 SKŁAD
           </button>
@@ -3009,6 +3524,7 @@
             class="upgrade-tab"
             data-tab="bench"
             onclick="switchUpgradeTab('bench')"
+            data-t="benchTab"
           >
             🪑 ŁAWKA
           </button>
@@ -3021,7 +3537,8 @@
         <button
           class="menu-btn"
           onclick="showScreen('mainMenu')"
-          style="width: 100%; margin-top: 1rem"
+          style="width: 100%; margin-top: 1.5rem"
+          data-t="back"
         >
           🔙 POWRÓT
         </button>
@@ -3030,128 +3547,55 @@
 
     <!-- ==================== UPGRADE MODAL ==================== -->
     <div class="negotiation-modal" id="upgradeModal">
-      <div class="negotiation-panel" style="max-width: 500px">
-        <div
-          class="upgrade-modal-header"
-          style="
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            margin-bottom: 1rem;
-          "
-        >
-          <div id="upgradeCardPreview" style="flex-shrink: 0"></div>
-          <div>
-            <h2 id="upgradePlayerName" style="color: white; font-size: 1.2rem">
-              Zawodnik
-            </h2>
-            <p
-              id="upgradePlayerDetails"
-              style="color: var(--silver); font-size: 0.9rem"
-            >
-              ST | OVR 75
-            </p>
+      <div class="upgrade-modal-content">
+        <div class="upgrade-modal-header">
+          <div id="upgradeCardPreview"></div>
+          <div class="upgrade-player-info">
+            <h2 id="upgradePlayerName">Zawodnik</h2>
+            <p id="upgradePlayerDetails">ST | OVR 75</p>
           </div>
         </div>
 
-        <div
-          class="upgrade-stats-section"
-          style="
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-          "
-        >
-          <h3
-            style="color: var(--gold); font-size: 0.9rem; margin-bottom: 0.8rem"
-          >
-            📊 ULEPSZ STATYSTYKĘ
-          </h3>
-          <div
-            id="upgradeStatsList"
-            style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem"
-          >
+        <div class="upgrade-section">
+          <div class="upgrade-section-title stats">
+            📊 <span data-t="upgradeStats">ULEPSZ STATYSTYKĘ</span>
+          </div>
+          <div class="upgrade-stats-grid" id="upgradeStatsList">
             <!-- Stats will be generated by JS -->
           </div>
         </div>
 
-        <div
-          class="upgrade-position-section"
-          style="
-            background: rgba(0, 100, 200, 0.2);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-          "
-        >
-          <h3 style="color: #4dabf7; font-size: 0.9rem; margin-bottom: 0.8rem">
-            🔄 ZMIEŃ POZYCJĘ
-          </h3>
-          <div
-            id="upgradePositionsList"
-            style="
-              display: flex;
-              flex-wrap: wrap;
-              gap: 0.4rem;
-              justify-content: center;
-            "
-          >
+        <div class="upgrade-section">
+          <div class="upgrade-section-title positions">
+            🔄 <span data-t="upgradePositions">DODAJ POZYCJĘ</span>
+          </div>
+          <div class="upgrade-positions-grid" id="upgradePositionsList">
             <!-- Positions will be generated by JS -->
           </div>
-          <div
-            id="positionCostInfo"
-            style="
-              color: var(--silver);
-              font-size: 0.8rem;
-              margin-top: 0.5rem;
-              text-align: center;
-            "
-          ></div>
+          <div class="position-cost-info" id="positionCostInfo"></div>
         </div>
 
-        <div
-          class="upgrade-cost-section"
-          style="
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            text-align: center;
-          "
-        >
-          <div style="color: var(--silver); font-size: 0.8rem">KOSZT</div>
-          <div
-            id="upgradeCost"
-            style="
-              color: var(--gold);
-              font-size: 1.5rem;
-              font-family: 'Russo One', sans-serif;
-            "
-          >
-            €0
-          </div>
-          <div
-            id="upgradeEffect"
-            style="color: #4ade80; font-size: 0.9rem; margin-top: 0.3rem"
-          >
+        <div class="upgrade-cost-section">
+          <div class="upgrade-cost-label" data-t="cost">KOSZT</div>
+          <div class="upgrade-cost-value" id="upgradeCost">€0</div>
+          <div class="upgrade-effect" id="upgradeEffect" data-t="selectOption">
             Wybierz opcję
           </div>
         </div>
 
-        <div style="display: flex; gap: 0.5rem">
+        <div class="upgrade-buttons">
           <button
-            class="menu-btn"
+            class="menu-btn gold"
             id="confirmUpgradeBtn"
             onclick="confirmUpgrade()"
-            style="flex: 1"
+            data-t="confirm"
           >
             ✅ POTWIERDŹ
           </button>
           <button
-            class="menu-btn"
+            class="menu-btn btn-cancel"
             onclick="closeUpgradeModal()"
-            style="flex: 1; background: #4a1a1a"
+            data-t="cancel"
           >
             ❌ ANULUJ
           </button>
@@ -3161,25 +3605,30 @@
 
     <!-- ==================== PLAY MENU ==================== -->
     <div class="screen" id="playMenu">
-      <h1 class="game-title">⚽ RZUTY KARNE</h1>
+      <h1 class="game-title" data-t="penalties">⚽ RZUTY KARNE</h1>
 
       <div class="menu-container">
-        <button class="menu-btn" onclick="startPenalties('easy')">
+        <button class="menu-btn" onclick="startPenalties('easy')" data-t="easy">
           🟢 ŁATWY
         </button>
-        <button class="menu-btn" onclick="startPenalties('medium')">
+        <button
+          class="menu-btn"
+          onclick="startPenalties('medium')"
+          data-t="medium"
+        >
           🟡 ŚREDNI
         </button>
-        <button class="menu-btn" onclick="startPenalties('hard')">
+        <button class="menu-btn" onclick="startPenalties('hard')" data-t="hard">
           🔴 TRUDNY
         </button>
         <button
           class="menu-btn gold"
           onclick="showScreen('onlinePenaltyLobby')"
+          data-t="online"
         >
           🌐 ONLINE VS GRACZ
         </button>
-        <button class="menu-btn" onclick="showScreen('mainMenu')">
+        <button class="menu-btn" onclick="showScreen('mainMenu')" data-t="back">
           🔙 POWRÓT
         </button>
       </div>
@@ -3187,15 +3636,16 @@
 
     <!-- ==================== ONLINE PENALTY LOBBY ==================== -->
     <div class="screen" id="onlinePenaltyLobby">
-      <h1 class="game-title">🌐 KARNE ONLINE</h1>
+      <h1 class="game-title" data-t="onlinePenalties">🌐 KARNE ONLINE</h1>
 
       <div class="lobby-container">
         <div class="lobby-section" id="onlinePenaltyChoice">
-          <div class="lobby-title">WYBIERZ OPCJĘ</div>
+          <div class="lobby-title" data-t="chooseOption">WYBIERZ OPCJĘ</div>
           <button
             class="menu-btn"
             onclick="createPenaltyRoom()"
             style="width: 100%; margin-bottom: 1rem"
+            data-t="createRoom"
           >
             🏠 UTWÓRZ POKÓJ
           </button>
@@ -3205,6 +3655,7 @@
               margin-bottom: 1rem;
               color: var(--silver);
             "
+            data-t="or"
           >
             — lub —
           </div>
@@ -3212,12 +3663,14 @@
             type="text"
             class="lobby-input"
             id="joinPenaltyInput"
-            placeholder="Wklej kod pokoju"
+            data-t-placeholder="pasteCode"
+            placeholder="Wklej link lub kod"
           />
           <button
             class="menu-btn"
             onclick="joinPenaltyRoom()"
             style="width: 100%"
+            data-t="joinRoom"
           >
             🔗 DOŁĄCZ DO POKOJU
           </button>
@@ -3228,16 +3681,19 @@
           id="hostPenaltySection"
           style="display: none"
         >
-          <div class="lobby-title">TWÓJ POKÓJ</div>
-          <div class="lobby-link" id="penaltyRoomCode">Generowanie...</div>
+          <div class="lobby-title" data-t="yourRoom">TWÓJ POKÓJ</div>
+          <div class="lobby-link" id="penaltyRoomCode" data-t="generating">
+            Generowanie...
+          </div>
           <button
             class="menu-btn"
             onclick="copyPenaltyCode()"
             style="width: 100%; margin-bottom: 1rem"
+            data-t="copyLink"
           >
-            📋 KOPIUJ KOD
+            📋 KOPIUJ LINK
           </button>
-          <div class="lobby-status" id="penaltyHostStatus">
+          <div class="lobby-status" id="penaltyHostStatus" data-t="waiting">
             Oczekiwanie na przeciwnika...
           </div>
           <button
@@ -3246,6 +3702,7 @@
             onclick="startOnlinePenalty()"
             style="width: 100%; margin-top: 1rem"
             disabled
+            data-t="start"
           >
             ROZPOCZNIJ
           </button>
@@ -3256,8 +3713,8 @@
           id="guestPenaltySection"
           style="display: none"
         >
-          <div class="lobby-title">DOŁĄCZANIE...</div>
-          <div class="lobby-status" id="penaltyGuestStatus">
+          <div class="lobby-title" data-t="joining">DOŁĄCZANIE...</div>
+          <div class="lobby-status" id="penaltyGuestStatus" data-t="connecting">
             Łączenie z pokojem...
           </div>
         </div>
@@ -3266,6 +3723,7 @@
           class="menu-btn"
           onclick="leavePenaltyLobby()"
           style="width: 100%"
+          data-t="back"
         >
           🔙 POWRÓT
         </button>
@@ -3361,81 +3819,10 @@
     </div>
 
     <!-- ==================== ONLINE LOBBY ==================== -->
-    <div class="screen" id="onlineLobby">
-      <h1 class="game-title">🌐 GRA ONLINE</h1>
-
-      <div class="lobby-container">
-        <div class="lobby-section" id="onlineChoiceSection">
-          <div class="lobby-title">WYBIERZ OPCJĘ</div>
-          <button
-            class="menu-btn"
-            onclick="createOnlineRoom()"
-            style="width: 100%; margin-bottom: 1rem"
-          >
-            🏠 UTWÓRZ POKÓJ
-          </button>
-          <div
-            style="
-              text-align: center;
-              margin-bottom: 1rem;
-              color: var(--silver);
-            "
-          >
-            — lub —
-          </div>
-          <input
-            type="text"
-            class="lobby-input"
-            id="joinRoomInput"
-            placeholder="Wklej link lub kod pokoju"
-          />
-          <button
-            class="menu-btn"
-            onclick="joinOnlineRoom()"
-            style="width: 100%"
-          >
-            🔗 DOŁĄCZ DO POKOJU
-          </button>
-        </div>
-
-        <div class="lobby-section" id="hostLobbySection" style="display: none">
-          <div class="lobby-title">TWÓJ POKÓJ</div>
-          <div class="lobby-link" id="roomLink">Generowanie linku...</div>
-          <button
-            class="menu-btn"
-            onclick="copyRoomLink()"
-            style="width: 100%; margin-bottom: 1rem"
-          >
-            📋 KOPIUJ LINK
-          </button>
-          <div class="lobby-status" id="hostStatus">
-            Oczekiwanie na przeciwnika...
-          </div>
-          <button
-            class="menu-btn gold"
-            id="startOnlineBtn"
-            onclick="startOnlineGame()"
-            style="width: 100%; margin-top: 1rem"
-            disabled
-          >
-            ROZPOCZNIJ MECZ
-          </button>
-        </div>
-
-        <div class="lobby-section" id="guestLobbySection" style="display: none">
-          <div class="lobby-title">DOŁĄCZANIE...</div>
-          <div class="lobby-status" id="guestStatus">Łączenie z pokojem...</div>
-        </div>
-
-        <button class="menu-btn" onclick="leaveLobby()" style="width: 100%">
-          🔙 POWRÓT
-        </button>
-      </div>
-    </div>
 
     <!-- ==================== SQUAD SCREEN ==================== -->
     <div class="screen" id="squadScreen">
-      <h1 class="game-title">📋 MÓJ SKŁAD</h1>
+      <h1 class="game-title" data-t="squadTitle">📋 MÓJ SKŁAD</h1>
 
       <div class="formation-selector" id="formationSelector">
         <button class="formation-btn selected" data-formation="4-3-3">
@@ -3457,7 +3844,7 @@
       </div>
 
       <div class="bench-section">
-        <h3 class="bench-title">🪑 ŁAWKA REZERWOWYCH</h3>
+        <h3 class="bench-title" data-t="bench">🪑 ŁAWKA REZERWOWYCH</h3>
         <div class="bench-players" id="benchPlayers">
           <!-- Bench players will be generated by JS -->
         </div>
@@ -3474,7 +3861,7 @@
     <div class="player-select-modal" id="playerSelectModal">
       <div class="player-select-panel">
         <div class="player-select-header">
-          <h2>WYBIERZ ZAWODNIKA</h2>
+          <h2 data-t="selectPlayer">WYBIERZ ZAWODNIKA</h2>
           <div class="player-select-slot-info" id="slotInfo">Pozycja: ST</div>
         </div>
         <div class="player-select-tabs">
@@ -3494,7 +3881,7 @@
 
     <!-- ==================== MARKET SCREEN ==================== -->
     <div class="screen" id="marketScreen">
-      <h1 class="game-title">🏪 RYNEK TRANSFEROWY</h1>
+      <h1 class="game-title" data-t="marketTitle">🏪 RYNEK TRANSFEROWY</h1>
 
       <div class="market-container">
         <div class="market-header">
@@ -3647,7 +4034,8 @@
             <h3 id="negotiationPlayerName">Zawodnik</h3>
             <p id="negotiationPlayerDetails">ST | 🇵🇱 | OVR 75</p>
             <p class="price">
-              Cena rynkowa: <span id="negotiationPrice">€0</span>
+              <span data-t="marketPrice">Cena rynkowa</span>:
+              <span id="negotiationPrice">€0</span>
             </p>
           </div>
           <button class="chat-close" onclick="closeNegotiation()">✕</button>
@@ -3655,11 +4043,15 @@
 
         <!-- Tension bar -->
         <div class="tension-bar-container">
-          <div class="tension-label">😊 Nastrój agenta</div>
+          <div class="tension-label" data-t="agentMood">😊 Nastrój agenta</div>
           <div class="tension-bar">
             <div class="tension-fill" id="tensionFill"></div>
           </div>
-          <div class="tension-warning" id="tensionWarning">
+          <div
+            class="tension-warning"
+            id="tensionWarning"
+            data-t="agentWarning"
+          >
             ⚠️ Agent traci cierpliwość!
           </div>
         </div>
@@ -3671,10 +4063,12 @@
 
         <!-- Phase 1: Price negotiation -->
         <div class="chat-offer-area" id="pricePhase">
-          <div class="phase-title">💰 FAZA 1: CENA TRANSFERU</div>
+          <div class="phase-title" data-t="phase1">
+            💰 FAZA 1: CENA TRANSFERU
+          </div>
           <div class="offer-grid">
             <div class="offer-input" style="grid-column: span 2">
-              <label>💵 Twoja oferta cenowa</label>
+              <label data-t="yourOffer">💵 Twoja oferta cenowa</label>
               <input type="number" id="offerPrice" placeholder="€" />
             </div>
           </div>
@@ -3685,7 +4079,7 @@
                 id="includeSwap"
                 onchange="toggleSwapPlayer()"
               />
-              <span>🔄 Dodaj gracza w rozliczeniu</span>
+              <span data-t="addSwap">🔄 Dodaj gracza w rozliczeniu</span>
             </label>
             <div
               class="swap-player-select"
@@ -3693,16 +4087,26 @@
               style="display: none"
             >
               <select id="swapPlayerDropdown">
-                <option value="">-- Wybierz gracza --</option>
+                <option value="" data-t="selectSwapPlayer">
+                  -- Wybierz gracza --
+                </option>
               </select>
               <div class="swap-player-value" id="swapPlayerValue"></div>
             </div>
           </div>
           <div class="chat-buttons">
-            <button class="btn-send" onclick="sendPriceOffer()">
+            <button
+              class="btn-send"
+              onclick="sendPriceOffer()"
+              data-t="sendOffer"
+            >
               📤 ZŁÓŻ OFERTĘ
             </button>
-            <button class="btn-leave" onclick="closeNegotiation()">
+            <button
+              class="btn-leave"
+              onclick="closeNegotiation()"
+              data-t="leave"
+            >
               ❌ ODEJDŹ
             </button>
           </div>
@@ -3710,10 +4114,12 @@
 
         <!-- Phase 2: Contract negotiation -->
         <div class="chat-offer-area" id="contractPhase" style="display: none">
-          <div class="phase-title">📋 FAZA 2: WARUNKI KONTRAKTU</div>
+          <div class="phase-title" data-t="phase2">
+            📋 FAZA 2: WARUNKI KONTRAKTU
+          </div>
           <div class="offer-grid">
             <div class="offer-input">
-              <label>💰 Pensja/tyg</label>
+              <label data-t="salaryWeek">💰 Pensja/tyg</label>
               <input
                 type="number"
                 id="offerSalary"
@@ -3722,32 +4128,42 @@
               />
             </div>
             <div class="offer-input">
-              <label>📅 Kontrakt (lata)</label>
+              <label data-t="contractYears">📅 Kontrakt (lata)</label>
               <input type="number" id="offerLength" value="3" min="1" max="5" />
             </div>
             <div class="offer-input">
-              <label>🎁 Bonus za podpis</label>
+              <label data-t="signingBonus">🎁 Bonus za podpis</label>
               <input
                 type="number"
                 id="offerBonus"
                 value="0"
+                data-t-placeholder="optional"
                 placeholder="€ (opcjonalne)"
               />
             </div>
             <div class="offer-input">
-              <label>🔓 Klauzula wykupu</label>
+              <label data-t="releaseClause">🔓 Klauzula wykupu</label>
               <input
                 type="number"
                 id="offerClause"
+                data-t-placeholder="optional"
                 placeholder="€ (opcjonalne)"
               />
             </div>
           </div>
           <div class="chat-buttons">
-            <button class="btn-send" onclick="sendContractOffer()">
+            <button
+              class="btn-send"
+              onclick="sendContractOffer()"
+              data-t="sendOffer"
+            >
               📤 ZŁÓŻ OFERTĘ
             </button>
-            <button class="btn-leave" onclick="closeNegotiation()">
+            <button
+              class="btn-leave"
+              onclick="closeNegotiation()"
+              data-t="leave"
+            >
               ❌ ODEJDŹ
             </button>
           </div>
@@ -3808,13 +4224,15 @@
         pl: {
           // Main menu
           title: "⚽ FOOTBALL MANAGER ULTIMATE",
-          managerName: "IMIĘ MENEDŻERA",
+          managerName: "Nazwa Managera",
           balance: "SALDO",
           play: "⚽ ZAGRAJ",
-          squad: "👥 SKŁAD",
+          squad: "📋 MÓJ SKŁAD",
           market: "🏪 RYNEK TRANSFEROWY",
           legends: "⭐ LEGENDY",
           settings: "⚙️ USTAWIENIA",
+          upgrades: "⬆️ ULEPSZENIA",
+          reset: "🗑️ RESETUJ GRĘ",
 
           // Play menu
           penalties: "⚽ RZUTY KARNE",
@@ -3846,34 +4264,71 @@
           congrats: "Gratulacje! Wygrałeś rzuty karne!",
           lost: "Przegrałeś rzuty karne.",
           exit: "🔙 WYJDŹ",
+          surrender: "🏳️ PODDAJ SIĘ",
+          surrenderConfirm: "Czy na pewno chcesz się poddać?",
+          playAgain: "🔄 ZAGRAJ PONOWNIE",
+          mainMenu: "🏠 MENU GŁÓWNE",
+          shoot: "STRZELAJ!",
 
           // Online
           onlinePenalties: "🌐 KARNE ONLINE",
           chooseOption: "WYBIERZ OPCJĘ",
           createRoom: "🏠 UTWÓRZ POKÓJ",
           or: "— lub —",
-          pasteCode: "Wklej kod pokoju",
+          pasteCode: "Wklej link lub kod",
           joinRoom: "🔗 DOŁĄCZ DO POKOJU",
           yourRoom: "TWÓJ POKÓJ",
-          copyCode: "📋 KOPIUJ KOD",
+          copyLink: "📋 KOPIUJ LINK",
           waiting: "Oczekiwanie na przeciwnika...",
           opponentJoined: "✅ Przeciwnik dołączył!",
           start: "ROZPOCZNIJ",
           joining: "DOŁĄCZANIE...",
           connecting: "Łączenie z pokojem...",
           connected: "✅ Połączono! Oczekiwanie na start...",
-          codeCopied: "Kod skopiowany!",
+          linkCopied: "Link skopiowany!",
           waitingOpponent: "⏳ Oczekiwanie na przeciwnika...",
+          disconnect: "🏠 ROZŁĄCZ",
+          opponentDisconnected: "Przeciwnik rozłączył się",
+          hostDisconnected: "Host rozłączył się",
+          rematchRequest: "Przeciwnik chce zagrać ponownie. Zgadzasz się?",
+          rematchDeclined: "Przeciwnik odmówił rewanżu.",
+          waitingForOpponent: "Czekam na przeciwnika...",
 
           // Squad
-          squadTitle: "👥 TWÓJ SKŁAD",
+          squadTitle: "📋 MÓJ SKŁAD",
           formation: "FORMACJA",
           overall: "ŚREDNIA",
           chemistry: "CHEMIA",
+          bench: "🪑 ŁAWKA REZERWOWYCH",
+          selectPlayer: "WYBIERZ ZAWODNIKA",
+          position: "Pozycja",
+          squadTab: "SKŁAD",
+          benchTab: "ŁAWKA",
+          cancel: "❌ ANULUJ",
 
           // Market
           marketTitle: "🏪 RYNEK TRANSFEROWY",
-          refresh: "Odświeżenie za",
+          refresh: "Nowe karty za",
+          marketPrice: "Cena rynkowa",
+
+          // Negotiation
+          phase1: "💰 FAZA 1: CENA TRANSFERU",
+          phase2: "📋 FAZA 2: WARUNKI KONTRAKTU",
+          yourOffer: "Twoja oferta cenowa",
+          addSwap: "🔄 Dodaj gracza w rozliczeniu",
+          selectSwapPlayer: "-- Wybierz gracza --",
+          swapValue: "Wartość wymiany",
+          salaryWeek: "Pensja/tyg",
+          contractYears: "Kontrakt (lata)",
+          signingBonus: "Bonus za podpis",
+          releaseClause: "Klauzula wykupu",
+          optional: "(opcjonalne)",
+          sendOffer: "📤 ZŁÓŻ OFERTĘ",
+          leave: "❌ ODEJDŹ",
+          agentMood: "😊 Nastrój agenta",
+          agentWarning: "⚠️ Agent traci cierpliwość!",
+          notEnoughMoney: "Nie macie wystarczających środków na tę ofertę.",
+          playerJoined: "dołączył do Twojej drużyny!",
 
           // Legends
           legendsTitle: "⭐ LEGENDY NA EMERYTURZE",
@@ -3889,6 +4344,19 @@
           retiredLegend: "przeszedł na emeryturę jako LEGENDA!",
           newPlayer: "Nowy gracz dołączył do składu.",
 
+          // Upgrades
+          upgradesTitle: "⬆️ ULEPSZENIA ZAWODNIKÓW",
+          upgradeStats: "ULEPSZ STATYSTYKĘ",
+          upgradePositions: "DODAJ POZYCJĘ",
+          confirm: "✅ POTWIERDŹ",
+          selectOption: "Wybierz opcję",
+          maxLevel: "MAX",
+          currentPosition: "obecna",
+          positionCostNear: "Podobna pozycja",
+          positionCostFar: "Odległa pozycja",
+          statUpgraded: "Statystyka ulepszona!",
+          positionAdded: "Pozycja dodana!",
+
           // Settings
           settingsTitle: "⚙️ USTAWIENIA",
           language: "JĘZYK",
@@ -3896,18 +4364,79 @@
           // Mobile block
           mobileTitle: "Tylko na komputerze",
           mobileMsg: "Ta gra wymaga komputera z klawiaturą i myszką.",
-          mobileDevices: "💻 Komputer | 🖱️ Myszka | ⌨️ Klawiatura",
+
+          // Instructions
+          howToPlay: "📖 JAK GRAĆ",
+          basics: "⚽ Podstawy",
+          basicsDesc:
+            "Zarządzaj swoją drużyną, kupuj zawodników i wygrywaj mecze!",
+          economy: "💰 Ekonomia",
+          cards: "🎴 Karty Zawodników",
+          close: "ZAMKNIJ",
+
+          // Misc
+          resetConfirm:
+            "Czy na pewno chcesz zresetować grę? Stracisz cały postęp!",
+          generating: "Generowanie...",
+          unknown: "Nieznany",
+
+          // Squad reveal
+          yourSquad: "TWÓJ SKŁAD",
+          goalkeeper: "BRAMKARZ",
+          defenders: "OBROŃCY",
+          midfielders: "POMOCNICY",
+          attackers: "NAPASTNICY",
+          ready: "✅ GOTOWY!",
+          waitingForOpponent: "Oczekiwanie na przeciwnika...",
+          bothReady: "Obaj gracze gotowi! Zaczynamy...",
+
+          // Additional alerts
+          enterCode: "Wprowadź kod lub link pokoju",
+          pasteCodeAlert: "Wklej kod pokoju!",
+          notEnoughFunds: "Nie masz wystarczających środków!",
+          exitMatchConfirm: "Czy na pewno chcesz wyjść z meczu?",
+          result: "Wynik",
+          earnings: "Zarobek",
+          stats: "Statystyki",
+          matches: "Mecze",
+          wins: "W",
+          draws: "R",
+          losses: "P",
+          copied: "Skopiowano!",
+
+          // Match results
+          victory: "🏆 ZWYCIĘSTWO!",
+          defeat: "😞 PORAŻKA",
+          draw: "🤝 REMIS",
+
+          // Upgrade modal
+          upgradePlayer: "ULEPSZ ZAWODNIKA",
+          currentStats: "Obecne statystyki",
+          afterUpgrade: "Po ulepszeniu",
+          cost: "Koszt",
+
+          // Negotiation agent messages
+          agentGreeting:
+            "Dzień dobry. Reprezentuję {player}. Cena wywoławcza to €{price}. Jaką kwotę Państwo proponują?",
+          agentPriceOk:
+            "Cena zaakceptowana! Przejdźmy teraz do warunków kontraktu.",
+          agentPriceLow: "To za mało. Proszę o lepszą ofertę.",
+          agentLeaves: "Dosyć! Negocjacje zakończone.",
+          agentContractOk: "Świetnie! Podpisujemy kontrakt. Witamy w klubie!",
+          totalOffer: "łącznie",
         },
         en: {
           // Main menu
           title: "⚽ FOOTBALL MANAGER ULTIMATE",
-          managerName: "MANAGER NAME",
+          managerName: "Manager Name",
           balance: "BALANCE",
           play: "⚽ PLAY",
-          squad: "👥 SQUAD",
+          squad: "📋 MY SQUAD",
           market: "🏪 TRANSFER MARKET",
           legends: "⭐ LEGENDS",
           settings: "⚙️ SETTINGS",
+          upgrades: "⬆️ UPGRADES",
+          reset: "🗑️ RESET GAME",
 
           // Play menu
           penalties: "⚽ PENALTY SHOOTOUT",
@@ -3939,34 +4468,71 @@
           congrats: "Congratulations! You won the penalty shootout!",
           lost: "You lost the penalty shootout.",
           exit: "🔙 EXIT",
+          surrender: "🏳️ SURRENDER",
+          surrenderConfirm: "Are you sure you want to surrender?",
+          playAgain: "🔄 PLAY AGAIN",
+          mainMenu: "🏠 MAIN MENU",
+          shoot: "SHOOT!",
 
           // Online
           onlinePenalties: "🌐 ONLINE PENALTIES",
           chooseOption: "CHOOSE OPTION",
           createRoom: "🏠 CREATE ROOM",
           or: "— or —",
-          pasteCode: "Paste room code",
+          pasteCode: "Paste link or code",
           joinRoom: "🔗 JOIN ROOM",
           yourRoom: "YOUR ROOM",
-          copyCode: "📋 COPY CODE",
+          copyLink: "📋 COPY LINK",
           waiting: "Waiting for opponent...",
           opponentJoined: "✅ Opponent joined!",
           start: "START",
           joining: "JOINING...",
           connecting: "Connecting to room...",
           connected: "✅ Connected! Waiting for start...",
-          codeCopied: "Code copied!",
+          linkCopied: "Link copied!",
           waitingOpponent: "⏳ Waiting for opponent...",
+          disconnect: "🏠 DISCONNECT",
+          opponentDisconnected: "Opponent disconnected",
+          hostDisconnected: "Host disconnected",
+          rematchRequest: "Opponent wants a rematch. Do you accept?",
+          rematchDeclined: "Opponent declined rematch.",
+          waitingForOpponent: "Waiting for opponent...",
 
           // Squad
-          squadTitle: "👥 YOUR SQUAD",
+          squadTitle: "📋 MY SQUAD",
           formation: "FORMATION",
           overall: "AVERAGE",
           chemistry: "CHEMISTRY",
+          bench: "🪑 BENCH",
+          selectPlayer: "SELECT PLAYER",
+          position: "Position",
+          squadTab: "SQUAD",
+          benchTab: "BENCH",
+          cancel: "❌ CANCEL",
 
           // Market
           marketTitle: "🏪 TRANSFER MARKET",
-          refresh: "Refresh in",
+          refresh: "New cards in",
+          marketPrice: "Market price",
+
+          // Negotiation
+          phase1: "💰 PHASE 1: TRANSFER FEE",
+          phase2: "📋 PHASE 2: CONTRACT TERMS",
+          yourOffer: "Your price offer",
+          addSwap: "🔄 Add player in exchange",
+          selectSwapPlayer: "-- Select player --",
+          swapValue: "Exchange value",
+          salaryWeek: "Salary/week",
+          contractYears: "Contract (years)",
+          signingBonus: "Signing bonus",
+          releaseClause: "Release clause",
+          optional: "(optional)",
+          sendOffer: "📤 SEND OFFER",
+          leave: "❌ LEAVE",
+          agentMood: "😊 Agent mood",
+          agentWarning: "⚠️ Agent is losing patience!",
+          notEnoughMoney: "You don't have enough funds for this offer.",
+          playerJoined: "joined your team!",
 
           // Legends
           legendsTitle: "⭐ RETIRED LEGENDS",
@@ -3982,6 +4548,19 @@
           retiredLegend: "has retired as a LEGEND!",
           newPlayer: "New player joined the squad.",
 
+          // Upgrades
+          upgradesTitle: "⬆️ PLAYER UPGRADES",
+          upgradeStats: "UPGRADE STAT",
+          upgradePositions: "ADD POSITION",
+          confirm: "✅ CONFIRM",
+          selectOption: "Select option",
+          maxLevel: "MAX",
+          currentPosition: "current",
+          positionCostNear: "Similar position",
+          positionCostFar: "Distant position",
+          statUpgraded: "Stat upgraded!",
+          positionAdded: "Position added!",
+
           // Settings
           settingsTitle: "⚙️ SETTINGS",
           language: "LANGUAGE",
@@ -3989,7 +4568,65 @@
           // Mobile block
           mobileTitle: "Desktop Only",
           mobileMsg: "This game requires a computer with keyboard and mouse.",
-          mobileDevices: "💻 Computer | 🖱️ Mouse | ⌨️ Keyboard",
+
+          // Instructions
+          howToPlay: "📖 HOW TO PLAY",
+          basics: "⚽ Basics",
+          basicsDesc: "Manage your team, buy players and win matches!",
+          economy: "💰 Economy",
+          cards: "🎴 Player Cards",
+          close: "CLOSE",
+
+          // Misc
+          resetConfirm:
+            "Are you sure you want to reset? You will lose all progress!",
+          generating: "Generating...",
+          unknown: "Unknown",
+
+          // Squad reveal
+          yourSquad: "YOUR SQUAD",
+          goalkeeper: "GOALKEEPER",
+          defenders: "DEFENDERS",
+          midfielders: "MIDFIELDERS",
+          attackers: "ATTACKERS",
+          ready: "✅ READY!",
+          waitingForOpponent: "Waiting for opponent...",
+          bothReady: "Both players ready! Starting...",
+
+          // Additional alerts
+          enterCode: "Enter room code or link",
+          pasteCodeAlert: "Paste room code!",
+          notEnoughFunds: "You don't have enough funds!",
+          exitMatchConfirm: "Are you sure you want to exit the match?",
+          result: "Result",
+          earnings: "Earnings",
+          stats: "Stats",
+          matches: "Matches",
+          wins: "W",
+          draws: "D",
+          losses: "L",
+          copied: "Copied!",
+
+          // Match results
+          victory: "🏆 VICTORY!",
+          defeat: "😞 DEFEAT",
+          draw: "🤝 DRAW",
+
+          // Upgrade modal
+          upgradePlayer: "UPGRADE PLAYER",
+          currentStats: "Current stats",
+          afterUpgrade: "After upgrade",
+          cost: "Cost",
+
+          // Negotiation agent messages
+          agentGreeting:
+            "Hello. I represent {player}. Starting price is €{price}. What is your offer?",
+          agentPriceOk: "Price accepted! Let's discuss contract terms.",
+          agentPriceLow: "That's too low. Please make a better offer.",
+          agentLeaves: "Enough! Negotiations are over.",
+          agentContractOk:
+            "Great! We're signing the contract. Welcome to the club!",
+          totalOffer: "total",
         },
       };
 
@@ -4001,15 +4638,22 @@
         currentLang = lang;
         localStorage.setItem("footballLang", lang);
         updateAllText();
+        updateLanguageButtons();
       }
 
       function updateAllText() {
         // Update all elements with data-t attribute
         document.querySelectorAll("[data-t]").forEach((el) => {
-          el.textContent = t(el.dataset.t);
+          const key = el.dataset.t;
+          if (translations[currentLang][key]) {
+            el.textContent = t(key);
+          }
         });
         document.querySelectorAll("[data-t-placeholder]").forEach((el) => {
-          el.placeholder = t(el.dataset.tPlaceholder);
+          const key = el.dataset.tPlaceholder;
+          if (translations[currentLang][key]) {
+            el.placeholder = t(key);
+          }
         });
       }
       // ==================== GAME STATE ====================
@@ -4147,9 +4791,7 @@
       }
 
       function resetGame() {
-        if (
-          confirm("Czy na pewno chcesz zresetować grę? Stracisz cały postęp!")
-        ) {
+        if (confirm(t("resetConfirm"))) {
           localStorage.removeItem(SAVE_KEY);
           location.reload();
         }
@@ -5936,50 +6578,95 @@
       let agreedPrice = 0;
       let swapPlayer = null;
 
-      const agentGreetingsPrice = [
-        "Dzień dobry. Reprezentuję {player}. Cena wywoławcza to €{price}. Jaką kwotę Państwo proponują?",
-        "Witam. Agent {player} do usług. Rozmawiajmy o cenie - punkt wyjścia to €{price}.",
-        "Dzień dobry. {player} jest dostępny za €{price}. Czekam na Państwa propozycję.",
-      ];
-
-      const agentPriceAccept = [
-        "Cena zaakceptowana! Przejdźmy teraz do warunków kontraktu dla {player}.",
-        "Doskonale, €{price} to uczciwa kwota. Teraz ustalmy szczegóły umowy.",
-        "Zgoda! Mamy porozumienie w kwestii ceny. Czas na kontrakt.",
-      ];
-
-      const agentPriceCounter = [
-        "To za mało. {player} jest wart co najmniej €{counter}. Proszę o lepszą ofertę.",
-        "Mój klient oczekuje minimum €{counter}. Możemy się spotkać w połowie drogi?",
-        "Rozumiem budżet, ale €{counter} to absolutne minimum dla {player}.",
-      ];
-
-      const agentPriceLow = [
-        "Ta oferta jest obraźliwa. {player} nie będzie rozmawiał za takie pieniądze.",
-        "Żartujecie? To nawet nie pokrywa kosztów agenta. Poważna oferta albo kończymy.",
-        "Nie zamierzam tracić czasu. Wróćcie z realną propozycją.",
-      ];
-
-      const agentContractAccept = [
-        "Świetnie! {player} z przyjemnością podpisuje kontrakt. Witamy w klubie!",
-        "Warunki zaakceptowane! {player} już nie może się doczekać gry w Państwa barwach.",
-        "Mamy deal! {player} jest Waszym nowym zawodnikiem. Gratulacje!",
-      ];
-
-      const agentContractCounter = [
-        "{player} oczekuje pensji bliższej €{salary}/tyg. Bonus €{bonus} też by pomógł.",
-        "Dobry początek, ale pensja €{salary}/tyg byłaby bardziej odpowiednia dla {player}.",
-        "Musimy porozmawiać o pensjach. €{salary}/tyg to minimum dla kogoś tej klasy.",
-      ];
-
-      const agentLeaves = [
-        "Dosyć! Negocjacje zakończone. {player} nie jest zainteresowany.",
-        "Straciłem cierpliwość. {player} będzie szukał innego klubu.",
-        "To była strata czasu. Do widzenia.",
-      ];
+      function getAgentMessages() {
+        if (currentLang === "pl") {
+          return {
+            greetingsPrice: [
+              "Dzień dobry. Reprezentuję {player}. Cena wywoławcza to €{price}. Jaką kwotę Państwo proponują?",
+              "Witam. Agent {player} do usług. Rozmawiajmy o cenie - punkt wyjścia to €{price}.",
+              "Dzień dobry. {player} jest dostępny za €{price}. Czekam na Państwa propozycję.",
+            ],
+            priceAccept: [
+              "Cena zaakceptowana! Przejdźmy teraz do warunków kontraktu dla {player}.",
+              "Doskonale, €{price} to uczciwa kwota. Teraz ustalmy szczegóły umowy.",
+              "Zgoda! Mamy porozumienie w kwestii ceny. Czas na kontrakt.",
+            ],
+            priceCounter: [
+              "To za mało. {player} jest wart co najmniej €{counter}. Proszę o lepszą ofertę.",
+              "Mój klient oczekuje minimum €{counter}. Możemy się spotkać w połowie drogi?",
+              "Rozumiem budżet, ale €{counter} to absolutne minimum dla {player}.",
+            ],
+            priceLow: [
+              "Ta oferta jest obraźliwa. {player} nie będzie rozmawiał za takie pieniądze.",
+              "Żartujecie? To nawet nie pokrywa kosztów agenta. Poważna oferta albo kończymy.",
+              "Nie zamierzam tracić czasu. Wróćcie z realną propozycją.",
+            ],
+            contractAccept: [
+              "Świetnie! {player} z przyjemnością podpisuje kontrakt. Witamy w klubie!",
+              "Warunki zaakceptowane! {player} już nie może się doczekać gry w Państwa barwach.",
+              "Mamy deal! {player} jest Waszym nowym zawodnikiem. Gratulacje!",
+            ],
+            contractCounter: [
+              "{player} oczekuje pensji bliższej €{salary}/tyg. Bonus €{bonus} też by pomógł.",
+              "Dobry początek, ale pensja €{salary}/tyg byłaby bardziej odpowiednia dla {player}.",
+              "Musimy porozmawiać o pensjach. €{salary}/tyg to minimum dla kogoś tej klasy.",
+            ],
+            leaves: [
+              "Dosyć! Negocjacje zakończone. {player} nie jest zainteresowany.",
+              "Straciłem cierpliwość. {player} będzie szukał innego klubu.",
+              "To była strata czasu. Do widzenia.",
+            ],
+            notEnoughMoney: "Nie macie wystarczających środków na tę ofertę.",
+            tooLow:
+              "To zdecydowanie za mało. {player} oczekuje minimum €{salary}/tyg.",
+          };
+        } else {
+          return {
+            greetingsPrice: [
+              "Hello. I represent {player}. Starting price is €{price}. What is your offer?",
+              "Greetings. I'm {player}'s agent. Let's discuss the price - starting at €{price}.",
+              "Good day. {player} is available for €{price}. I await your proposal.",
+            ],
+            priceAccept: [
+              "Price accepted! Let's move on to contract terms for {player}.",
+              "Excellent, €{price} is a fair amount. Now let's discuss the details.",
+              "Agreed! We have a deal on the price. Time for the contract.",
+            ],
+            priceCounter: [
+              "That's too low. {player} is worth at least €{counter}. Please make a better offer.",
+              "My client expects minimum €{counter}. Can we meet in the middle?",
+              "I understand budget constraints, but €{counter} is the absolute minimum for {player}.",
+            ],
+            priceLow: [
+              "This offer is insulting. {player} won't negotiate for this money.",
+              "Are you joking? This doesn't even cover agent fees. Serious offer or we're done.",
+              "I won't waste my time. Come back with a real proposal.",
+            ],
+            contractAccept: [
+              "Great! {player} is happy to sign the contract. Welcome to the club!",
+              "Terms accepted! {player} can't wait to play for your team.",
+              "We have a deal! {player} is your new player. Congratulations!",
+            ],
+            contractCounter: [
+              "{player} expects salary closer to €{salary}/week. A bonus of €{bonus} would help too.",
+              "Good start, but €{salary}/week would be more appropriate for {player}.",
+              "We need to talk about salaries. €{salary}/week is the minimum for someone of this class.",
+            ],
+            leaves: [
+              "Enough! Negotiations are over. {player} is not interested.",
+              "I've lost patience. {player} will look for another club.",
+              "This was a waste of time. Goodbye.",
+            ],
+            notEnoughMoney: "You don't have enough funds for this offer.",
+            tooLow:
+              "That's way too low. {player} expects minimum €{salary}/week.",
+          };
+        }
+      }
 
       function getRandomMessage(messages, replacements = {}) {
-        let msg = messages[Math.floor(Math.random() * messages.length)];
+        const arr = Array.isArray(messages) ? messages : [messages];
+        let msg = arr[Math.floor(Math.random() * arr.length)];
         for (const [key, value] of Object.entries(replacements)) {
           msg = msg.replace(new RegExp(`{${key}}`, "g"), value);
         }
@@ -6042,7 +6729,7 @@
         // Add greeting
         addChatMessage(
           "agent",
-          getRandomMessage(agentGreetingsPrice, {
+          getRandomMessage(getAgentMessages().greetingsPrice, {
             player: player.name,
             price: player.price.toLocaleString(),
           })
@@ -6172,10 +6859,7 @@
         // Check if can afford
         if (offeredPrice > GameState.manager.balance) {
           setTimeout(() => {
-            addChatMessage(
-              "agent",
-              "Nie macie wystarczających środków na tę ofertę."
-            );
+            addChatMessage("agent", getAgentMessages().notEnoughMoney);
             negotiationTension += 15;
             updateTensionBar();
           }, 800);
@@ -6195,7 +6879,7 @@
 
             addChatMessage(
               "agent",
-              getRandomMessage(agentPriceAccept, {
+              getRandomMessage(getAgentMessages().priceAccept, {
                 player: currentNegotiationPlayer.name,
                 price: totalOffer.toLocaleString(),
               })
@@ -6215,7 +6899,7 @@
 
             addChatMessage(
               "agent",
-              getRandomMessage(agentPriceCounter, {
+              getRandomMessage(getAgentMessages().priceCounter, {
                 player: currentNegotiationPlayer.name,
                 counter: counterPrice.toLocaleString(),
               })
@@ -6227,7 +6911,7 @@
 
             addChatMessage(
               "agent",
-              getRandomMessage(agentPriceLow, {
+              getRandomMessage(getAgentMessages().priceLow, {
                 player: currentNegotiationPlayer.name,
               })
             );
@@ -6238,7 +6922,7 @@
 
             addChatMessage(
               "agent",
-              getRandomMessage(agentLeaves, {
+              getRandomMessage(getAgentMessages().leaves, {
                 player: currentNegotiationPlayer.name,
               })
             );
@@ -6250,7 +6934,7 @@
           if (negotiationTension >= 100) {
             addChatMessage(
               "agent",
-              getRandomMessage(agentLeaves, {
+              getRandomMessage(getAgentMessages().leaves, {
                 player: currentNegotiationPlayer.name,
               })
             );
@@ -6280,10 +6964,7 @@
               (bonus ? `, bonus €${bonus.toLocaleString()}` : "")
           );
           setTimeout(() => {
-            addChatMessage(
-              "agent",
-              "Nie macie wystarczających środków na bonus podpisowy."
-            );
+            addChatMessage("agent", getAgentMessages().notEnoughMoney);
             negotiationTension += 10;
             updateTensionBar();
           }, 800);
@@ -6314,7 +6995,7 @@
             // Accept
             addChatMessage(
               "agent",
-              getRandomMessage(agentContractAccept, {
+              getRandomMessage(getAgentMessages().contractAccept, {
                 player: currentNegotiationPlayer.name,
               })
             );
@@ -6351,9 +7032,7 @@
               updateAccountDisplay();
               autoSave();
 
-              alert(
-                `🎉 ${currentNegotiationPlayer.name} dołączył do Twojej drużyny!`
-              );
+              alert(`🎉 ${currentNegotiationPlayer.name} ${t("playerJoined")}`);
               closeNegotiation();
               renderMarket();
             }, 1500);
@@ -6366,7 +7045,7 @@
 
             addChatMessage(
               "agent",
-              getRandomMessage(agentContractCounter, {
+              getRandomMessage(getAgentMessages().contractCounter, {
                 player: currentNegotiationPlayer.name,
                 salary: counterSalary.toLocaleString(),
                 bonus: counterBonus.toLocaleString(),
@@ -6379,11 +7058,10 @@
 
             addChatMessage(
               "agent",
-              `To zdecydowanie za mało. ${
-                currentNegotiationPlayer.name
-              } oczekuje minimum €${Math.floor(
-                expectedSalary * 0.75
-              ).toLocaleString()}/tyg.`
+              getRandomMessage(getAgentMessages().tooLow, {
+                player: currentNegotiationPlayer.name,
+                salary: Math.floor(expectedSalary * 0.75).toLocaleString(),
+              })
             );
           }
 
@@ -6392,7 +7070,7 @@
             setTimeout(() => {
               addChatMessage(
                 "agent",
-                getRandomMessage(agentLeaves, {
+                getRandomMessage(getAgentMessages().leaves, {
                   player: currentNegotiationPlayer.name,
                 })
               );
@@ -6475,7 +7153,7 @@
         }
 
         if (!code) {
-          alert("Wprowadź kod lub link pokoju");
+          alert(t("enterCode"));
           return;
         }
 
@@ -6538,7 +7216,7 @@
       function copyRoomLink() {
         const link = document.getElementById("roomLink").textContent;
         navigator.clipboard.writeText(link).then(() => {
-          alert("Link skopiowany!");
+          alert(t("linkCopied"));
         });
       }
 
@@ -7303,13 +7981,7 @@
       }
 
       function surrenderPenalties() {
-        if (
-          confirm(
-            currentLang === "pl"
-              ? "Czy na pewno chcesz się poddać?"
-              : "Are you sure you want to surrender?"
-          )
-        ) {
+        if (confirm(t("surrenderConfirm"))) {
           // Opponent wins automatically
           penaltyState.opponentScore = penaltyState.playerScore + 1;
           endPenalties();
@@ -7334,64 +8006,147 @@
       };
 
       function createPenaltyRoom() {
+        if (typeof Peer === "undefined") {
+          alert(
+            currentLang === "pl"
+              ? "Błąd połączenia. Odśwież stronę."
+              : "Connection error. Refresh the page."
+          );
+          return;
+        }
+
         document.getElementById("onlinePenaltyChoice").style.display = "none";
         document.getElementById("hostPenaltySection").style.display = "block";
 
         isPenaltyHost = true;
-        penaltyPeer = new Peer();
+
+        // Create peer with custom config
+        penaltyPeer = new Peer({
+          config: {
+            iceServers: [
+              { urls: "stun:stun.l.google.com:19302" },
+              { urls: "stun:stun1.l.google.com:19302" },
+              { urls: "stun:stun2.l.google.com:19302" },
+            ],
+          },
+          debug: 0,
+        });
 
         penaltyPeer.on("open", (id) => {
-          document.getElementById("penaltyRoomCode").textContent = id;
+          const currentUrl = window.location.origin + window.location.pathname;
+          const shareLink = currentUrl + "?room=" + id;
+          document.getElementById("penaltyRoomCode").textContent = shareLink;
+          document.getElementById("penaltyHostStatus").textContent =
+            t("waiting");
         });
 
         penaltyPeer.on("connection", (conn) => {
           penaltyConn = conn;
           document.getElementById("penaltyHostStatus").textContent =
-            "✅ Przeciwnik dołączył!";
+            t("opponentJoined");
           document.getElementById("startOnlinePenaltyBtn").disabled = false;
 
           conn.on("data", handlePenaltyData);
           conn.on("close", () => {
-            alert("Przeciwnik rozłączył się");
+            alert(t("opponentDisconnected"));
             leavePenaltyLobby();
           });
+        });
+
+        penaltyPeer.on("error", (err) => {
+          console.error("PeerJS error:", err);
+          const errorMsg =
+            currentLang === "pl"
+              ? "Błąd połączenia. Spróbuj ponownie."
+              : "Connection error. Try again.";
+          document.getElementById("penaltyHostStatus").textContent = errorMsg;
         });
       }
 
       function joinPenaltyRoom() {
-        const code = document.getElementById("joinPenaltyInput").value.trim();
-        if (!code) {
-          alert("Wklej kod pokoju!");
+        if (typeof Peer === "undefined") {
+          alert(
+            currentLang === "pl"
+              ? "Błąd połączenia. Odśwież stronę."
+              : "Connection error. Refresh the page."
+          );
           return;
+        }
+
+        let code = document.getElementById("joinPenaltyInput").value.trim();
+        if (!code) {
+          alert(t("pasteCodeAlert"));
+          return;
+        }
+
+        // Extract code from full URL if pasted
+        if (code.includes("?room=")) {
+          const match = code.match(/room=([^&]+)/);
+          if (match) code = match[1];
+        } else if (code.includes("?penalty=")) {
+          const match = code.match(/penalty=([^&]+)/);
+          if (match) code = match[1];
         }
 
         document.getElementById("onlinePenaltyChoice").style.display = "none";
         document.getElementById("guestPenaltySection").style.display = "block";
 
         isPenaltyHost = false;
-        penaltyPeer = new Peer();
+
+        // Create peer with custom config
+        penaltyPeer = new Peer({
+          config: {
+            iceServers: [
+              { urls: "stun:stun.l.google.com:19302" },
+              { urls: "stun:stun1.l.google.com:19302" },
+              { urls: "stun:stun2.l.google.com:19302" },
+            ],
+          },
+          debug: 0,
+        });
 
         penaltyPeer.on("open", () => {
+          document.getElementById("penaltyGuestStatus").textContent =
+            t("connecting");
           penaltyConn = penaltyPeer.connect(code);
 
           penaltyConn.on("open", () => {
             document.getElementById("penaltyGuestStatus").textContent =
-              "✅ Połączono! Oczekiwanie na start...";
+              t("connected");
           });
 
           penaltyConn.on("data", handlePenaltyData);
 
           penaltyConn.on("close", () => {
-            alert("Host rozłączył się");
+            alert(t("hostDisconnected"));
             leavePenaltyLobby();
           });
+
+          penaltyConn.on("error", (err) => {
+            console.error("Connection error:", err);
+            const errorMsg =
+              currentLang === "pl"
+                ? "Nie można połączyć z pokojem."
+                : "Cannot connect to room.";
+            document.getElementById("penaltyGuestStatus").textContent =
+              errorMsg;
+          });
+        });
+
+        penaltyPeer.on("error", (err) => {
+          console.error("PeerJS error:", err);
+          const errorMsg =
+            currentLang === "pl"
+              ? "Błąd połączenia. Sprawdź kod."
+              : "Connection error. Check the code.";
+          document.getElementById("penaltyGuestStatus").textContent = errorMsg;
         });
       }
 
       function copyPenaltyCode() {
-        const code = document.getElementById("penaltyRoomCode").textContent;
-        navigator.clipboard.writeText(code);
-        alert("Kod skopiowany!");
+        const link = document.getElementById("penaltyRoomCode").textContent;
+        navigator.clipboard.writeText(link);
+        alert(t("linkCopied"));
       }
 
       function leavePenaltyLobby() {
@@ -7411,9 +8166,242 @@
       function startOnlinePenalty() {
         isOnlinePenalty = true;
 
-        // Send start signal to guest
-        penaltyConn.send({ type: "start_penalty" });
+        // Send start signal with squad to guest
+        penaltyConn.send({
+          type: "start_penalty",
+          squad: getSquadForReveal(),
+        });
 
+        // Start squad reveal animation
+        startSquadReveal(true); // true = host
+      }
+
+      // Get squad organized by position for reveal
+      function getSquadForReveal() {
+        const squad = {
+          gk: [],
+          def: [],
+          mid: [],
+          att: [],
+        };
+
+        GameState.squad.players.forEach((p) => {
+          if (!p) return;
+          const pos = p.position;
+          if (pos === "GK") squad.gk.push(p);
+          else if (["CB", "LB", "RB", "LWB", "RWB"].includes(pos))
+            squad.def.push(p);
+          else if (["CDM", "CM", "CAM", "LM", "RM"].includes(pos))
+            squad.mid.push(p);
+          else squad.att.push(p);
+        });
+
+        return squad;
+      }
+
+      // Squad reveal animation state
+      let squadRevealState = {
+        currentIndex: 0,
+        allPlayers: [],
+        positions: [],
+        isReady: false,
+        opponentReady: false,
+        opponentSquad: null,
+      };
+
+      function startSquadReveal(isHost) {
+        const overlay = document.getElementById("squadRevealOverlay");
+        overlay.style.display = "flex";
+
+        // Hide full squad, show card reveal
+        document.getElementById("squadRevealFull").style.display = "none";
+        document.getElementById("squadRevealCardContainer").style.display =
+          "block";
+        document.getElementById("squadRevealPosition").style.display = "block";
+        document.getElementById("squadRevealProgress").style.display = "flex";
+
+        // Build player list in order: GK -> DEF -> MID -> ATT
+        const squad = getSquadForReveal();
+        squadRevealState = {
+          currentIndex: 0,
+          allPlayers: [],
+          positions: [],
+          isReady: false,
+          opponentReady: false,
+          opponentSquad: null,
+        };
+
+        // Add players with position labels
+        if (squad.gk.length > 0) {
+          squad.gk.forEach((p) => {
+            squadRevealState.allPlayers.push(p);
+            squadRevealState.positions.push("goalkeeper");
+          });
+        }
+        if (squad.def.length > 0) {
+          squad.def.forEach((p, i) => {
+            squadRevealState.allPlayers.push(p);
+            squadRevealState.positions.push(i === 0 ? "defenders" : "");
+          });
+        }
+        if (squad.mid.length > 0) {
+          squad.mid.forEach((p, i) => {
+            squadRevealState.allPlayers.push(p);
+            squadRevealState.positions.push(i === 0 ? "midfielders" : "");
+          });
+        }
+        if (squad.att.length > 0) {
+          squad.att.forEach((p, i) => {
+            squadRevealState.allPlayers.push(p);
+            squadRevealState.positions.push(i === 0 ? "attackers" : "");
+          });
+        }
+
+        // Generate progress dots
+        const dotsContainer = document.getElementById("squadRevealProgress");
+        dotsContainer.innerHTML = squadRevealState.allPlayers
+          .map(
+            (_, i) => `<div class="squad-reveal-dot" id="revealDot${i}"></div>`
+          )
+          .join("");
+
+        // Update title
+        document.getElementById("squadRevealTitle").textContent =
+          t("yourSquad");
+
+        // Start reveal
+        revealNextCard();
+      }
+
+      function revealNextCard() {
+        const { currentIndex, allPlayers, positions } = squadRevealState;
+
+        if (currentIndex >= allPlayers.length) {
+          // All cards revealed, show full squad
+          showFullSquadReveal();
+          return;
+        }
+
+        const player = allPlayers[currentIndex];
+        const posLabel = positions[currentIndex];
+
+        // Update position label if new category
+        if (posLabel) {
+          document.getElementById("squadRevealPosition").textContent =
+            t(posLabel);
+        }
+
+        // Show card with animation
+        const container = document.getElementById("squadRevealCardContainer");
+        container.innerHTML = `<div class="squad-reveal-card">${renderPlayerCard(
+          player,
+          false
+        )}</div>`;
+
+        // Update progress dots
+        for (let i = 0; i <= currentIndex; i++) {
+          const dot = document.getElementById(`revealDot${i}`);
+          if (dot) {
+            dot.classList.remove("active");
+            dot.classList.add("done");
+          }
+        }
+        if (currentIndex < allPlayers.length) {
+          const currentDot = document.getElementById(
+            `revealDot${currentIndex}`
+          );
+          if (currentDot) currentDot.classList.add("active");
+        }
+
+        squadRevealState.currentIndex++;
+
+        // Next card after delay
+        setTimeout(revealNextCard, 1200);
+      }
+
+      function showFullSquadReveal() {
+        // Hide single card, show full squad
+        document.getElementById("squadRevealCardContainer").style.display =
+          "none";
+        document.getElementById("squadRevealPosition").style.display = "none";
+        document.getElementById("squadRevealProgress").style.display = "none";
+        document.getElementById("squadRevealFull").style.display = "flex";
+
+        // Build formation display
+        const squad = getSquadForReveal();
+        const formationContainer = document.getElementById(
+          "squadRevealFormation"
+        );
+
+        let html = "";
+
+        // Attackers (top)
+        if (squad.att.length > 0) {
+          html += `<div class="squad-reveal-row">${squad.att
+            .map((p) => renderPlayerCard(p, true))
+            .join("")}</div>`;
+        }
+
+        // Midfielders
+        if (squad.mid.length > 0) {
+          html += `<div class="squad-reveal-row">${squad.mid
+            .map((p) => renderPlayerCard(p, true))
+            .join("")}</div>`;
+        }
+
+        // Defenders
+        if (squad.def.length > 0) {
+          html += `<div class="squad-reveal-row">${squad.def
+            .map((p) => renderPlayerCard(p, true))
+            .join("")}</div>`;
+        }
+
+        // Goalkeeper (bottom)
+        if (squad.gk.length > 0) {
+          html += `<div class="squad-reveal-row">${squad.gk
+            .map((p) => renderPlayerCard(p, true))
+            .join("")}</div>`;
+        }
+
+        formationContainer.innerHTML = html;
+
+        // Show ready button
+        document.getElementById("squadRevealReadyBtn").style.display = "block";
+        document.getElementById("squadRevealReadyBtn").textContent = t("ready");
+        document.getElementById("squadRevealWaiting").style.display = "none";
+      }
+
+      function confirmSquadReady() {
+        squadRevealState.isReady = true;
+
+        // Send ready signal
+        penaltyConn.send({ type: "squad_ready" });
+
+        // Hide button, show waiting
+        document.getElementById("squadRevealReadyBtn").style.display = "none";
+        document.getElementById("squadRevealWaiting").style.display = "block";
+        document.getElementById("squadRevealWaiting").textContent =
+          t("waitingForOpponent");
+
+        // Check if both ready
+        checkBothReady();
+      }
+
+      function checkBothReady() {
+        if (squadRevealState.isReady && squadRevealState.opponentReady) {
+          document.getElementById("squadRevealWaiting").textContent =
+            t("bothReady");
+
+          // Start penalties after short delay
+          setTimeout(() => {
+            document.getElementById("squadRevealOverlay").style.display =
+              "none";
+            actuallyStartOnlinePenalty();
+          }, 1500);
+        }
+      }
+
+      function actuallyStartOnlinePenalty() {
         // Initialize online penalty state
         penaltyState = {
           round: 1,
@@ -7424,7 +8412,7 @@
           opponentShots: [],
           phase: isPenaltyHost ? "player_shoot" : "player_save",
           shooters: getPlayerShooters(),
-          opponentShooters: [], // Not used in online
+          opponentShooters: [],
           currentShooterIndex: 0,
           selectedDirection: null,
         };
@@ -7439,37 +8427,18 @@
         if (data.type === "start_penalty") {
           isOnlinePenalty = true;
 
-          penaltyState = {
-            round: 1,
-            maxRounds: 5,
-            playerScore: 0,
-            opponentScore: 0,
-            playerShots: [],
-            opponentShots: [],
-            phase: isPenaltyHost ? "player_shoot" : "player_save",
-            shooters: getPlayerShooters(),
-            opponentShooters: [],
-            currentShooterIndex: 0,
-            selectedDirection: null,
-          };
+          // Store opponent squad if sent
+          if (data.squad) {
+            squadRevealState.opponentSquad = data.squad;
+          }
 
-          showScreen("penaltyScreen");
+          // Start squad reveal for guest
+          startSquadReveal(false);
+        }
 
-          // Reset dots
-          document
-            .querySelectorAll("#playerDots .dot, #opponentDots .dot")
-            .forEach((dot) => {
-              dot.className = "dot";
-            });
-
-          // Show surrender button for online
-          document.getElementById("surrenderBtn").style.display = "block";
-          document.getElementById("surrenderBtn").onclick =
-            surrenderOnlinePenalties;
-
-          initCrowdSound();
-          updatePenaltyUI();
-          setupOnlinePenaltyPhase();
+        if (data.type === "squad_ready") {
+          squadRevealState.opponentReady = true;
+          checkBothReady();
         }
 
         if (data.type === "penalty_choice") {
@@ -7507,13 +8476,7 @@
         }
 
         if (data.type === "rematch_request") {
-          if (
-            confirm(
-              currentLang === "pl"
-                ? "Przeciwnik chce zagrać ponownie. Zgadzasz się?"
-                : "Opponent wants a rematch. Do you accept?"
-            )
-          ) {
+          if (confirm(t("rematchRequest"))) {
             penaltyConn.send({ type: "rematch_accept" });
             // Restart game
             if (isPenaltyHost) {
@@ -7530,11 +8493,7 @@
         }
 
         if (data.type === "rematch_decline") {
-          alert(
-            currentLang === "pl"
-              ? "Przeciwnik odmówił rewanżu."
-              : "Opponent declined rematch."
-          );
+          alert(t("rematchDeclined"));
         }
 
         if (data.type === "surrender") {
@@ -7831,13 +8790,7 @@
       }
 
       function surrenderOnlinePenalties() {
-        if (
-          confirm(
-            currentLang === "pl"
-              ? "Czy na pewno chcesz się poddać?"
-              : "Are you sure you want to surrender?"
-          )
-        ) {
+        if (confirm(t("surrenderConfirm"))) {
           if (penaltyConn && penaltyConn.open) {
             penaltyConn.send({ type: "surrender" });
           }
@@ -8755,7 +9708,7 @@
       }
 
       function exitMatch() {
-        if (confirm("Czy na pewno chcesz wyjść z meczu?")) {
+        if (confirm(t("exitMatchConfirm"))) {
           clearInterval(matchState.turnTimer);
           if (matchTimerInterval) clearInterval(matchTimerInterval);
           stopCrowdSound();
@@ -8805,7 +9758,7 @@
         let earnings = 0;
 
         if (playerScore > oppScore) {
-          result = "WYGRANA!";
+          result = t("victory");
           earnings =
             5000 +
             (GameState.match.difficulty === "hard"
@@ -8815,11 +9768,11 @@
               : 1000);
           GameState.stats.matchesWon++;
         } else if (playerScore < oppScore) {
-          result = "PRZEGRANA";
+          result = t("defeat");
           earnings = 500;
           GameState.stats.matchesLost++;
         } else {
-          result = "REMIS";
+          result = t("draw");
           earnings = 2000;
           GameState.stats.matchesDraw++;
         }
@@ -8829,11 +9782,15 @@
         autoSave(); // Save after match
 
         alert(
-          `${result}\n\nWynik: ${playerScore} : ${oppScore}\nZarobek: €${earnings.toLocaleString()}\n\n📊 Statystyki:\nMecze: ${
-            GameState.stats.matchesPlayed
-          } | W: ${GameState.stats.matchesWon} R: ${
-            GameState.stats.matchesDraw
-          } P: ${GameState.stats.matchesLost}`
+          `${result}\n\n${t("result")}: ${playerScore} : ${oppScore}\n${t(
+            "earnings"
+          )}: €${earnings.toLocaleString()}\n\n📊 ${t("stats")}:\n${t(
+            "matches"
+          )}: ${GameState.stats.matchesPlayed} | ${t("wins")}: ${
+            GameState.stats.matchesWon
+          } ${t("draws")}: ${GameState.stats.matchesDraw} ${t("losses")}: ${
+            GameState.stats.matchesLost
+          }`
         );
         showScreen("mainMenu");
       }
@@ -8930,30 +9887,29 @@
           upgradeTab === "squad"
             ? GameState.squad.players
             : GameState.squad.bench;
+        const emptyText =
+          currentLang === "pl"
+            ? `Brak zawodników ${
+                upgradeTab === "squad" ? "w składzie" : "na ławce"
+              }`
+            : `No players ${upgradeTab === "squad" ? "in squad" : "on bench"}`;
 
-        if (players.length === 0) {
+        if (!players || players.filter((p) => p).length === 0) {
           grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--silver); padding: 2rem;">
-                    Brak zawodników ${
-                      upgradeTab === "squad" ? "w składzie" : "na ławce"
-                    }
+                    ${emptyText}
                 </div>`;
           return;
         }
 
         grid.innerHTML = players
-          .map(
-            (player, index) => `
-                <div class="upgrade-player-card" onclick="openUpgradeModal('${upgradeTab}', ${index})">
-                    <div class="mini-card">${renderPlayerCard(
-                      player,
-                      true
-                    )}</div>
-                    <div class="upgrade-player-name">${player.name}</div>
-                    <div class="upgrade-player-ovr">OVR ${player.overall}</div>
-                    <div class="upgrade-player-pos">${player.position}</div>
-                </div>
-            `
-          )
+          .map((player, index) => {
+            if (!player) return "";
+            return `
+                    <div class="upgrade-player-card" onclick="openUpgradeModal('${upgradeTab}', ${index})">
+                        ${renderPlayerCard(player, false)}
+                    </div>
+                `;
+          })
           .join("");
 
         // Update balance display
@@ -9016,10 +9972,11 @@
           "CF",
           "ST",
         ];
+        const playerPositions = player.positions || [player.position];
 
         container.innerHTML = allPositions
           .map((pos) => {
-            const isCurrent = player.position === pos;
+            const isCurrent = playerPositions.includes(pos);
             const cost = getPositionChangeCost(player.position, pos);
             const isExpensive = cost >= 30000;
 
@@ -9031,16 +9988,26 @@
                             ${isCurrent ? "disabled" : ""}
                             onclick="selectUpgradePosition('${pos}')">
                         ${pos}
+                        ${
+                          isCurrent
+                            ? `<small>(${t("currentPosition")})</small>`
+                            : ""
+                        }
                     </button>
                 `;
           })
           .join("");
 
         if (costInfo) {
+          const sameText =
+            currentLang === "pl" ? "Ta sama kategoria" : "Same category";
+          const nearText = currentLang === "pl" ? "Sąsiednia" : "Adjacent";
+          const farText = currentLang === "pl" ? "Odległa/GK" : "Distant/GK";
+
           costInfo.innerHTML = `
-                    <span style="color: #4ade80;">Ta sama kategoria: €5,000</span> | 
-                    <span style="color: var(--gold);">Sąsiednia: €15,000</span> | 
-                    <span style="color: #ff6b6b;">Odległa/GK: €30-50k</span>
+                    <span style="color: var(--neon-green);">● ${sameText}: €5,000</span> 
+                    <span style="color: var(--gold);">● ${nearText}: €15,000</span> 
+                    <span style="color: #ff6b6b;">● ${farText}: €30-50k</span>
                 `;
         }
       }
@@ -9083,10 +10050,42 @@
                 "Physical",
               ];
 
+        const statNames =
+          currentLang === "pl"
+            ? {
+                Pace: "Szybkość",
+                Shooting: "Strzały",
+                Passing: "Podania",
+                Dribbling: "Drybling",
+                Defending: "Obrona",
+                Physical: "Siła",
+                Diving: "Rzuty",
+                Handling: "Chwyt",
+                Kicking: "Wykopy",
+                Reflexes: "Refleks",
+                Positioning: "Ustawienie",
+                Speed: "Szybkość",
+              }
+            : {
+                Pace: "Pace",
+                Shooting: "Shooting",
+                Passing: "Passing",
+                Dribbling: "Dribbling",
+                Defending: "Defending",
+                Physical: "Physical",
+                Diving: "Diving",
+                Handling: "Handling",
+                Kicking: "Kicking",
+                Reflexes: "Reflexes",
+                Positioning: "Positioning",
+                Speed: "Speed",
+              };
+
         container.innerHTML = stats
           .map((stat) => {
             const value = player.stats?.[stat] || player.overall;
             const isMaxed = value >= 99;
+            const newValue = Math.min(99, value + 1);
 
             return `
                     <div class="upgrade-stat-btn ${isMaxed ? "maxed" : ""}" 
@@ -9094,15 +10093,26 @@
                          onclick="${
                            isMaxed ? "" : `selectUpgradeStat('${stat}')`
                          }">
-                        <span class="upgrade-stat-name">${stat}</span>
-                        <span>
-                            <span class="upgrade-stat-value">${value}</span>
+                        <div class="stat-info">
+                            <span class="upgrade-stat-name">${
+                              statNames[stat]
+                            }</span>
                             ${
                               isMaxed
-                                ? '<span class="upgrade-stat-max"> MAX</span>'
+                                ? `<span class="upgrade-stat-max">${t(
+                                    "maxLevel"
+                                  )}</span>`
                                 : ""
                             }
-                        </span>
+                        </div>
+                        <div class="stat-values">
+                            <span class="upgrade-stat-value">${value}</span>
+                            ${
+                              !isMaxed
+                                ? `<span class="stat-arrow">→</span><span class="stat-new-value">${newValue}</span>`
+                                : ""
+                            }
+                        </div>
                     </div>
                 `;
           })
@@ -9144,13 +10154,31 @@
 
         if (!currentUpgradePlayer) {
           if (costEl) costEl.textContent = "€0";
-          if (effectEl) effectEl.textContent = "Wybierz opcję";
+          if (effectEl) effectEl.textContent = t("selectOption");
           if (btn) btn.disabled = true;
           return;
         }
 
         let cost = 0;
-        let effectText = "Wybierz statystykę lub pozycję";
+        let effectText = t("selectOption");
+
+        const statNames =
+          currentLang === "pl"
+            ? {
+                Pace: "Szybkość",
+                Shooting: "Strzały",
+                Passing: "Podania",
+                Dribbling: "Drybling",
+                Defending: "Obrona",
+                Physical: "Siła",
+                Diving: "Rzuty",
+                Handling: "Chwyt",
+                Kicking: "Wykopy",
+                Reflexes: "Refleks",
+                Positioning: "Ustawienie",
+                Speed: "Szybkość",
+              }
+            : {};
 
         if (currentUpgradeStat) {
           cost = calculateUpgradeCost(
@@ -9160,15 +10188,15 @@
           const currentValue =
             currentUpgradePlayer.player.stats?.[currentUpgradeStat] ||
             currentUpgradePlayer.player.overall;
-          effectText = `${currentUpgradeStat}: ${currentValue} → ${
-            currentValue + 1
-          }`;
+          const statName = statNames[currentUpgradeStat] || currentUpgradeStat;
+          effectText = `${statName}: ${currentValue} → ${currentValue + 1}`;
         } else if (currentUpgradePosition) {
           cost = getPositionChangeCost(
             currentUpgradePlayer.player.position,
             currentUpgradePosition
           );
-          effectText = `Pozycja: ${currentUpgradePlayer.player.position} → ${currentUpgradePosition}`;
+          const posLabel = currentLang === "pl" ? "Pozycja" : "Position";
+          effectText = `${posLabel}: +${currentUpgradePosition}`;
         }
 
         if (costEl) costEl.textContent = `€${cost.toLocaleString()}`;
@@ -9199,7 +10227,7 @@
           const cost = calculateUpgradeCost(player, currentUpgradeStat);
 
           if (GameState.manager.balance < cost) {
-            alert("Nie masz wystarczających środków!");
+            alert(t("notEnoughFunds"));
             return;
           }
 
@@ -9248,7 +10276,7 @@
           );
 
           if (GameState.manager.balance < cost) {
-            alert("Nie masz wystarczających środków!");
+            alert(t("notEnoughFunds"));
             return;
           }
 
@@ -9441,10 +10469,14 @@
       // ==================== CHECK URL FOR ROOM ====================
       function checkUrlForRoom() {
         const params = new URLSearchParams(window.location.search);
-        const roomId = params.get("room");
-        if (roomId) {
-          document.getElementById("joinRoomInput").value = roomId;
-          showScreen("onlineLobby");
+        const penaltyRoom = params.get("room") || params.get("penalty");
+
+        if (penaltyRoom) {
+          // Auto-join penalty room
+          showScreen("onlinePenaltyLobby");
+          document.getElementById("joinPenaltyInput").value = penaltyRoom;
+          // Auto-connect after short delay
+          setTimeout(() => joinPenaltyRoom(), 500);
         }
       }
 
