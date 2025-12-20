@@ -8513,63 +8513,139 @@ Players may become unhappy and start requesting transfers.`;
         ].filter((p) => p && p.position === player.position).length;
         const playerStats = player.matchStats || {};
         const goals = playerStats.goals || 0;
+        const assists = playerStats.assists || 0;
+        const allPlayers = [
+          ...GameState.squad.players,
+          ...GameState.squad.bench,
+        ].filter((p) => p);
+        const avgTeamSalary =
+          allPlayers.length > 0
+            ? allPlayers.reduce((sum, p) => sum + (p.salary || 0), 0) /
+              allPlayers.length
+            : 0;
 
-        // 1-20: Original reasons
+        // Każdy powód ma konkretny warunek
+        // 1: Wyniki ostatnich meczów były słabe
         if (!avgRating || avgRating < 6.5) validReasons.push(1);
+        // 2: Klub ma problemy finansowe
         if (GameState.manager.balance < 50000) validReasons.push(2);
-        validReasons.push(3);
-        if (!avgRating || avgRating < 6.0) validReasons.push(4);
-        if (totalSalary > GameState.manager.balance * 0.5) validReasons.push(5);
-        validReasons.push(6);
-        validReasons.push(7);
-        if (!isInSquad || (avgRating && avgRating < 6.5)) validReasons.push(8);
-        if (GameState.manager.balance < 100000) validReasons.push(9);
-        validReasons.push(10);
-        if (samePos > 1) validReasons.push(11);
-        if (player.age > 30) validReasons.push(12);
-        if (player.injuredUntil) validReasons.push(13);
-        validReasons.push(14);
-        validReasons.push(15);
-        validReasons.push(16);
-        if (player.age > 28) validReasons.push(17);
-        if (GameState.manager.balance < player.salary * 52)
+        // 3: Pensja nie odpowiada poziomowi gry
+        if (player.salary > player.overall * 15) validReasons.push(3);
+        // 4: Młodsi zawodnicy czekają na szansę
+        if (player.age > 28 && samePos > 1) validReasons.push(4);
+        // 5: Restrukturyzacja płac w klubie
+        if (totalSalary > GameState.manager.balance * 0.3) validReasons.push(5);
+        // 6: Kontuzje ograniczyły twoją grę
+        if (player.injuredUntil || player.wasInjured) validReasons.push(6);
+        // 7: Inni gracze zarabiają mniej za podobną grę
+        if (player.salary > avgTeamSalary * 1.3) validReasons.push(7);
+        // 8: Potrzebujemy środków na transfery
+        if (GameState.manager.balance < 80000) validReasons.push(8);
+        // 9: Twoja wartość rynkowa spadła
+        if (player.age > 30 || (avgRating && avgRating < 6.0))
+          validReasons.push(9);
+        // 10: Nowa strategia płacowa klubu
+        if (totalSalary > GameState.manager.balance * 0.4)
+          validReasons.push(10);
+        // 11: Mniej minut na boisku w tym sezonie
+        if (!isInSquad) validReasons.push(11);
+        // 12: Liga stała się bardziej konkurencyjna
+        if (player.overall < 75) validReasons.push(12);
+        // 13: Sponsorzy zmniejszyli budżet
+        if (GameState.manager.balance < 40000) validReasons.push(13);
+        // 14: Musisz udowodnić swoją wartość
+        if (!avgRating || avgRating < 6.8) validReasons.push(14);
+        // 15: Wiek wpływa na twoje możliwości
+        if (player.age > 32) validReasons.push(15);
+        // 16: Brak postępu w rozwoju umiejętności
+        if (player.age > 26 && player.overall < 75) validReasons.push(16);
+        // 17: Konkurencja na twojej pozycji wzrosła
+        if (samePos > 2) validReasons.push(17);
+        // 18: Oczekiwania kibiców są wysokie
+        if (avgRating && avgRating < 7.0 && player.overall >= 75)
           validReasons.push(18);
-        validReasons.push(19);
-        validReasons.push(20);
-        // 21-50: Extended reasons
-        if (player.stats && player.stats.Physical && player.stats.Physical < 70)
+        // 19: Musimy zbalansować budżet
+        if (GameState.manager.balance < 60000) validReasons.push(19);
+        // 20: To sprawiedliwa oferta rynkowa
+        if (player.salary > player.overall * 12) validReasons.push(20);
+        // 21: Twoja dyspozycja fizyczna spadła
+        if (player.stats && player.stats.Physical && player.stats.Physical < 65)
           validReasons.push(21);
-        if (goals === 0 && ["ST", "CF", "LW", "RW"].includes(player.position))
+        // 22: Brak bramek i asyst w ostatnim czasie
+        if (
+          goals === 0 &&
+          assists === 0 &&
+          ["ST", "CF", "LW", "RW", "CAM"].includes(player.position)
+        )
           validReasons.push(22);
-        validReasons.push(23);
-        if (!isInSquad) validReasons.push(24);
+        // 23: Trener ma inne plany taktyczne
+        if (!isInSquad && samePos > 1) validReasons.push(23);
+        // 24: Zespół gra lepiej bez ciebie na boisku
+        if (!isInSquad && avgRating && avgRating < 6.5) validReasons.push(24);
+        // 25: Zarząd wymaga cięć kosztów
         if (GameState.manager.balance < 30000) validReasons.push(25);
+        // 26: Twoje zachowanie na boisku było krytykowane
         if (player.yellowCards && player.yellowCards > 3) validReasons.push(26);
-        if (player.overall < 70) validReasons.push(27);
+        // 27: Oczekiwania transferowe się nie spełniły
+        if (player.overall < 70 && player.salary > 800) validReasons.push(27);
+        // 28: Musisz odbudować formę
         if (avgRating && avgRating < 6.0) validReasons.push(28);
-        validReasons.push(29);
-        if (player.salary > 1000) validReasons.push(30);
-        if (!avgRating) validReasons.push(31);
-        if (GameState.manager.balance < 80000) validReasons.push(32);
-        if (!isInSquad) validReasons.push(33);
-        if (player.age > 27) validReasons.push(34);
-        validReasons.push(35);
+        // 29: Rynek piłkarski się zmienił
+        if (player.age > 29 && player.salary > 1000) validReasons.push(29);
+        // 30: Twoja pensja jest najwyższa w zespole
+        if (player.salary >= Math.max(...allPlayers.map((p) => p.salary || 0)))
+          validReasons.push(30);
+        // 31: Brak zaangażowania na treningach
+        if (!avgRating && !isInSquad) validReasons.push(31);
+        // 32: Inne priorytety finansowe klubu
+        if (GameState.manager.balance < 70000) validReasons.push(32);
+        // 33: Twoja pozycja w hierarchii spadła
+        if (!isInSquad && player.overall < 75) validReasons.push(33);
+        // 34: Musimy inwestować w młodzież
+        if (player.age > 28) validReasons.push(34);
+        // 35: Poprzedni kontrakt był zbyt hojny
+        if (player.salary > player.overall * 18) validReasons.push(35);
+        // 36: Wyniki drużyny są rozczarowujące
         if (avgRating && avgRating < 6.5) validReasons.push(36);
-        if (player.stats && player.stats.Shooting && player.stats.Shooting < 65)
+        // 37: Twoja skuteczność spadła
+        if (
+          player.stats &&
+          player.stats.Shooting &&
+          player.stats.Shooting < 60 &&
+          ["ST", "CF"].includes(player.position)
+        )
           validReasons.push(37);
-        if (player.age >= 30) validReasons.push(38);
-        validReasons.push(39);
+        // 38: Brak liderskich zachowań
+        if (player.age >= 28 && !isInSquad) validReasons.push(38);
+        // 39: Regulamin finansowy ligi wymaga zmian
+        if (totalSalary > GameState.manager.balance * 0.5)
+          validReasons.push(39);
+        // 40: Twoje żółte kartki kosztują zespół
         if (player.yellowCards && player.yellowCards > 2) validReasons.push(40);
+        // 41: Mniej meczów w tym sezonie
         if (!avgRating) validReasons.push(41);
-        if (samePos > 2) validReasons.push(42);
-        if (GameState.manager.balance < 60000) validReasons.push(43);
-        if (!isInSquad) validReasons.push(44);
-        if (GameState.manager.balance < 40000) validReasons.push(45);
-        if (avgRating && avgRating < 6.8) validReasons.push(46);
-        if (player.age > 29) validReasons.push(47);
-        if (avgRating && avgRating < 6.3) validReasons.push(48);
-        if (GameState.manager.balance < 70000) validReasons.push(49);
-        validReasons.push(50);
+        // 42: Inni zawodnicy awansowali ponad ciebie
+        if (samePos > 2 && !isInSquad) validReasons.push(42);
+        // 43: Potrzebujemy elastyczności budżetowej
+        if (GameState.manager.balance < 55000) validReasons.push(43);
+        // 44: Twój wpływ na wyniki jest mniejszy
+        if (!isInSquad && player.overall < 72) validReasons.push(44);
+        // 45: Kryzys ekonomiczny dotknął klub
+        if (GameState.manager.balance < 35000) validReasons.push(45);
+        // 46: Twoje statystyki nie imponują
+        if (avgRating && avgRating < 6.7) validReasons.push(46);
+        // 47: Czas na nowy rozdział w karierze
+        if (player.age > 31) validReasons.push(47);
+        // 48: Twoja motywacja wydaje się niższa
+        if (avgRating && avgRating < 6.2 && !isInSquad) validReasons.push(48);
+        // 49: Potrzebujemy funduszy na infrastrukturę
+        if (GameState.manager.balance < 65000) validReasons.push(49);
+        // 50: To ostateczna oferta klubu
+        if (
+          player.salary > player.overall * 14 &&
+          GameState.manager.balance < 80000
+        )
+          validReasons.push(50);
 
         return validReasons;
       }
@@ -8583,60 +8659,117 @@ Players may become unhappy and start requesting transfers.`;
         const playerStats = player.matchStats || {};
         const goals = playerStats.goals || 0;
         const assists = playerStats.assists || 0;
+        const samePos = [
+          ...GameState.squad.players,
+          ...GameState.squad.bench,
+        ].filter((p) => p && p.position === player.position).length;
 
-        // 1-20: Original reasons
+        // Każdy powód ma konkretny warunek
+        // 1: Jesteś kluczowym zawodnikiem drużyny
         if (isInSquad && player.overall >= 70) validReasons.push(1);
+        // 2: Widzimy twoją przyszłość w klubie
         if (player.age < 30) validReasons.push(2);
+        // 3: Twoje występy były świetne
         if (avgRating && avgRating >= 7.0) validReasons.push(3);
-        if (player.overall >= 75) validReasons.push(4);
+        // 4: Kibice cię uwielbiają
+        if (player.overall >= 75 && isInSquad) validReasons.push(4);
+        // 5: Chcemy budować drużynę wokół ciebie
         if (player.overall >= 80) validReasons.push(5);
-        validReasons.push(6);
-        if (player.age < 27) validReasons.push(7);
-        validReasons.push(8);
-        validReasons.push(9);
-        validReasons.push(10);
-        if (player.age < 26) validReasons.push(11);
-        if (player.age >= 27) validReasons.push(12);
-        validReasons.push(13);
-        if (isInSquad) validReasons.push(14);
-        validReasons.push(15);
-        if (avgRating) validReasons.push(16);
-        validReasons.push(17);
-        validReasons.push(18);
-        if (player.overall >= 70) validReasons.push(19);
-        validReasons.push(20);
-        // 21-50: Extended reasons
+        // 6: Twoja lojalność jest doceniana
+        if (player.contractYears && player.contractYears <= 1)
+          validReasons.push(6);
+        // 7: Masz potencjał na więcej
+        if (player.age < 27 && player.overall >= 68) validReasons.push(7);
+        // 8: Twój profesjonalizm jest wzorowy
+        if (avgRating && avgRating >= 6.5 && isInSquad) validReasons.push(8);
+        // 9: Inwestujemy w twoją przyszłość
+        if (player.age < 25 && player.overall >= 65) validReasons.push(9);
+        // 10: Jesteś ważny dla szatni
+        if (player.age >= 28 && isInSquad) validReasons.push(10);
+        // 11: Rozwijasz się w dobrym kierunku
+        if (player.age < 26 && player.overall >= 68) validReasons.push(11);
+        // 12: Twoje doświadczenie jest cenne
+        if (player.age >= 27 && player.overall >= 72) validReasons.push(12);
+        // 13: Chcemy zatrzymać cię na dłużej
+        if (isInSquad && player.overall >= 72) validReasons.push(13);
+        // 14: Jesteś częścią naszych planów
+        if (isInSquad && player.age < 32) validReasons.push(14);
+        // 15: Twoja wartość dla klubu rośnie
+        if (avgRating && avgRating >= 6.8) validReasons.push(15);
+        // 16: Widzimy twoje zaangażowanie
+        if (avgRating && goals + assists >= 1) validReasons.push(16);
+        // 17: Trener bardzo cię ceni
+        if (isInSquad && avgRating && avgRating >= 6.5) validReasons.push(17);
+        // 18: Twoja postawa zasługuje na nagrodę
+        if (isInSquad && player.overall >= 70) validReasons.push(18);
+        // 19: Jesteś filarem tego zespołu
+        if (player.overall >= 75 && isInSquad) validReasons.push(19);
+        // 20: Chcemy cię docenić
+        if (avgRating && avgRating >= 6.5) validReasons.push(20);
+        // 21: Trener bardzo cię ceni
         if (isInSquad && player.overall >= 72) validReasons.push(21);
+        // 22: Twoje umiejętności są unikalne
         if (player.overall >= 78) validReasons.push(22);
-        if (isInSquad) validReasons.push(23);
-        if (isInSquad) validReasons.push(24);
+        // 23: Stabilność kadry jest kluczowa
+        if (isInSquad && samePos <= 2) validReasons.push(23);
+        // 24: Twoja obecność wzmacnia zespół
+        if (isInSquad && player.overall >= 70) validReasons.push(24);
+        // 25: Twoja wszechstronność jest atutem
         if (player.positions && player.positions.length > 1)
           validReasons.push(25);
-        if (isInSquad) validReasons.push(26);
-        if (player.overall >= 70) validReasons.push(27);
+        // 26: Możesz być kapitanem w przyszłości
+        if (isInSquad && player.age >= 25 && player.overall >= 75)
+          validReasons.push(26);
+        // 27: Jesteś wzorem dla młodych
+        if (player.overall >= 70 && player.age >= 26) validReasons.push(27);
+        // 28: Twoje statystyki robią wrażenie
         if (avgRating && avgRating >= 6.8) validReasons.push(28);
-        if (player.age < 28) validReasons.push(29);
-        if (player.age < 29) validReasons.push(30);
+        // 29: Masz wiele do zaoferowania
+        if (player.age < 28 && player.overall >= 70) validReasons.push(29);
+        // 30: Twoja kariera dopiero rozkwita
+        if (player.age < 29 && player.overall >= 72) validReasons.push(30);
+        // 31: Widzimy w tobie gwiazdę
         if (player.age < 26 && player.overall >= 68) validReasons.push(31);
+        // 32: Twoja klasa jest niepodważalna
         if (player.overall >= 77) validReasons.push(32);
-        if (isInSquad) validReasons.push(33);
-        if (avgRating && avgRating >= 6.5) validReasons.push(34);
-        if (player.overall >= 80) validReasons.push(35);
-        if (player.age >= 28) validReasons.push(36);
+        // 33: Zależy nam na tobie
+        if (isInSquad && avgRating && avgRating >= 6.5) validReasons.push(33);
+        // 34: Twój wkład jest doceniany
+        if (avgRating && avgRating >= 6.5 && isInSquad) validReasons.push(34);
+        // 35: Jesteś ambasadorem klubu
+        if (player.overall >= 80 && isInSquad) validReasons.push(35);
+        // 36: Twoje doświadczenie jest bezcenne
+        if (player.age >= 28 && player.overall >= 73) validReasons.push(36);
+        // 37: Jesteś jednym z najlepszych
         if (player.overall >= 82) validReasons.push(37);
-        if (isInSquad) validReasons.push(38);
-        validReasons.push(39);
-        if (player.age < 25) validReasons.push(40);
+        // 38: Twoja rola jest kluczowa
+        if (isInSquad && samePos <= 2) validReasons.push(38);
+        // 39: Chcemy przedłużyć współpracę
+        if (isInSquad && player.contractYears && player.contractYears <= 2)
+          validReasons.push(39);
+        // 40: Twoja młodość to atut
+        if (player.age < 25 && player.overall >= 66) validReasons.push(40);
+        // 41: Trener buduje taktykę wokół ciebie
         if (isInSquad && player.overall >= 73) validReasons.push(41);
+        // 42: Twoja jakość jest widoczna
         if (player.overall >= 74) validReasons.push(42);
-        if (player.age < 28) validReasons.push(43);
-        validReasons.push(44);
+        // 43: Masz przed sobą świetlane lata
+        if (player.age < 28 && player.overall >= 70) validReasons.push(43);
+        // 44: Twoja praca nie idzie na marne
+        if (avgRating && avgRating >= 6.3 && isInSquad) validReasons.push(44);
+        // 45: Twoje bramki/asysty są kluczowe
         if (goals >= 3 || assists >= 3) validReasons.push(45);
-        if (player.age >= 26) validReasons.push(46);
+        // 46: Twoja dojrzałość jest atutem
+        if (player.age >= 26 && player.overall >= 72) validReasons.push(46);
+        // 47: Jakość twojej gry jest wysoka
         if (player.overall >= 75) validReasons.push(47);
-        if (player.overall >= 76) validReasons.push(48);
+        // 48: Jesteś ważnym ogniwem
+        if (player.overall >= 76 && isInSquad) validReasons.push(48);
+        // 49: Klub wierzy w twój talent
         if (isInSquad && player.overall >= 74) validReasons.push(49);
-        validReasons.push(50);
+        // 50: To oferta godna twojej klasy
+        if (player.overall >= 75 && avgRating && avgRating >= 6.5)
+          validReasons.push(50);
 
         return validReasons;
       }
@@ -8650,65 +8783,141 @@ Players may become unhappy and start requesting transfers.`;
         const playerStats = player.matchStats || {};
         const goals = playerStats.goals || 0;
         const assists = playerStats.assists || 0;
+        const allPlayers = [
+          ...GameState.squad.players,
+          ...GameState.squad.bench,
+        ].filter((p) => p);
+        const avgTeamSalary =
+          allPlayers.length > 0
+            ? allPlayers.reduce((sum, p) => sum + (p.salary || 0), 0) /
+              allPlayers.length
+            : 0;
 
-        // 1-20: Original reasons
+        // Każdy powód ma konkretny warunek
+        // 1: Twoje wyniki są wybitne
         if (avgRating && avgRating >= 6.5) validReasons.push(1);
+        // 2: Zasługujesz na podwyżkę
         if (avgRating && avgRating >= 7.0) validReasons.push(2);
-        validReasons.push(3);
-        validReasons.push(4);
+        // 3: Doceniamy twoją ciężką pracę
+        if (isInSquad && avgRating && avgRating >= 6.3) validReasons.push(3);
+        // 4: Twoja lojalność jest nagradzana
+        if (player.contractYears && player.contractYears >= 2 && isInSquad)
+          validReasons.push(4);
+        // 5: Inwestujemy w twoją przyszłość
         if (player.age < 28 && player.overall >= 70) validReasons.push(5);
+        // 6: Budżet na to pozwala
         if (GameState.manager.balance > 100000) validReasons.push(6);
-        if (isInSquad) validReasons.push(7);
-        validReasons.push(8);
-        validReasons.push(9);
-        validReasons.push(10);
-        if (player.age < 27) validReasons.push(11);
-        validReasons.push(12);
-        if (isInSquad) validReasons.push(13);
-        validReasons.push(14);
-        if (player.age < 28) validReasons.push(15);
+        // 7: Jesteś kluczowy dla taktyki
+        if (isInSquad && player.overall >= 72) validReasons.push(7);
+        // 8: Twój rozwój nas cieszy
+        if (player.age < 27 && player.overall >= 68) validReasons.push(8);
+        // 9: Zasługujesz na uznanie
+        if (avgRating && avgRating >= 6.7) validReasons.push(9);
+        // 10: Twoja wartość wzrosła
+        if (player.salary < player.overall * 10) validReasons.push(10);
+        // 11: Twoja młodość to atut
+        if (player.age < 27 && player.overall >= 66) validReasons.push(11);
+        // 12: Chcemy cię zmotywować
+        if (isInSquad && avgRating && avgRating >= 6.0) validReasons.push(12);
+        // 13: Trener widzi twoje postępy
+        if (isInSquad && player.overall >= 70) validReasons.push(13);
+        // 14: Twój wpływ na grę jest duży
+        if (isInSquad && (goals >= 2 || assists >= 2)) validReasons.push(14);
+        // 15: Twoja kariera idzie w górę
+        if (player.age < 28 && player.overall >= 72) validReasons.push(15);
+        // 16: Jakość twojej gry jest wysoka
         if (player.overall >= 75) validReasons.push(16);
-        validReasons.push(17);
+        // 17: Doceniamy twoje zaangażowanie
+        if (isInSquad && avgRating && avgRating >= 6.5) validReasons.push(17);
+        // 18: Jesteś gwiazdą tego zespołu
         if (player.overall >= 78) validReasons.push(18);
-        if (GameState.manager.balance > 50000) validReasons.push(19);
-        validReasons.push(20);
-        // 21-50: Extended reasons
+        // 19: Stać nas na to
+        if (
+          GameState.manager.balance > 50000 &&
+          player.salary < avgTeamSalary * 1.2
+        )
+          validReasons.push(19);
+        // 20: To wyraz naszego szacunku
+        if (isInSquad && player.overall >= 73) validReasons.push(20);
+        // 21: Twoje bramki są kluczowe
         if (goals >= 3) validReasons.push(21);
+        // 22: Twoja obrona jest niezawodna
         if (
           ["CB", "LB", "RB", "CDM", "GK"].includes(player.position) &&
-          isInSquad
+          isInSquad &&
+          player.overall >= 70
         )
           validReasons.push(22);
+        // 23: Twoje oceny mówią same za siebie
         if (avgRating && avgRating >= 7.2) validReasons.push(23);
+        // 24: Widzimy twój wysiłek
         if (avgRating && avgRating >= 6.8) validReasons.push(24);
+        // 25: Jesteś jednym z najlepszych
         if (player.overall >= 80) validReasons.push(25);
+        // 26: Twoje asysty zmieniają mecze
         if (assists >= 3) validReasons.push(26);
+        // 27: Trener buduje taktykę wokół ciebie
         if (isInSquad && player.overall >= 72) validReasons.push(27);
+        // 28: Twoje dryblingi zachwycają
         if (player.stats && player.stats.Dribbling >= 75) validReasons.push(28);
+        // 29: Twoja forma jest imponująca
         if (avgRating && avgRating >= 6.7) validReasons.push(29);
+        // 30: Jesteś filarem drużyny
         if (isInSquad && player.overall >= 74) validReasons.push(30);
+        // 31: Twoja jakość jest widoczna
         if (player.overall >= 73) validReasons.push(31);
+        // 32: Twoje występy są stabilne
         if (avgRating && avgRating >= 6.9) validReasons.push(32);
-        if (player.age < 26) validReasons.push(33);
+        // 33: Twoja młodość to bonus
+        if (player.age < 26 && player.overall >= 68) validReasons.push(33);
+        // 34: Twoje podania są precyzyjne
         if (player.stats && player.stats.Passing >= 72) validReasons.push(34);
+        // 35: Twój poziom jest top
         if (avgRating && avgRating >= 7.0) validReasons.push(35);
-        if (player.overall >= 71) validReasons.push(36);
-        if (player.age < 25) validReasons.push(37);
+        // 36: Rozwijasz się świetnie
+        if (player.overall >= 71 && player.age < 28) validReasons.push(36);
+        // 37: Masz wielki potencjał
+        if (player.age < 25 && player.overall >= 66) validReasons.push(37);
+        // 38: Twoja klasa jest niepodważalna
         if (player.overall >= 72) validReasons.push(38);
+        // 39: Jesteś ważny dla nas
         if (isInSquad && player.overall >= 73) validReasons.push(39);
-        if (isInSquad) validReasons.push(40);
-        if (player.stats && player.stats.Passing >= 70) validReasons.push(41);
-        if (player.positions && player.positions.length > 1)
+        // 40: Twoja obecność dodaje pewności zespołowi
+        if (isInSquad && player.overall >= 70) validReasons.push(40);
+        // 41: Twoja gra kreuje szanse
+        if (player.stats && player.stats.Passing >= 70 && isInSquad)
+          validReasons.push(41);
+        // 42: Twoja wszechstronność jest cenna
+        if (player.positions && player.positions.length > 1 && isInSquad)
           validReasons.push(42);
+        // 43: Twój poziom gry wzrósł
         if (player.overall >= 76) validReasons.push(43);
+        // 44: Twoja dyspozycja jest świetna
         if (avgRating && avgRating >= 6.8) validReasons.push(44);
-        if (isInSquad && goals >= 1) validReasons.push(45);
+        // 45: Twoje statystyki są imponujące
+        if (isInSquad && (goals >= 1 || assists >= 1)) validReasons.push(45);
+        // 46: Twoja regularność jest godna pochwały
         if (avgRating && avgRating >= 6.6) validReasons.push(46);
+        // 47: Twoja wizja gry jest świetna
         if (player.stats && player.stats.Passing >= 73) validReasons.push(47);
-        if (["GK", "CB"].includes(player.position) && player.overall >= 70)
+        // 48: Twoja defensywa jest solidna
+        if (
+          ["GK", "CB", "CDM"].includes(player.position) &&
+          player.overall >= 70 &&
+          isInSquad
+        )
           validReasons.push(48);
-        if (player.overall >= 74) validReasons.push(49);
-        validReasons.push(50);
+        // 49: Zasługujesz na więcej
+        if (player.overall >= 74 && player.salary < player.overall * 12)
+          validReasons.push(49);
+        // 50: Ta podwyżka to minimum co możemy zrobić
+        if (
+          isInSquad &&
+          avgRating &&
+          avgRating >= 6.5 &&
+          player.salary < avgTeamSalary
+        )
+          validReasons.push(50);
 
         return validReasons;
       }
@@ -9618,6 +9827,7 @@ Players may become unhappy and start requesting transfers.`;
         const goals = playerStats.goals || 0;
         const assists = playerStats.assists || 0;
 
+        // Każdy powód ma konkretny warunek
         // 1: Gracz jest kluczowy dla składu
         if (isInSquad && player.overall >= 70) validReasons.push(1);
         // 2: Cena jest zbyt niska
@@ -9630,17 +9840,18 @@ Players may become unhappy and start requesting transfers.`;
           validReasons.push(4);
         // 5: Jest w szczytowej formie
         if (avgRating && avgRating >= 7.0) validReasons.push(5);
-        // 6: Inne kluby oferowały więcej (blef)
-        validReasons.push(6);
+        // 6: Inne kluby oferowały więcej
+        if (offer && offer.offerAmount < marketValue * 1.1)
+          validReasons.push(6);
         // 7: Wartość rynkowa rośnie
         if (player.age < 27 && player.overall >= 70) validReasons.push(7);
         // 8: Potrzebujemy go do końca sezonu
-        if (isInSquad) validReasons.push(8);
+        if (isInSquad && player.overall >= 68) validReasons.push(8);
         // 9: To niesprawiedliwa oferta
         if (offer && offer.offerAmount < marketValue * 0.8)
           validReasons.push(9);
         // 10: Ma duży potencjał rozwoju
-        if (player.age < 24) validReasons.push(10);
+        if (player.age < 24 && player.overall >= 62) validReasons.push(10);
         // 11: Trudno będzie go zastąpić
         if (samePositionCount <= 1 && isInSquad) validReasons.push(11);
         // 12: Kontrakt jest długoterminowy
@@ -9649,7 +9860,8 @@ Players may become unhappy and start requesting transfers.`;
         // 13: Sponsor wymaga jego obecności
         if (player.overall >= 85) validReasons.push(13);
         // 14: Jest liderem szatni
-        if (player.age >= 28 && player.overall >= 75) validReasons.push(14);
+        if (player.age >= 28 && player.overall >= 75 && isInSquad)
+          validReasons.push(14);
         // 15: Media go uwielbiają
         if (player.overall >= 82) validReasons.push(15);
         // 16: Statystyki mówią same za siebie
@@ -9660,14 +9872,14 @@ Players may become unhappy and start requesting transfers.`;
         if (player.overall >= 85) validReasons.push(18);
         // 19: Nie jesteśmy zdesperowani
         if (GameState.manager.balance > 100000) validReasons.push(19);
-        // 20: Cena musi odzwierciedlać jego klasę (zawsze)
-        validReasons.push(20);
+        // 20: Cena musi odzwierciedlać jego klasę
+        if (offer && offer.offerAmount < marketValue) validReasons.push(20);
         // 21: To nasz najlepszy strzelec
         if (goals >= 5) validReasons.push(21);
         // 22: Ma świetne statystyki w tym sezonie
         if (avgRating && avgRating >= 7.0) validReasons.push(22);
         // 23: Jest częścią naszego projektu sportowego
-        if (player.contractYears && player.contractYears >= 2)
+        if (player.contractYears && player.contractYears >= 2 && isInSquad)
           validReasons.push(23);
         // 24: Jego umiejętności są unikalne
         if (player.overall >= 78) validReasons.push(24);
@@ -9675,18 +9887,19 @@ Players may become unhappy and start requesting transfers.`;
         if (player.contractYears && player.contractYears >= 3)
           validReasons.push(25);
         // 26: Nie możemy go stracić w środku sezonu
-        if (isInSquad) validReasons.push(26);
+        if (isInSquad && player.overall >= 70) validReasons.push(26);
         // 27: Trener uważa go za niezbędnego
         if (isInSquad && player.overall >= 72) validReasons.push(27);
         // 28: Ma świetną chemię z drużyną
-        if (isInSquad) validReasons.push(28);
+        if (isInSquad && avgRating && avgRating >= 6.0) validReasons.push(28);
         // 29: Jest gwarancją bramek
         if (goals >= 3 && ["ST", "CF", "LW", "RW"].includes(player.position))
           validReasons.push(29);
         // 30: Jego obrona jest kluczowa
         if (
           ["CB", "LB", "RB", "CDM", "GK"].includes(player.position) &&
-          isInSquad
+          isInSquad &&
+          player.overall >= 68
         )
           validReasons.push(30);
         // 31: Ma najlepsze podania w zespole
@@ -9694,40 +9907,49 @@ Players may become unhappy and start requesting transfers.`;
         // 32: Jest naszym najszybszym graczem
         if (player.stats && player.stats.Pace >= 80) validReasons.push(32);
         // 33: Jego doświadczenie jest bezcenne
-        if (player.age >= 28) validReasons.push(33);
+        if (player.age >= 28 && player.overall >= 72) validReasons.push(33);
         // 34: Młodzi gracze się od niego uczą
-        if (player.age >= 30 && isInSquad) validReasons.push(34);
+        if (player.age >= 30 && isInSquad && player.overall >= 70)
+          validReasons.push(34);
         // 35: Jest twarzą naszego klubu
         if (player.overall >= 85) validReasons.push(35);
         // 36: Sponsorzy podpisali z nim umowę
         if (player.overall >= 83) validReasons.push(36);
         // 37: Nie znajdziemy godnego zastępcy
-        if (samePositionCount <= 1) validReasons.push(37);
-        // 38: Rynek transferowy jest zamknięty (blef)
-        validReasons.push(38);
+        if (samePositionCount <= 1 && player.overall >= 70)
+          validReasons.push(37);
+        // 38: Potrzebujemy stabilności w składzie
+        if (isInSquad && squadCount <= 11) validReasons.push(38);
         // 39: Mamy ambicje mistrzowskie
-        if (GameState.manager.balance > 50000) validReasons.push(39);
+        if (GameState.manager.balance > 50000 && isInSquad)
+          validReasons.push(39);
         // 40: Jest w najlepszym wieku
-        if (player.age >= 24 && player.age <= 29) validReasons.push(40);
+        if (player.age >= 24 && player.age <= 29 && player.overall >= 72)
+          validReasons.push(40);
         // 41: Jego wartość tylko rośnie
-        if (player.age < 27) validReasons.push(41);
+        if (player.age < 27 && player.overall >= 68) validReasons.push(41);
         // 42: Byłby to cios dla morale drużyny
         if (isInSquad && player.overall >= 75) validReasons.push(42);
         // 43: Kibice by nas za to znienawidzili
         if (player.overall >= 80) validReasons.push(43);
         // 44: Ma klauzulę wykupu wyższą od oferty
-        if (offer && offer.offerAmount < marketValue * 1.2)
+        if (
+          offer &&
+          offer.offerAmount < marketValue * 1.2 &&
+          player.contractYears &&
+          player.contractYears >= 2
+        )
           validReasons.push(44);
         // 45: Jest niezawodny w kluczowych meczach
         if (avgRating && avgRating >= 7.0) validReasons.push(45);
         // 46: Jego etyka pracy jest wzorowa
-        if (player.overall >= 70) validReasons.push(46);
+        if (player.overall >= 70 && isInSquad) validReasons.push(46);
         // 47: Jest gwiazdą mediów społecznościowych
         if (player.overall >= 82) validReasons.push(47);
         // 48: Rywale by zyskali za dużo
-        validReasons.push(48);
+        if (player.overall >= 75 && isInSquad) validReasons.push(48);
         // 49: To strategiczny zawodnik dla nas
-        if (isInSquad) validReasons.push(49);
+        if (isInSquad && player.overall >= 72) validReasons.push(49);
         // 50: Ta oferta to obraza dla jego klasy
         if (offer && offer.offerAmount < marketValue * 0.7)
           validReasons.push(50);
@@ -14714,17 +14936,16 @@ Players may become unhappy and start requesting transfers.`;
         if (data.type === "rematch_request") {
           if (confirm(t("wantRematch"))) {
             penaltyConn.send({ type: "rematch_accept" });
-            // Reset and restart
-            resetOnlinePenaltyState();
-            setupOnlinePenaltyPhase();
+            // Full reset and restart for new match
+            startRematch();
           } else {
             penaltyConn.send({ type: "rematch_decline" });
           }
         }
 
         if (data.type === "rematch_accept") {
-          resetOnlinePenaltyState();
-          setupOnlinePenaltyPhase();
+          // Full reset and restart for new match
+          startRematch();
         }
 
         if (data.type === "rematch_decline") {
@@ -14740,6 +14961,14 @@ Players may become unhappy and start requesting transfers.`;
       }
 
       function resetOnlinePenaltyState() {
+        // FULL reset for new match - prevent memory leaks
+
+        // Clear any timers
+        if (penaltyState.shootTimer) {
+          clearInterval(penaltyState.shootTimer);
+        }
+
+        // Reset penalty state completely
         penaltyState = {
           round: 1,
           maxRounds: 5,
@@ -14749,16 +14978,70 @@ Players may become unhappy and start requesting transfers.`;
           opponentShots: [],
           phase: isPenaltyHost ? "player_shoot" : "player_save",
           shooters: getPlayerShooters(),
-          opponentShooters: [],
+          opponentShooters: onlinePenaltyState.opponentShooters || [],
           currentShooterIndex: 0,
           selectedDirection: null,
           lastShooter: null,
           currentShooter: null,
+          shootTimer: null,
+          opponentOVR: onlinePenaltyState.opponentOVR || 70,
         };
+
+        // Reset online state
         onlinePenaltyState.myChoice = null;
         onlinePenaltyState.opponentChoice = null;
         onlinePenaltyState.resolved = false;
+
+        // Reset squad reveal state for potential future reveals
+        squadRevealState.isReady = false;
+        squadRevealState.opponentReady = false;
+
+        // Reset visual elements
+        const gk = document.getElementById("penaltyGK");
+        const ball = document.getElementById("penaltyBall");
+        const result = document.getElementById("penaltyResult");
+
+        if (gk) gk.className = "goalkeeper-penalty";
+        if (ball) ball.className = "ball-penalty";
+        if (result) {
+          result.textContent = "";
+          result.className = "penalty-result";
+        }
+
+        // Reset dots
+        document
+          .querySelectorAll("#playerDots .dot, #opponentDots .dot")
+          .forEach((dot) => {
+            dot.className = "dot";
+          });
+
+        // Reset goal zones
+        document.querySelectorAll(".goal-zone").forEach((z) => {
+          z.classList.remove("highlight-green", "highlight-red", "selected");
+        });
+
+        // Show surrender button again
+        const surrenderBtn = document.getElementById("surrenderBtn");
+        if (surrenderBtn) surrenderBtn.style.display = "block";
+
         updatePenaltyUI();
+      }
+
+      function startRematch() {
+        // Full reset for clean new match
+        resetOnlinePenaltyState();
+
+        // Update player names display
+        const myName = GameState.manager.name || t("you");
+        const oppName = opponentName || t("opponent");
+        document.getElementById("playerName").textContent = myName;
+        document.getElementById("opponentNameDisplay").textContent = oppName;
+
+        // Make sure we're on penalty screen
+        showScreen("penaltyScreen");
+
+        // Start the new match
+        setupOnlinePenaltyPhase();
       }
 
       function setupOnlinePenaltyPhase() {
