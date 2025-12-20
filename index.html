@@ -12503,6 +12503,9 @@ Players may become unhappy and start requesting transfers.`;
           return;
         }
 
+        // FULL RESET for new online match
+        fullResetOnlineMatch();
+
         document.getElementById("onlinePenaltyChoice").style.display = "none";
         document.getElementById("hostPenaltySection").style.display = "block";
 
@@ -12548,6 +12551,64 @@ Players may become unhappy and start requesting transfers.`;
         });
       }
 
+      function fullResetOnlineMatch() {
+        // Reset ALL online state for fresh new match
+        isOnlinePenalty = false;
+        isPenaltyHost = false;
+        opponentName = "";
+
+        // Close old connections
+        if (penaltyConn) {
+          try {
+            penaltyConn.close();
+          } catch (e) {}
+          penaltyConn = null;
+        }
+        if (penaltyPeer) {
+          try {
+            penaltyPeer.destroy();
+          } catch (e) {}
+          penaltyPeer = null;
+        }
+
+        // Reset penalty state
+        penaltyState = {
+          round: 1,
+          maxRounds: 5,
+          playerScore: 0,
+          opponentScore: 0,
+          playerShots: [],
+          opponentShots: [],
+          phase: "player_shoot",
+          shooters: getPlayerShooters(),
+          opponentShooters: [],
+          currentShooterIndex: 0,
+          selectedDirection: null,
+          shootTimer: null,
+          timeLeft: 15,
+          lastShooter: null,
+          currentShooter: null,
+        };
+
+        // Reset online penalty state
+        onlinePenaltyState = {
+          myChoice: null,
+          opponentChoice: null,
+          resolved: false,
+        };
+
+        // Reset squad reveal state
+        squadRevealState = {
+          currentIndex: 0,
+          allPlayers: [],
+          positions: [],
+          isReady: false,
+          opponentReady: false,
+          opponentSquad: null,
+          opponentName: "",
+        };
+      }
+
       function joinPenaltyRoom() {
         if (typeof Peer === "undefined") {
           alert(t("connectionError"));
@@ -12559,6 +12620,9 @@ Players may become unhappy and start requesting transfers.`;
           alert(t("pasteCodeAlert"));
           return;
         }
+
+        // FULL RESET for new online match
+        fullResetOnlineMatch();
 
         // Extract code from full URL if pasted
         if (code.includes("?room=")) {
@@ -12650,8 +12714,18 @@ Players may become unhappy and start requesting transfers.`;
           name: GameState.manager.name || "Manager",
         });
 
-        // Start squad reveal animation
-        startSquadReveal(true); // true = host
+        // Show waiting overlay - will start reveal when guest sends their squad
+        const overlay = document.getElementById("squadRevealOverlay");
+        overlay.style.display = "flex";
+        document.getElementById("squadRevealFull").style.display = "none";
+        document.getElementById("squadRevealCardContainer").style.display =
+          "none";
+        document.getElementById("squadRevealPosition").style.display = "none";
+        document.getElementById("squadRevealProgress").style.display = "none";
+        document.getElementById("squadRevealTitle").textContent =
+          currentLang === "pl"
+            ? "Oczekiwanie na skład przeciwnika..."
+            : "Waiting for opponent squad...";
       }
 
       // Get squad organized by position for reveal
@@ -12699,41 +12773,59 @@ Players may become unhappy and start requesting transfers.`;
         document.getElementById("squadRevealPosition").style.display = "block";
         document.getElementById("squadRevealProgress").style.display = "flex";
 
-        // Build player list in order: GK -> DEF -> MID -> ATT
-        const squad = getSquadForReveal();
-        squadRevealState = {
-          currentIndex: 0,
-          allPlayers: [],
-          positions: [],
-          isReady: false,
-          opponentReady: false,
-          opponentSquad: null,
+        // Use OPPONENT's squad (not your own - you already know yours!)
+        // For host: wait for guest's squad to arrive, for guest: use host's squad
+        const useOpponentSquad = () => {
+          const oppSquad = squadRevealState.opponentSquad;
+          if (!oppSquad) {
+            // No opponent squad yet, use placeholder
+            return { gk: [], def: [], mid: [], att: [] };
+          }
+          return oppSquad;
         };
 
+        const squad = useOpponentSquad();
+
+        squadRevealState.currentIndex = 0;
+        squadRevealState.allPlayers = [];
+        squadRevealState.positions = [];
+        squadRevealState.isReady = false;
+        // Keep opponentSquad and opponentName
+
         // Add players with position labels
-        if (squad.gk.length > 0) {
+        if (squad.gk && squad.gk.length > 0) {
           squad.gk.forEach((p) => {
             squadRevealState.allPlayers.push(p);
             squadRevealState.positions.push("goalkeeper");
           });
         }
-        if (squad.def.length > 0) {
+        if (squad.def && squad.def.length > 0) {
           squad.def.forEach((p, i) => {
             squadRevealState.allPlayers.push(p);
             squadRevealState.positions.push(i === 0 ? "defenders" : "");
           });
         }
-        if (squad.mid.length > 0) {
+        if (squad.mid && squad.mid.length > 0) {
           squad.mid.forEach((p, i) => {
             squadRevealState.allPlayers.push(p);
             squadRevealState.positions.push(i === 0 ? "midfielders" : "");
           });
         }
-        if (squad.att.length > 0) {
+        if (squad.att && squad.att.length > 0) {
           squad.att.forEach((p, i) => {
             squadRevealState.allPlayers.push(p);
             squadRevealState.positions.push(i === 0 ? "attackers" : "");
           });
+        }
+
+        // If no players (host waiting for guest), show waiting message
+        if (squadRevealState.allPlayers.length === 0) {
+          document.getElementById("squadRevealTitle").textContent =
+            currentLang === "pl"
+              ? "Oczekiwanie na skład przeciwnika..."
+              : "Waiting for opponent squad...";
+          // Will be updated when opponent squad arrives
+          return;
         }
 
         // Generate progress dots
@@ -12744,9 +12836,12 @@ Players may become unhappy and start requesting transfers.`;
           )
           .join("");
 
-        // Update title
+        // Update title - showing OPPONENT's squad
+        const oppName =
+          squadRevealState.opponentName ||
+          (currentLang === "pl" ? "Przeciwnik" : "Opponent");
         document.getElementById("squadRevealTitle").textContent =
-          t("yourSquad");
+          currentLang === "pl" ? `Skład: ${oppName}` : `Squad: ${oppName}`;
 
         // Start reveal
         revealNextCard();
@@ -12889,7 +12984,7 @@ Players may become unhappy and start requesting transfers.`;
       }
 
       function actuallyStartOnlinePenalty() {
-        // Initialize online penalty state
+        // Initialize online penalty state - FULL RESET
         penaltyState = {
           round: 1,
           maxRounds: 5,
@@ -12902,9 +12997,25 @@ Players may become unhappy and start requesting transfers.`;
           opponentShooters: [],
           currentShooterIndex: 0,
           selectedDirection: null,
+          lastShooter: null,
+          currentShooter: null,
+        };
+
+        // Reset online state too
+        onlinePenaltyState = {
+          myChoice: null,
+          opponentChoice: null,
+          resolved: false,
         };
 
         showScreen("penaltyScreen");
+
+        // Reset dots visually
+        document
+          .querySelectorAll("#playerDots .dot, #opponentDots .dot")
+          .forEach((dot) => {
+            dot.className = "dot";
+          });
 
         // Set player names
         const myName = GameState.manager.name || t("you");
@@ -12926,7 +13037,7 @@ Players may become unhappy and start requesting transfers.`;
         if (data.type === "start_penalty") {
           isOnlinePenalty = true;
 
-          // Store opponent squad and name
+          // Store opponent squad and name (host's squad)
           if (data.squad) {
             squadRevealState.opponentSquad = data.squad;
           }
@@ -12935,20 +13046,26 @@ Players may become unhappy and start requesting transfers.`;
             squadRevealState.opponentName = data.name;
           }
 
-          // Send my name back to host
+          // Send my name AND my squad back to host
           penaltyConn.send({
             type: "player_info",
             name: GameState.manager.name || "Manager",
+            squad: getSquadForReveal(),
           });
 
-          // Start squad reveal for guest
+          // Start squad reveal for guest - show OPPONENT's squad (host)
           startSquadReveal(false);
         }
 
         if (data.type === "player_info") {
-          // Host receives guest name
+          // Host receives guest name AND squad
           opponentName = data.name || "Manager";
           squadRevealState.opponentName = data.name || "Manager";
+          if (data.squad) {
+            squadRevealState.opponentSquad = data.squad;
+            // NOW host can start reveal with opponent's squad
+            startSquadReveal(true);
+          }
         }
 
         if (data.type === "squad_ready") {
@@ -13005,9 +13122,12 @@ Players may become unhappy and start requesting transfers.`;
           opponentShooters: [],
           currentShooterIndex: 0,
           selectedDirection: null,
+          lastShooter: null,
+          currentShooter: null,
         };
         onlinePenaltyState.myChoice = null;
         onlinePenaltyState.opponentChoice = null;
+        onlinePenaltyState.resolved = false;
         updatePenaltyUI();
       }
 
@@ -13030,21 +13150,37 @@ Players may become unhappy and start requesting transfers.`;
         result.className = "penalty-result";
         gk.className = "goalkeeper-penalty";
         ball.className = "ball-penalty";
-        document
-          .querySelectorAll(".goal-zone")
-          .forEach((z) => (z.className = "goal-zone " + z.dataset.zone));
+        document.querySelectorAll(".goal-zone").forEach((z) => {
+          z.className = "goal-zone " + z.dataset.zone;
+          z.classList.remove("selected");
+        });
+
+        // GENERATE BUTTONS for online mode
+        buttons.innerHTML = `
+                <button class="penalty-btn" onclick="selectOnlinePenaltyDirection('left')">⬅️ ${
+                  currentLang === "pl" ? "LEWO" : "LEFT"
+                }</button>
+                <button class="penalty-btn" onclick="selectOnlinePenaltyDirection('center')">⬆️ ${
+                  currentLang === "pl" ? "ŚRODEK" : "CENTER"
+                }</button>
+                <button class="penalty-btn" onclick="selectOnlinePenaltyDirection('right')">➡️ ${
+                  currentLang === "pl" ? "PRAWO" : "RIGHT"
+                }</button>
+            `;
         buttons.style.display = "flex";
 
         if (penaltyState.phase === "player_shoot") {
-          const shooter =
-            penaltyState.shooters[
-              penaltyState.currentShooterIndex % penaltyState.shooters.length
-            ];
+          // Select shooter based on attack stats
+          const shooter = selectNextShooter();
+          penaltyState.currentShooter = shooter;
+
           actionEl.textContent = t("chooseShot");
-          shooterName.textContent = shooter?.name || t("shooterShoots");
-          shooterStats.textContent = `SHO: ${
-            shooter?.stats?.Shooting || shooter?.overall || 70
-          }`;
+          shooterName.textContent =
+            (currentLang === "pl" ? "Strzela: " : "Shoots: ") +
+            (shooter?.name || "Strzelec");
+          shooterStats.textContent = `ATK: ${Math.round(
+            calculateAttackScore(shooter)
+          )}`;
         } else {
           actionEl.textContent = t("chooseDefense");
           shooterName.textContent = t("opponentShoots");
@@ -13053,6 +13189,7 @@ Players may become unhappy and start requesting transfers.`;
 
         shooterInfo.style.display = "block";
 
+        // Also allow clicking on goal zones
         document.querySelectorAll(".goal-zone").forEach((zone) => {
           zone.onclick = () => selectOnlinePenaltyDirection(zone.dataset.zone);
         });
