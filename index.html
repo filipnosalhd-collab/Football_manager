@@ -13931,11 +13931,15 @@ Players may become unhappy and start requesting transfers.`;
 
         squadPlayers.forEach((player, index) => {
           const requiredPosition = getRequiredPositionForSlot(index);
-          const isWrongPosition =
-            player.originalPosition !== requiredPosition &&
-            player.position !== requiredPosition;
 
-          if (isWrongPosition) {
+          // Check if player can play this position (including additional trained positions)
+          const playerPositions = player.positions || [player.position];
+          const canPlayPosition =
+            playerPositions.includes(requiredPosition) ||
+            player.position === requiredPosition ||
+            player.originalPosition === requiredPosition;
+
+          if (!canPlayPosition) {
             player.wrongPositionMatches =
               (player.wrongPositionMatches || 0) + 1;
 
@@ -14069,12 +14073,15 @@ Players may become unhappy and start requesting transfers.`;
             });
           }
 
-          // Check wrong position
+          // Check wrong position (but respect additional trained positions)
           const requiredPosition = getRequiredPositionForSlot(index);
-          if (
-            player.originalPosition !== requiredPosition &&
-            player.position !== requiredPosition
-          ) {
+          const playerPositions = player.positions || [player.position];
+          const canPlayPosition =
+            playerPositions.includes(requiredPosition) ||
+            player.position === requiredPosition ||
+            player.originalPosition === requiredPosition;
+
+          if (!canPlayPosition) {
             issues.push({
               player: player,
               type: "wrongPosition",
