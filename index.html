@@ -8218,9 +8218,14 @@ Players may become unhappy and start requesting transfers.`;
         const player = findPlayerById(listing.playerId);
         if (!player) return;
 
-        // Generate offer (70-120% of asking price)
-        const offerPercent = 0.7 + Math.random() * 0.5;
-        const offerAmount = Math.floor(listing.askingPrice * offerPercent);
+        // Calculate REAL market value based on player stats
+        const realMarketValue = Math.floor(
+          player.overall * player.overall * 10
+        );
+
+        // Generate offer based on REAL value (80-110% of real value)
+        const offerPercent = 0.8 + Math.random() * 0.3;
+        const offerAmount = Math.floor(realMarketValue * offerPercent);
 
         // Pick random club
         const clubName =
@@ -8231,20 +8236,12 @@ Players may become unhappy and start requesting transfers.`;
           playerId: listing.playerId,
           clubName: clubName,
           offerAmount: offerAmount,
+          realValue: realMarketValue,
           timestamp: Date.now(),
         };
 
         transferListState.offers.push(offer);
         renderTransferList();
-
-        // Show notification if on this screen
-        if (
-          document
-            .getElementById("transferListScreen")
-            .classList.contains("active")
-        ) {
-          // Play sound or show notification
-        }
       }
 
       function acceptTransferOffer(offerId) {
@@ -8456,31 +8453,43 @@ Players may become unhappy and start requesting transfers.`;
 
       function processSellNegotiationResponse() {
         const offer = sellNegotiationState.offer;
-        const listing = sellNegotiationState.listing;
+        const player = sellNegotiationState.player;
         const counterPrice = sellNegotiationState.counterPrice;
 
-        // Agent decides based on price difference and reasons
-        const originalOffer = offer.offerAmount;
-        const askingPrice = listing ? listing.askingPrice : counterPrice;
-        const priceRatio = originalOffer / counterPrice;
+        // Calculate REAL market value
+        const realMarketValue = Math.floor(
+          player.overall * player.overall * 10
+        );
 
-        let acceptChance = priceRatio * 0.6;
-        acceptChance += sellNegotiationState.selectedReasons.length * 0.02;
-        acceptChance = Math.min(0.85, acceptChance);
+        // Agent analyzes: is the counter price reasonable compared to real value?
+        const priceVsReal = counterPrice / realMarketValue;
+
+        let acceptChance = 0;
+
+        // If asking for less than 120% of real value - very likely to accept
+        if (priceVsReal <= 1.2) {
+          acceptChance = 0.85;
+        } else if (priceVsReal <= 1.5) {
+          acceptChance = 0.5;
+        } else if (priceVsReal <= 2.0) {
+          acceptChance = 0.2;
+        } else {
+          // Asking for 2x+ real value - almost no chance
+          acceptChance = 0.05;
+        }
+
+        // Bonus for reasons
+        acceptChance += sellNegotiationState.selectedReasons.length * 0.015;
+        acceptChance = Math.min(0.9, acceptChance);
 
         let accepted = false;
         let counterOffer = false;
-
-        if (counterPrice <= originalOffer * 1.1) {
-          // Asking for only 10% more - high chance
-          acceptChance = 0.8;
-        }
 
         if (Math.random() < acceptChance) {
           accepted = true;
         } else if (
           sellNegotiationState.attempts < sellNegotiationState.maxAttempts &&
-          Math.random() < 0.6
+          priceVsReal < 2.5
         ) {
           counterOffer = true;
         }
@@ -8499,16 +8508,20 @@ Players may become unhappy and start requesting transfers.`;
 
           document.getElementById("sellChatEndBtn").style.display = "block";
         } else if (counterOffer) {
-          // Agent makes counter offer
+          // Agent makes counter offer - closer to real value
+          const maxAgentWillPay = realMarketValue * 1.15;
           const newOffer = Math.floor(
-            originalOffer + (counterPrice - originalOffer) * 0.5
+            Math.min(
+              maxAgentWillPay,
+              offer.offerAmount + (counterPrice - offer.offerAmount) * 0.3
+            )
           );
           offer.offerAmount = newOffer;
 
           const counterMsg =
             currentLang === "pl"
-              ? `To za dużo. Mogę zaoferować €${newOffer.toLocaleString()}.`
-              : `That's too much. I can offer €${newOffer.toLocaleString()}.`;
+              ? `To za dużo. Wartość rynkowa to około €${realMarketValue.toLocaleString()}. Mogę dać €${newOffer.toLocaleString()}.`
+              : `That's too much. Market value is around €${realMarketValue.toLocaleString()}. I can offer €${newOffer.toLocaleString()}.`;
           addSellChatMessage(counterMsg, "player");
 
           // Reset for new attempt
@@ -8520,8 +8533,8 @@ Players may become unhappy and start requesting transfers.`;
         } else {
           const rejectMsg =
             currentLang === "pl"
-              ? "Niestety nie możemy tyle zapłacić. Negocjacje zakończone."
-              : "Unfortunately we cannot pay that much. Negotiations over.";
+              ? `Niestety €${counterPrice.toLocaleString()} to za dużo. Wartość rynkowa to €${realMarketValue.toLocaleString()}. Negocjacje zakończone.`
+              : `Unfortunately €${counterPrice.toLocaleString()} is too much. Market value is €${realMarketValue.toLocaleString()}. Negotiations over.`;
           addSellChatMessage(rejectMsg, "player");
           addSellChatMessage(t("chatDealFailed"), "system");
 
@@ -11279,6 +11292,8 @@ Players may become unhappy and start requesting transfers.`;
           selectedDirection: null,
           shootTimer: null,
           timeLeft: 15,
+          lastShooter: null,
+          currentShooter: null,
         };
 
         showScreen("penaltyScreen");
@@ -11316,17 +11331,70 @@ Players may become unhappy and start requesting transfers.`;
       }
 
       function getPlayerShooters() {
-        // Get attackers and midfielders sorted by shooting stat
+        // Get all outfield players sorted by attack stats
         const outfield = GameState.squad.players.filter(
           (p) => p && p.position !== "GK"
         );
-        return outfield
-          .sort((a, b) => {
-            const shootA = a.stats?.Shooting || a.overall;
-            const shootB = b.stats?.Shooting || b.overall;
-            return shootB - shootA;
-          })
-          .slice(0, 5);
+
+        // Sort by total attack stats
+        return outfield.sort((a, b) => {
+          const attackA = calculateAttackScore(a);
+          const attackB = calculateAttackScore(b);
+          return attackB - attackA;
+        });
+      }
+
+      function calculateAttackScore(player) {
+        // Attack stats: Pace, Shooting, Passing, Dribbling (not Defending, Physical)
+        const stats = player.stats || {};
+        const pace = stats.Pace || player.overall;
+        const shooting = stats.Shooting || player.overall;
+        const passing = stats.Passing || player.overall;
+        const dribbling = stats.Dribbling || player.overall;
+
+        // Average of attack stats
+        return (pace + shooting + passing + dribbling) / 4;
+      }
+
+      function selectNextShooter() {
+        // Get all eligible shooters (outfield players)
+        const allShooters = getPlayerShooters();
+        if (allShooters.length === 0) return null;
+
+        // Get last shooter to avoid repetition
+        const lastShooter = penaltyState.lastShooter;
+
+        // Calculate weights based on TOTAL attack stats
+        let totalWeight = 0;
+        const weights = allShooters.map((player) => {
+          // Skip if same as last shooter
+          if (lastShooter && player.id === lastShooter.id) {
+            return 0;
+          }
+
+          // Weight based on ALL attack stats (Pace, Shooting, Passing, Dribbling)
+          const attackScore = calculateAttackScore(player);
+          const weight = Math.pow(attackScore, 2); // Square to emphasize high attackers
+          totalWeight += weight;
+          return weight;
+        });
+
+        // If all weights are 0 (only one player), just pick first available
+        if (totalWeight === 0) {
+          return allShooters[0];
+        }
+
+        // Random weighted selection
+        let random = Math.random() * totalWeight;
+        for (let i = 0; i < allShooters.length; i++) {
+          random -= weights[i];
+          if (random <= 0) {
+            return allShooters[i];
+          }
+        }
+
+        // Fallback
+        return allShooters[0];
       }
 
       function getOpponentShooters() {
@@ -11421,10 +11489,10 @@ Players may become unhappy and start requesting transfers.`;
         penaltyState.timeLeft = 15;
 
         if (penaltyState.phase === "player_shoot") {
-          const shooter =
-            penaltyState.shooters[
-              penaltyState.currentShooterIndex % penaltyState.shooters.length
-            ];
+          // Select shooter based on stats (weighted random, no repeat)
+          const shooter = selectNextShooter();
+          penaltyState.currentShooter = shooter;
+
           actionEl.textContent = t("chooseShot") + " - 15s";
           shooterName.textContent =
             (currentLang === "pl" ? "Strzela: " : "Shoots: ") +
@@ -11685,12 +11753,12 @@ Players may become unhappy and start requesting transfers.`;
         const result = document.getElementById("penaltyResult");
 
         if (penaltyState.phase === "player_shoot") {
-          // Player is shooting
-          const shooter =
-            penaltyState.shooters[
-              penaltyState.currentShooterIndex % penaltyState.shooters.length
-            ];
+          // Player is shooting - use the currentShooter selected in setupPenaltyPhase
+          const shooter = penaltyState.currentShooter;
           const shooting = shooter?.stats?.Shooting || shooter?.overall || 70;
+
+          // Save as lastShooter for next selection
+          penaltyState.lastShooter = shooter;
 
           // Opponent GK picks direction
           const directions = ["left", "center", "right"];
@@ -11715,11 +11783,11 @@ Players may become unhappy and start requesting transfers.`;
               playSaveSound();
               updatePenaltyUI();
 
-              // Pokaż kartę strzelca
-              showPenaltyCard(shooter, () => {
+              // Pudło - nie pokazuj karty, przejdź dalej
+              setTimeout(() => {
                 penaltyState.phase = "player_save";
                 setupPenaltyPhase();
-              });
+              }, 1500);
             }, 250);
           } else {
             setTimeout(() => {
@@ -11765,11 +11833,19 @@ Players may become unhappy and start requesting transfers.`;
 
               updatePenaltyUI();
 
-              // Pokaż kartę strzelca
-              showPenaltyCard(shooter, () => {
-                penaltyState.phase = "player_save";
-                setupPenaltyPhase();
-              });
+              // Pokaż kartę strzelca TYLKO gdy strzelił gola
+              if (scored) {
+                showPenaltyCard(shooter, () => {
+                  penaltyState.phase = "player_save";
+                  setupPenaltyPhase();
+                });
+              } else {
+                // Bramkarz obronił - nie pokazuj karty
+                setTimeout(() => {
+                  penaltyState.phase = "player_save";
+                  setupPenaltyPhase();
+                }, 1500);
+              }
             }, 500);
           }
         } else if (penaltyState.phase === "player_save") {
