@@ -4237,6 +4237,163 @@
           opacity: 0.7;
         }
       }
+
+      /* Transfer List Styles */
+      .transfer-list-container {
+        max-width: 900px;
+        width: 95%;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .transfer-list-section {
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 15px;
+        padding: 1rem;
+        border: 2px solid var(--gold);
+      }
+
+      .transfer-list-section h3 {
+        color: var(--gold);
+        margin-bottom: 1rem;
+        font-family: "Orbitron", sans-serif;
+        text-align: center;
+      }
+
+      .listed-players-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .listed-player-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+      }
+
+      .listed-player-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .listed-player-name {
+        color: white;
+        font-weight: bold;
+      }
+
+      .listed-player-price {
+        color: var(--gold);
+        font-size: 0.85rem;
+      }
+
+      .listed-player-actions button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        border-radius: 5px;
+        cursor: pointer;
+        background: linear-gradient(145deg, #4a1a1a, #2a0a0a);
+        border: 1px solid #ff4444;
+        color: #ff4444;
+      }
+
+      .offers-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .offer-item {
+        padding: 0.75rem;
+        background: rgba(0, 100, 0, 0.2);
+        border-radius: 8px;
+        border: 1px solid #4caf50;
+      }
+
+      .offer-item.new {
+        animation: offerPulse 1s ease;
+        border-color: var(--gold);
+      }
+
+      @keyframes offerPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 5px var(--gold);
+        }
+        50% {
+          box-shadow: 0 0 20px var(--gold);
+        }
+      }
+
+      .offer-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+
+      .offer-club {
+        color: white;
+        font-weight: bold;
+      }
+
+      .offer-amount {
+        color: #4caf50;
+        font-weight: bold;
+      }
+
+      .offer-player {
+        color: var(--silver);
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .offer-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .offer-actions button {
+        flex: 1;
+        padding: 0.4rem;
+        font-size: 0.7rem;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: "Orbitron", sans-serif;
+      }
+
+      .offer-actions .accept-btn {
+        background: linear-gradient(145deg, #1a5a1a, #0d3d0d);
+        border: 1px solid #4caf50;
+        color: #4caf50;
+      }
+
+      .offer-actions .reject-btn {
+        background: linear-gradient(145deg, #4a1a1a, #2a0a0a);
+        border: 1px solid #ff4444;
+        color: #ff4444;
+      }
+
+      .offer-actions .negotiate-btn {
+        background: linear-gradient(145deg, #1a1a4a, #0d0d2a);
+        border: 1px solid #5c6bc0;
+        color: #9fa8da;
+      }
+
+      .no-offers {
+        text-align: center;
+        color: var(--silver);
+        padding: 2rem;
+      }
     </style>
   </head>
   <body>
@@ -4376,6 +4533,13 @@
           data-t="market"
         >
           🏪 RYNEK TRANSFEROWY
+        </button>
+        <button
+          class="menu-btn"
+          onclick="openTransferList()"
+          data-t="transferList"
+        >
+          💰 LISTA TRANSFEROWA
         </button>
         <button
           class="menu-btn gold"
@@ -4812,6 +4976,168 @@
             data-t="cancel"
           >
             ❌ ANULUJ
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TRANSFER LIST SCREEN ==================== -->
+    <div class="screen" id="transferListScreen">
+      <h1 class="game-title" data-t="transferList">💰 LISTA TRANSFEROWA</h1>
+
+      <div class="account-panel" style="margin-bottom: 1rem">
+        <div class="account-balance" id="transferListBalance">€0</div>
+      </div>
+
+      <div class="transfer-list-container">
+        <div class="transfer-list-section">
+          <h3 data-t="listedPlayers">Gracze na liście</h3>
+          <div class="listed-players-grid" id="listedPlayersGrid">
+            <!-- Listed players will appear here -->
+          </div>
+        </div>
+
+        <div class="transfer-list-section">
+          <h3 data-t="offersReceived">Otrzymane oferty</h3>
+          <div class="offers-list" id="offersListContainer">
+            <div class="no-offers" data-t="noOffersYet">
+              Brak ofert - poczekaj...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="menu-btn"
+        onclick="showScreen('mainMenu')"
+        style="margin-top: 1rem"
+        data-t="back"
+      >
+        🔙 POWRÓT
+      </button>
+    </div>
+
+    <!-- ==================== LIST PLAYER MODAL ==================== -->
+    <div class="modal-overlay" id="listPlayerModal" style="display: none">
+      <div class="email-modal-content">
+        <div class="email-modal-header">
+          <div class="email-modal-subject">
+            🏷️ <span data-t="listForSale">WYSTAW NA SPRZEDAŻ</span>
+          </div>
+        </div>
+
+        <div class="compose-section">
+          <label data-t="selectPlayerEmail">Wybierz zawodnika:</label>
+          <select
+            id="listPlayerSelect"
+            class="compose-select"
+            onchange="updateListPlayerPreview()"
+          >
+            <option value="">-- Wybierz --</option>
+          </select>
+        </div>
+
+        <div
+          class="compose-player-preview"
+          id="listPlayerPreview"
+          style="display: none"
+        ></div>
+
+        <div
+          class="compose-section"
+          id="listPriceSection"
+          style="display: none"
+        >
+          <label data-t="askingPrice">Cena wywoławcza (€):</label>
+          <input
+            type="number"
+            id="listAskingPrice"
+            class="compose-input"
+            min="1000"
+          />
+          <div class="compose-hint" id="listPriceHint"></div>
+        </div>
+
+        <div class="email-modal-actions">
+          <button
+            class="email-action-btn accept"
+            onclick="confirmListPlayer()"
+            id="listPlayerBtn"
+            disabled
+          >
+            🏷️ <span data-t="listForSale">WYSTAW</span>
+          </button>
+          <button
+            class="email-action-btn close"
+            onclick="closeListPlayerModal()"
+          >
+            ❌ <span data-t="cancel">ANULUJ</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SELL NEGOTIATION MODAL ==================== -->
+    <div class="modal-overlay" id="sellNegotiationModal" style="display: none">
+      <div class="chat-modal-content">
+        <div class="chat-header">
+          <div class="chat-player-info">
+            <div class="chat-player-avatar" id="sellChatClubLogo">🏟️</div>
+            <div class="chat-player-name" id="sellChatClubName">
+              Agent klubu
+            </div>
+          </div>
+          <button class="chat-close-btn" onclick="closeSellNegotiation()">
+            ✕
+          </button>
+        </div>
+
+        <div class="chat-messages" id="sellChatMessages">
+          <!-- Messages will be generated -->
+        </div>
+
+        <div
+          class="chat-reasons-panel"
+          id="sellReasonsPanel"
+          style="display: none"
+        >
+          <div class="chat-reasons-title" data-t="selectReasons">
+            Wybierz argumenty:
+          </div>
+          <div class="chat-reasons-list" id="sellReasonsList">
+            <!-- Reasons checkboxes -->
+          </div>
+        </div>
+
+        <div class="chat-input-panel" id="sellInputPanel" style="display: none">
+          <div class="chat-salary-input">
+            <label id="sellPriceLabel">Cena:</label>
+            <input
+              type="number"
+              id="sellPriceInput"
+              class="compose-input"
+              min="1000"
+            />
+            <span>€</span>
+          </div>
+        </div>
+
+        <div class="chat-actions" id="sellChatActions">
+          <button
+            class="chat-send-btn"
+            onclick="sendSellNegotiationMessage()"
+            id="sellChatSendBtn"
+            disabled
+          >
+            📤 <span data-t="sendMessage">WYŚLIJ</span>
+          </button>
+          <button
+            class="chat-end-btn"
+            onclick="closeSellNegotiation()"
+            id="sellChatEndBtn"
+            style="display: none"
+          >
+            ✅ <span data-t="endChat">ZAKOŃCZ</span>
           </button>
         </div>
       </div>
@@ -5842,6 +6168,46 @@
           stillInjured:
             "🏥 {player} nadal jest kontuzjowany ({hours}h pozostało)",
 
+          // Transfer list system
+          transferList: "💰 LISTA TRANSFEROWA",
+          listForSale: "🏷️ WYSTAW NA SPRZEDAŻ",
+          removeFromList: "❌ USUŃ Z LISTY",
+          askingPrice: "Cena wywoławcza",
+          playerListed: "✅ {player} wystawiony na sprzedaż!",
+          playerUnlisted: "❌ {player} usunięty z listy transferowej",
+          noOffersYet: "Brak ofert - poczekaj...",
+          newOffer: "📨 Nowa oferta!",
+          offersReceived: "Otrzymane oferty",
+          fromClub: "od",
+          acceptOffer: "✅ Akceptuj",
+          rejectOffer: "❌ Odrzuć",
+          negotiateOffer: "💬 Negocjuj",
+          offerAccepted: "✅ Sprzedałeś {player} do {club} za €{price}!",
+          offerRejected: "❌ Odrzuciłeś ofertę od {club}",
+          listedPlayers: "Gracze na liście",
+
+          // Sell negotiation reasons (20)
+          sellReason1: "Gracz jest kluczowy dla naszego składu",
+          sellReason2: "Cena jest zbyt niska jak na jego talent",
+          sellReason3: "Mamy długoterminowe plany z tym graczem",
+          sellReason4: "Kibice go uwielbiają",
+          sellReason5: "Jest w szczytowej formie",
+          sellReason6: "Inne kluby oferowały więcej",
+          sellReason7: "Jego wartość rynkowa rośnie",
+          sellReason8: "Potrzebujemy go do końca sezonu",
+          sellReason9: "To niesprawiedliwa oferta",
+          sellReason10: "Ma duży potencjał rozwoju",
+          sellReason11: "Trudno będzie go zastąpić",
+          sellReason12: "Kontrakt jest długoterminowy",
+          sellReason13: "Sponsor wymaga jego obecności",
+          sellReason14: "Jest liderem szatni",
+          sellReason15: "Media go uwielbiają",
+          sellReason16: "Statystyki mówią same za siebie",
+          sellReason17: "Inwestowaliśmy w jego rozwój",
+          sellReason18: "Byłby stratą dla ligi",
+          sellReason19: "Nie jesteśmy zdesperowani",
+          sellReason20: "Cena musi odzwierciedlać jego klasę",
+
           // Free kicks
           freeKicks: "⚽ RZUTY WOLNE",
           penaltiesMode: "⚽ KARNE (DOGRYWKA)",
@@ -6266,6 +6632,46 @@
             "📉 {player} lost {points} OVR from playing wrong position!",
           injuryHealed: "✅ {player} has recovered from injury!",
           stillInjured: "🏥 {player} is still injured ({hours}h remaining)",
+
+          // Transfer list system
+          transferList: "💰 TRANSFER LIST",
+          listForSale: "🏷️ LIST FOR SALE",
+          removeFromList: "❌ REMOVE FROM LIST",
+          askingPrice: "Asking price",
+          playerListed: "✅ {player} listed for sale!",
+          playerUnlisted: "❌ {player} removed from transfer list",
+          noOffersYet: "No offers yet - wait...",
+          newOffer: "📨 New offer!",
+          offersReceived: "Offers received",
+          fromClub: "from",
+          acceptOffer: "✅ Accept",
+          rejectOffer: "❌ Reject",
+          negotiateOffer: "💬 Negotiate",
+          offerAccepted: "✅ You sold {player} to {club} for €{price}!",
+          offerRejected: "❌ You rejected offer from {club}",
+          listedPlayers: "Listed players",
+
+          // Sell negotiation reasons (20)
+          sellReason1: "Player is key to our squad",
+          sellReason2: "Price is too low for his talent",
+          sellReason3: "We have long-term plans with this player",
+          sellReason4: "Fans love him",
+          sellReason5: "He is in peak form",
+          sellReason6: "Other clubs offered more",
+          sellReason7: "His market value is rising",
+          sellReason8: "We need him until end of season",
+          sellReason9: "This is an unfair offer",
+          sellReason10: "He has great development potential",
+          sellReason11: "He will be hard to replace",
+          sellReason12: "Contract is long-term",
+          sellReason13: "Sponsor requires his presence",
+          sellReason14: "He is a locker room leader",
+          sellReason15: "Media loves him",
+          sellReason16: "Statistics speak for themselves",
+          sellReason17: "We invested in his development",
+          sellReason18: "He would be a loss for the league",
+          sellReason19: "We are not desperate",
+          sellReason20: "Price must reflect his class",
 
           // Free kicks
           freeKicks: "⚽ FREE KICKS",
@@ -7540,6 +7946,594 @@ Players may become unhappy and start requesting transfers.`;
         autoSave();
       }
 
+      // ==================== TRANSFER LIST SYSTEM ====================
+
+      let transferListState = {
+        listedPlayers: [], // { playerId, askingPrice, listedAt }
+        offers: [], // { id, playerId, clubName, offerAmount, timestamp }
+        offerInterval: null,
+      };
+
+      const CLUB_NAMES = [
+        "FC Barcelona",
+        "Real Madrid",
+        "Bayern Munich",
+        "Manchester City",
+        "Liverpool FC",
+        "PSG",
+        "Juventus",
+        "AC Milan",
+        "Inter Milan",
+        "Chelsea FC",
+        "Arsenal",
+        "Atletico Madrid",
+        "Borussia Dortmund",
+        "RB Leipzig",
+        "Napoli",
+        "AS Roma",
+        "Ajax",
+        "Porto",
+        "Benfica",
+        "Sevilla",
+        "Leicester City",
+        "West Ham",
+        "Tottenham",
+        "Newcastle",
+      ];
+
+      function openTransferList() {
+        showScreen("transferListScreen");
+        document.getElementById("transferListBalance").textContent =
+          "€" + GameState.manager.balance.toLocaleString();
+        renderTransferList();
+        startOfferGeneration();
+      }
+
+      function renderTransferList() {
+        const grid = document.getElementById("listedPlayersGrid");
+        const offersContainer = document.getElementById("offersListContainer");
+
+        // Render listed players
+        if (transferListState.listedPlayers.length === 0) {
+          grid.innerHTML = `
+                    <div style="text-align: center; padding: 1rem; color: var(--silver);">
+                        ${
+                          currentLang === "pl"
+                            ? "Brak graczy na liście"
+                            : "No players listed"
+                        }
+                    </div>
+                    <button class="menu-btn" onclick="openListPlayerModal()" style="width: 100%;">
+                        🏷️ ${t("listForSale")}
+                    </button>
+                `;
+        } else {
+          grid.innerHTML =
+            transferListState.listedPlayers
+              .map((listing) => {
+                const player = findPlayerById(listing.playerId);
+                if (!player) return "";
+                return `
+                        <div class="listed-player-item">
+                            <div class="listed-player-info">
+                                <div class="listed-player-name">${
+                                  player.name
+                                } (${player.position}, OVR ${
+                  player.overall
+                })</div>
+                                <div class="listed-player-price">€${listing.askingPrice.toLocaleString()}</div>
+                            </div>
+                            <div class="listed-player-actions">
+                                <button onclick="unlistPlayer('${
+                                  listing.playerId
+                                }')">${t("removeFromList")}</button>
+                            </div>
+                        </div>
+                    `;
+              })
+              .join("") +
+            `
+                    <button class="menu-btn" onclick="openListPlayerModal()" style="width: 100%; margin-top: 0.5rem;">
+                        🏷️ ${t("listForSale")}
+                    </button>
+                `;
+        }
+
+        // Render offers
+        if (transferListState.offers.length === 0) {
+          offersContainer.innerHTML = `<div class="no-offers">${t(
+            "noOffersYet"
+          )}</div>`;
+        } else {
+          offersContainer.innerHTML = transferListState.offers
+            .map((offer) => {
+              const player = findPlayerById(offer.playerId);
+              if (!player) return "";
+              const isNew = Date.now() - offer.timestamp < 5000;
+              return `
+                        <div class="offer-item ${isNew ? "new" : ""}">
+                            <div class="offer-header">
+                                <div class="offer-club">🏟️ ${
+                                  offer.clubName
+                                }</div>
+                                <div class="offer-amount">€${offer.offerAmount.toLocaleString()}</div>
+                            </div>
+                            <div class="offer-player">${t("fromClub")}: ${
+                player.name
+              } (${player.position})</div>
+                            <div class="offer-actions">
+                                <button class="accept-btn" onclick="acceptTransferOffer('${
+                                  offer.id
+                                }')">${t("acceptOffer")}</button>
+                                <button class="negotiate-btn" onclick="negotiateTransferOffer('${
+                                  offer.id
+                                }')">${t("negotiateOffer")}</button>
+                                <button class="reject-btn" onclick="rejectTransferOffer('${
+                                  offer.id
+                                }')">${t("rejectOffer")}</button>
+                            </div>
+                        </div>
+                    `;
+            })
+            .join("");
+        }
+      }
+
+      function openListPlayerModal() {
+        const modal = document.getElementById("listPlayerModal");
+        const select = document.getElementById("listPlayerSelect");
+
+        // Get unlisted players
+        const allPlayers = [
+          ...(GameState.squad.players || []),
+          ...(GameState.squad.bench || []),
+        ].filter((p) => p);
+        const listedIds = transferListState.listedPlayers.map(
+          (l) => l.playerId
+        );
+        const unlistedPlayers = allPlayers.filter(
+          (p) => !listedIds.includes(p.id)
+        );
+
+        select.innerHTML =
+          `<option value="">-- ${
+            currentLang === "pl" ? "Wybierz" : "Select"
+          } --</option>` +
+          unlistedPlayers
+            .map(
+              (p) =>
+                `<option value="${p.id}">${p.name} (${p.position}, OVR ${p.overall})</option>`
+            )
+            .join("");
+
+        document.getElementById("listPlayerPreview").style.display = "none";
+        document.getElementById("listPriceSection").style.display = "none";
+        document.getElementById("listPlayerBtn").disabled = true;
+
+        modal.style.display = "flex";
+      }
+
+      function closeListPlayerModal() {
+        document.getElementById("listPlayerModal").style.display = "none";
+      }
+
+      function updateListPlayerPreview() {
+        const select = document.getElementById("listPlayerSelect");
+        const preview = document.getElementById("listPlayerPreview");
+        const priceSection = document.getElementById("listPriceSection");
+        const playerId = select.value;
+
+        if (!playerId) {
+          preview.style.display = "none";
+          priceSection.style.display = "none";
+          document.getElementById("listPlayerBtn").disabled = true;
+          return;
+        }
+
+        const player = findPlayerById(parseFloat(playerId));
+        if (!player) return;
+
+        const marketValue = Math.floor(player.overall * player.overall * 10);
+
+        preview.innerHTML = `
+                <div style="text-align: center; padding: 0.5rem;">
+                    <strong>${player.name}</strong><br>
+                    ${player.position} | OVR ${player.overall}<br>
+                    <span style="color: var(--gold);">${
+                      currentLang === "pl" ? "Wartość rynkowa" : "Market value"
+                    }: €${marketValue.toLocaleString()}</span>
+                </div>
+            `;
+        preview.style.display = "block";
+
+        document.getElementById("listAskingPrice").value = marketValue;
+        document.getElementById("listPriceHint").textContent = `${
+          currentLang === "pl" ? "Sugerowana" : "Suggested"
+        }: €${marketValue.toLocaleString()}`;
+        priceSection.style.display = "block";
+        document.getElementById("listPlayerBtn").disabled = false;
+      }
+
+      function confirmListPlayer() {
+        const playerId = parseFloat(
+          document.getElementById("listPlayerSelect").value
+        );
+        const askingPrice =
+          parseInt(document.getElementById("listAskingPrice").value) || 0;
+
+        if (!playerId || askingPrice < 1000) return;
+
+        const player = findPlayerById(playerId);
+        if (!player) return;
+
+        transferListState.listedPlayers.push({
+          playerId: playerId,
+          askingPrice: askingPrice,
+          listedAt: Date.now(),
+        });
+
+        closeListPlayerModal();
+        renderTransferList();
+        alert(t("playerListed").replace("{player}", player.name));
+        autoSave();
+      }
+
+      function unlistPlayer(playerId) {
+        const player = findPlayerById(parseFloat(playerId));
+        transferListState.listedPlayers =
+          transferListState.listedPlayers.filter((l) => l.playerId != playerId);
+        transferListState.offers = transferListState.offers.filter(
+          (o) => o.playerId != playerId
+        );
+        renderTransferList();
+        if (player) {
+          alert(t("playerUnlisted").replace("{player}", player.name));
+        }
+        autoSave();
+      }
+
+      function startOfferGeneration() {
+        // Clear existing interval
+        if (transferListState.offerInterval) {
+          clearInterval(transferListState.offerInterval);
+        }
+
+        // Generate offers every 20 seconds
+        transferListState.offerInterval = setInterval(() => {
+          generateRandomOffer();
+        }, 20000);
+
+        // Also generate first offer after 20 seconds
+        setTimeout(() => generateRandomOffer(), 20000);
+      }
+
+      function generateRandomOffer() {
+        if (transferListState.listedPlayers.length === 0) return;
+
+        // Pick random listed player
+        const listing =
+          transferListState.listedPlayers[
+            Math.floor(Math.random() * transferListState.listedPlayers.length)
+          ];
+        const player = findPlayerById(listing.playerId);
+        if (!player) return;
+
+        // Generate offer (70-120% of asking price)
+        const offerPercent = 0.7 + Math.random() * 0.5;
+        const offerAmount = Math.floor(listing.askingPrice * offerPercent);
+
+        // Pick random club
+        const clubName =
+          CLUB_NAMES[Math.floor(Math.random() * CLUB_NAMES.length)];
+
+        const offer = {
+          id: Date.now() + Math.random(),
+          playerId: listing.playerId,
+          clubName: clubName,
+          offerAmount: offerAmount,
+          timestamp: Date.now(),
+        };
+
+        transferListState.offers.push(offer);
+        renderTransferList();
+
+        // Show notification if on this screen
+        if (
+          document
+            .getElementById("transferListScreen")
+            .classList.contains("active")
+        ) {
+          // Play sound or show notification
+        }
+      }
+
+      function acceptTransferOffer(offerId) {
+        const offer = transferListState.offers.find((o) => o.id == offerId);
+        if (!offer) return;
+
+        const player = findPlayerById(offer.playerId);
+        if (!player) return;
+
+        // Add money
+        GameState.manager.balance += offer.offerAmount;
+
+        // Remove player from squad
+        const squadIndex = GameState.squad.players.findIndex(
+          (p) => p && p.id === offer.playerId
+        );
+        if (squadIndex !== -1) {
+          GameState.squad.players[squadIndex] = null;
+        } else {
+          const benchIndex = GameState.squad.bench.findIndex(
+            (p) => p && p.id === offer.playerId
+          );
+          if (benchIndex !== -1) {
+            GameState.squad.bench[benchIndex] = null;
+          }
+        }
+
+        // Remove from transfer list
+        transferListState.listedPlayers =
+          transferListState.listedPlayers.filter(
+            (l) => l.playerId !== offer.playerId
+          );
+        transferListState.offers = transferListState.offers.filter(
+          (o) => o.playerId !== offer.playerId
+        );
+
+        alert(
+          t("offerAccepted")
+            .replace("{player}", player.name)
+            .replace("{club}", offer.clubName)
+            .replace("{price}", offer.offerAmount.toLocaleString())
+        );
+
+        document.getElementById("transferListBalance").textContent =
+          "€" + GameState.manager.balance.toLocaleString();
+        renderTransferList();
+        autoSave();
+      }
+
+      function rejectTransferOffer(offerId) {
+        const offer = transferListState.offers.find((o) => o.id == offerId);
+        if (!offer) return;
+
+        transferListState.offers = transferListState.offers.filter(
+          (o) => o.id != offerId
+        );
+        alert(t("offerRejected").replace("{club}", offer.clubName));
+        renderTransferList();
+      }
+
+      // Sell Negotiation
+      let sellNegotiationState = {
+        offer: null,
+        player: null,
+        selectedReasons: [],
+        counterPrice: 0,
+        attempts: 0,
+        maxAttempts: 3,
+      };
+
+      function negotiateTransferOffer(offerId) {
+        const offer = transferListState.offers.find((o) => o.id == offerId);
+        if (!offer) return;
+
+        const player = findPlayerById(offer.playerId);
+        if (!player) return;
+
+        const listing = transferListState.listedPlayers.find(
+          (l) => l.playerId === offer.playerId
+        );
+
+        sellNegotiationState = {
+          offer: offer,
+          player: player,
+          listing: listing,
+          selectedReasons: [],
+          counterPrice: listing ? listing.askingPrice : offer.offerAmount * 1.2,
+          attempts: 0,
+          maxAttempts: 3,
+        };
+
+        // Setup modal
+        document.getElementById("sellChatClubName").textContent =
+          offer.clubName;
+        document.getElementById("sellChatMessages").innerHTML = "";
+        document.getElementById("sellReasonsPanel").style.display = "none";
+        document.getElementById("sellInputPanel").style.display = "none";
+        document.getElementById("sellChatSendBtn").style.display = "none";
+        document.getElementById("sellChatEndBtn").style.display = "none";
+
+        document.getElementById("sellNegotiationModal").style.display = "flex";
+
+        // Start chat
+        startSellNegotiation();
+      }
+
+      function addSellChatMessage(text, sender) {
+        const container = document.getElementById("sellChatMessages");
+        const msg = document.createElement("div");
+        msg.className = `chat-message ${sender}`;
+        msg.textContent = text;
+        container.appendChild(msg);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      function startSellNegotiation() {
+        const offer = sellNegotiationState.offer;
+        const player = sellNegotiationState.player;
+
+        // Agent greeting
+        const agentGreeting =
+          currentLang === "pl"
+            ? `Dzień dobry. Reprezentuję ${
+                offer.clubName
+              }. Oferujemy €${offer.offerAmount.toLocaleString()} za ${
+                player.name
+              }.`
+            : `Hello. I represent ${
+                offer.clubName
+              }. We offer €${offer.offerAmount.toLocaleString()} for ${
+                player.name
+              }.`;
+        addSellChatMessage(agentGreeting, "player");
+
+        const managerResponse =
+          currentLang === "pl"
+            ? "Rozumiem. Pozwól że przedstawię swoje argumenty."
+            : "I understand. Let me present my arguments.";
+        addSellChatMessage(managerResponse, "manager");
+
+        showSellReasonsPanel();
+      }
+
+      function showSellReasonsPanel() {
+        const panel = document.getElementById("sellReasonsPanel");
+        const list = document.getElementById("sellReasonsList");
+
+        list.innerHTML = "";
+        for (let i = 1; i <= 20; i++) {
+          const reason = t("sellReason" + i);
+          const item = document.createElement("label");
+          item.className = "chat-reason-item";
+          item.innerHTML = `<input type="checkbox" value="${i}" onchange="updateSellReasons()"> <span>${reason}</span>`;
+          list.appendChild(item);
+        }
+
+        panel.style.display = "block";
+
+        // Show price input
+        const inputPanel = document.getElementById("sellInputPanel");
+        document.getElementById("sellPriceInput").value =
+          sellNegotiationState.counterPrice;
+        document.getElementById("sellPriceLabel").textContent =
+          currentLang === "pl" ? "Twoja cena:" : "Your price:";
+        inputPanel.style.display = "flex";
+
+        document.getElementById("sellChatSendBtn").style.display = "block";
+        document.getElementById("sellChatSendBtn").disabled = true;
+      }
+
+      function updateSellReasons() {
+        const selected = [];
+        document
+          .querySelectorAll("#sellReasonsList input:checked")
+          .forEach((cb) => {
+            selected.push(parseInt(cb.value));
+          });
+        sellNegotiationState.selectedReasons = selected;
+        document.getElementById("sellChatSendBtn").disabled =
+          selected.length === 0;
+      }
+
+      function sendSellNegotiationMessage() {
+        if (sellNegotiationState.selectedReasons.length === 0) return;
+
+        const price =
+          parseInt(document.getElementById("sellPriceInput").value) || 0;
+        sellNegotiationState.counterPrice = price;
+        sellNegotiationState.attempts++;
+
+        // Hide panels
+        document.getElementById("sellReasonsPanel").style.display = "none";
+        document.getElementById("sellInputPanel").style.display = "none";
+        document.getElementById("sellChatSendBtn").style.display = "none";
+
+        // Build message
+        const reasonTexts = sellNegotiationState.selectedReasons
+          .map((i) => "• " + t("sellReason" + i))
+          .join("\n");
+        const priceText = currentLang === "pl" ? "Moja cena" : "My price";
+        const managerMsg =
+          reasonTexts + "\n\n" + priceText + ": €" + price.toLocaleString();
+
+        addSellChatMessage(managerMsg, "manager");
+
+        // Process agent response
+        processSellNegotiationResponse();
+      }
+
+      function processSellNegotiationResponse() {
+        const offer = sellNegotiationState.offer;
+        const listing = sellNegotiationState.listing;
+        const counterPrice = sellNegotiationState.counterPrice;
+
+        // Agent decides based on price difference and reasons
+        const originalOffer = offer.offerAmount;
+        const askingPrice = listing ? listing.askingPrice : counterPrice;
+        const priceRatio = originalOffer / counterPrice;
+
+        let acceptChance = priceRatio * 0.6;
+        acceptChance += sellNegotiationState.selectedReasons.length * 0.02;
+        acceptChance = Math.min(0.85, acceptChance);
+
+        let accepted = false;
+        let counterOffer = false;
+
+        if (counterPrice <= originalOffer * 1.1) {
+          // Asking for only 10% more - high chance
+          acceptChance = 0.8;
+        }
+
+        if (Math.random() < acceptChance) {
+          accepted = true;
+        } else if (
+          sellNegotiationState.attempts < sellNegotiationState.maxAttempts &&
+          Math.random() < 0.6
+        ) {
+          counterOffer = true;
+        }
+
+        if (accepted) {
+          const acceptMsg =
+            currentLang === "pl"
+              ? `Zgadzam się! €${counterPrice.toLocaleString()} to uczciwa cena.`
+              : `I agree! €${counterPrice.toLocaleString()} is a fair price.`;
+          addSellChatMessage(acceptMsg, "player");
+          addSellChatMessage(t("chatDealDone"), "system");
+
+          // Complete sale
+          offer.offerAmount = counterPrice;
+          acceptTransferOffer(offer.id);
+
+          document.getElementById("sellChatEndBtn").style.display = "block";
+        } else if (counterOffer) {
+          // Agent makes counter offer
+          const newOffer = Math.floor(
+            originalOffer + (counterPrice - originalOffer) * 0.5
+          );
+          offer.offerAmount = newOffer;
+
+          const counterMsg =
+            currentLang === "pl"
+              ? `To za dużo. Mogę zaoferować €${newOffer.toLocaleString()}.`
+              : `That's too much. I can offer €${newOffer.toLocaleString()}.`;
+          addSellChatMessage(counterMsg, "player");
+
+          // Reset for new attempt
+          sellNegotiationState.selectedReasons = [];
+          document
+            .querySelectorAll("#sellReasonsList input")
+            .forEach((cb) => (cb.checked = false));
+          showSellReasonsPanel();
+        } else {
+          const rejectMsg =
+            currentLang === "pl"
+              ? "Niestety nie możemy tyle zapłacić. Negocjacje zakończone."
+              : "Unfortunately we cannot pay that much. Negotiations over.";
+          addSellChatMessage(rejectMsg, "player");
+          addSellChatMessage(t("chatDealFailed"), "system");
+
+          document.getElementById("sellChatEndBtn").style.display = "block";
+        }
+      }
+
+      function closeSellNegotiation() {
+        document.getElementById("sellNegotiationModal").style.display = "none";
+        renderTransferList();
+      }
+
       // ==================== SAVE/LOAD SYSTEM ====================
       const SAVE_KEY = "footballManagerUltimate_save";
 
@@ -7559,6 +8553,10 @@ Players may become unhappy and start requesting transfers.`;
             emails: GameState.emails,
             lastWeekCheck: GameState.lastWeekCheck,
             gameTime: GameState.gameTime,
+            transferList: {
+              listedPlayers: transferListState.listedPlayers,
+              offers: transferListState.offers,
+            },
           };
           localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
         } catch (e) {}
@@ -7598,6 +8596,11 @@ Players may become unhappy and start requesting transfers.`;
           }
           if (data.gameTime) {
             GameState.gameTime = { ...GameState.gameTime, ...data.gameTime };
+          }
+          if (data.transferList) {
+            transferListState.listedPlayers =
+              data.transferList.listedPlayers || [];
+            transferListState.offers = data.transferList.offers || [];
           }
 
           return true;
