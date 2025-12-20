@@ -11211,6 +11211,15 @@ Players may become unhappy and start requesting transfers.`;
         return "bronze";
       }
 
+      function getRarityFromOverall(overall) {
+        if (overall >= 95) return "icon";
+        if (overall >= 88) return "legendary";
+        if (overall >= 82) return "epic";
+        if (overall >= 75) return "rare";
+        if (overall >= 65) return "uncommon";
+        return "common";
+      }
+
       // ==================== INITIALIZE SQUAD ====================
       function initializeSquad() {
         const positions = [
@@ -14407,7 +14416,11 @@ Players may become unhappy and start requesting transfers.`;
             currentLang === "pl"
               ? "Oczekiwanie na skład przeciwnika..."
               : "Waiting for opponent squad...";
-          // Will be updated when opponent squad arrives
+          document.getElementById("squadRevealCardContainer").style.display =
+            "none";
+          document.getElementById("squadRevealPosition").style.display = "none";
+          document.getElementById("squadRevealProgress").style.display = "none";
+          // Will be updated when opponent squad arrives via startSquadReveal call
           return;
         }
 
@@ -14643,6 +14656,8 @@ Players may become unhappy and start requesting transfers.`;
           // Store opponent squad and name (host's squad)
           if (data.squad) {
             squadRevealState.opponentSquad = data.squad;
+            // Also save for GK stats lookup
+            onlinePenaltyState.opponentSquad = data.squad;
           }
           if (data.name) {
             opponentName = data.name;
@@ -14666,6 +14681,8 @@ Players may become unhappy and start requesting transfers.`;
           squadRevealState.opponentName = data.name || "Manager";
           if (data.squad) {
             squadRevealState.opponentSquad = data.squad;
+            // Also save for GK stats lookup
+            onlinePenaltyState.opponentSquad = data.squad;
             // NOW host can start reveal with opponent's squad
             startSquadReveal(true);
           }
