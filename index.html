@@ -2201,6 +2201,313 @@
         }
       }
 
+      .surrender-btn {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        padding: 0.8rem 1.2rem;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.9rem;
+        background: linear-gradient(145deg, #4a1a1a, #2a0a0a);
+        border: 2px solid #ff4444;
+        border-radius: 10px;
+        color: #ff4444;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 100;
+      }
+
+      .surrender-btn:hover {
+        background: linear-gradient(145deg, #5a2a2a, #3a1a1a);
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+      }
+
+      /* ==================== FREE KICK STYLES ==================== */
+      .mode-indicator {
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.9rem;
+        color: var(--gold);
+        background: rgba(0, 0, 0, 0.5);
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        margin-bottom: 0.5rem;
+      }
+
+      .distance-info {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 1rem;
+        color: var(--silver);
+        margin-bottom: 0.5rem;
+      }
+
+      .freekick-goal-view {
+        position: relative;
+        width: 100%;
+        height: 280px;
+        background: linear-gradient(180deg, #87ceeb 0%, #228b22 70%);
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        cursor: crosshair;
+      }
+
+      .goal-frame-freekick {
+        position: absolute;
+        bottom: 20%;
+        left: 15%;
+        right: 15%;
+        height: 50%;
+        border: 8px solid white;
+        border-bottom: none;
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+      }
+
+      .goal-net-freekick {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 15px,
+            rgba(255, 255, 255, 0.1) 15px,
+            rgba(255, 255, 255, 0.1) 17px
+          ),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 15px,
+            rgba(255, 255, 255, 0.1) 15px,
+            rgba(255, 255, 255, 0.1) 17px
+          );
+        pointer-events: none;
+      }
+
+      .goalkeeper-freekick {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 60px;
+        background: linear-gradient(180deg, #ff9500 0%, #ff6600 100%);
+        border-radius: 12px 12px 6px 6px;
+        z-index: 5;
+        transition: all 0.5s ease;
+      }
+
+      .goalkeeper-freekick::before {
+        content: "";
+        position: absolute;
+        top: -18px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 22px;
+        height: 22px;
+        background: #ffd4a3;
+        border-radius: 50%;
+      }
+
+      .ball-freekick {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+        z-index: 10;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .ball-freekick.shooting {
+        animation: ballCurve 0.8s ease-out forwards;
+      }
+
+      @keyframes ballCurve {
+        0% {
+          bottom: -30px;
+          transform: translateX(-50%) scale(1);
+        }
+        50% {
+          bottom: 60%;
+          transform: translateX(var(--curve-x, 0)) scale(0.7);
+        }
+        100% {
+          bottom: var(--target-y, 50%);
+          left: var(--target-x, 50%);
+          transform: translateX(-50%) scale(0.5);
+        }
+      }
+
+      .aim-cursor {
+        position: absolute;
+        font-size: 1.5rem;
+        color: rgba(255, 0, 0, 0.8);
+        pointer-events: none;
+        z-index: 20;
+        display: none;
+        text-shadow: 0 0 10px red;
+        transform: translate(-50%, -50%);
+      }
+
+      .aim-cursor.active {
+        display: block;
+      }
+
+      .wall-freekick {
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.5rem;
+        letter-spacing: -5px;
+        z-index: 3;
+        filter: brightness(0.7);
+      }
+
+      /* Curve Meter (Speedometer style) */
+      .curve-meter {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 15px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border: 2px solid var(--gold);
+      }
+
+      .curve-meter-label {
+        font-family: "Orbitron", sans-serif;
+        color: var(--gold);
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .curve-meter-arc {
+        position: relative;
+        width: 200px;
+        height: 100px;
+        margin: 0 auto;
+        background: conic-gradient(
+          from 180deg,
+          #ff4444 0deg,
+          #ffff00 90deg,
+          #44ff44 180deg
+        );
+        border-radius: 200px 200px 0 0;
+        overflow: hidden;
+      }
+
+      .curve-meter-arc::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 70px;
+        background: rgba(0, 0, 0, 0.9);
+        border-radius: 140px 140px 0 0;
+      }
+
+      .curve-meter-needle {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        width: 4px;
+        height: 80px;
+        background: linear-gradient(to top, var(--gold) 0%, white 100%);
+        transform-origin: bottom center;
+        transform: translateX(-50%) rotate(0deg);
+        border-radius: 2px;
+        z-index: 5;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      }
+
+      .curve-meter-center {
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 20px;
+        background: var(--gold);
+        border-radius: 50%;
+        z-index: 6;
+      }
+
+      .curve-meter-labels {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.8rem;
+        color: var(--silver);
+      }
+
+      /* Power Meter */
+      .power-meter {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 15px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border: 2px solid var(--gold);
+      }
+
+      .power-meter-label {
+        font-family: "Orbitron", sans-serif;
+        color: var(--gold);
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .power-meter-bar {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        background: linear-gradient(
+          90deg,
+          #44ff44 0%,
+          #ffff00 50%,
+          #ff4444 80%,
+          #aa0000 100%
+        );
+        border-radius: 15px;
+        overflow: hidden;
+      }
+
+      .power-meter-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        width: 100%;
+        transition: width 0.05s linear;
+      }
+
+      .power-meter-max {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        background: white;
+        z-index: 5;
+        box-shadow: 0 0 10px white;
+      }
+
+      .power-meter-indicator {
+        position: absolute;
+        top: -5px;
+        width: 10px;
+        height: 40px;
+        background: var(--gold);
+        border-radius: 3px;
+        z-index: 10;
+        box-shadow: 0 0 15px var(--gold);
+      }
+
       /* ==================== MARKET ==================== */
       .market-container {
         max-width: 1200px;
@@ -3098,6 +3405,15 @@
         text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
       }
 
+      .squad-reveal-opponent-name {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.3rem;
+        color: #ff6b6b;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
       .squad-reveal-ready-btn {
         margin-top: 1.5rem;
         padding: 1rem 3rem;
@@ -3244,6 +3560,683 @@
           height: 35px;
         }
       }
+
+      /* Email System Styles */
+      .email-btn {
+        background: linear-gradient(145deg, #1a3d2a, #0d1f15);
+        border: 2px solid var(--gold);
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .email-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+      }
+
+      .email-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4444;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        font-family: "Orbitron", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse 1s infinite;
+      }
+
+      .email-container {
+        max-width: 800px;
+        width: 95%;
+        margin: 0 auto;
+        background: rgba(13, 31, 21, 0.9);
+        border: 2px solid var(--gold);
+        border-radius: 15px;
+        padding: 1rem;
+        max-height: 60vh;
+        overflow-y: auto;
+      }
+
+      .email-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .email-item {
+        background: linear-gradient(145deg, #1a3d2a, #0d1f15);
+        border: 1px solid var(--silver);
+        border-radius: 10px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .email-item:hover {
+        border-color: var(--gold);
+        transform: translateX(5px);
+      }
+
+      .email-item.unread {
+        border-left: 4px solid var(--gold);
+        background: linear-gradient(145deg, #1a4d3a, #0d2f25);
+      }
+
+      .email-item.urgent {
+        border-left: 4px solid #ff4444;
+      }
+
+      .email-icon {
+        font-size: 2rem;
+      }
+
+      .email-content {
+        flex: 1;
+      }
+
+      .email-subject {
+        font-family: "Orbitron", sans-serif;
+        color: var(--gold);
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .email-preview {
+        color: var(--silver);
+        font-size: 0.8rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .email-time {
+        color: #666;
+        font-size: 0.7rem;
+      }
+
+      .email-player-mini {
+        width: 50px;
+        height: 70px;
+      }
+
+      .no-emails {
+        text-align: center;
+        color: var(--silver);
+        padding: 2rem;
+        font-style: italic;
+      }
+
+      /* Email Modal */
+      .email-modal-content {
+        background: linear-gradient(145deg, #0d2818, #051a0d);
+        border: 2px solid var(--gold);
+        border-radius: 15px;
+        max-width: 600px;
+        width: 95%;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 1.5rem;
+      }
+
+      .email-modal-header {
+        border-bottom: 1px solid var(--gold);
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .email-modal-subject {
+        font-family: "Orbitron", sans-serif;
+        color: var(--gold);
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .email-modal-from {
+        color: var(--silver);
+        font-size: 0.9rem;
+      }
+
+      .email-modal-body {
+        color: #ddd;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        white-space: pre-line;
+      }
+
+      .email-modal-player {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+      }
+
+      .email-modal-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+
+      .email-action-btn {
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .email-action-btn.accept {
+        background: linear-gradient(145deg, #2d5a3d, #1a3d2a);
+        border: 2px solid #4caf50;
+        color: #4caf50;
+      }
+
+      .email-action-btn.negotiate {
+        background: linear-gradient(145deg, #5a4a2d, #3d3a1a);
+        border: 2px solid var(--gold);
+        color: var(--gold);
+      }
+
+      .email-action-btn.reject {
+        background: linear-gradient(145deg, #5a2d2d, #3d1a1a);
+        border: 2px solid #ff4444;
+        color: #ff4444;
+      }
+
+      .email-action-btn.close {
+        background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+        border: 2px solid var(--silver);
+        color: var(--silver);
+      }
+
+      .email-action-btn:hover {
+        transform: scale(1.05);
+      }
+
+      /* Contract info */
+      .contract-info {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+
+      .contract-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .contract-row:last-child {
+        border-bottom: none;
+      }
+
+      .contract-label {
+        color: var(--silver);
+      }
+
+      .contract-value {
+        color: var(--gold);
+        font-family: "Orbitron", sans-serif;
+      }
+
+      .contract-value.urgent {
+        color: #ff4444;
+      }
+
+      /* Modal Overlay */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Compose Email Styles */
+      .email-actions-bar {
+        max-width: 800px;
+        width: 95%;
+        margin: 0 auto 1rem auto;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .compose-section {
+        margin-bottom: 1rem;
+      }
+
+      .compose-section label {
+        display: block;
+        color: var(--silver);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .compose-select,
+      .compose-input {
+        width: 100%;
+        padding: 0.8rem;
+        background: rgba(0, 0, 0, 0.5);
+        border: 2px solid var(--silver);
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        font-family: "Rajdhani", sans-serif;
+      }
+
+      .compose-select:focus,
+      .compose-input:focus {
+        border-color: var(--gold);
+        outline: none;
+      }
+
+      .compose-options {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .compose-option {
+        flex: 1;
+        min-width: 150px;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid var(--silver);
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 1rem;
+      }
+
+      .compose-option:hover {
+        border-color: var(--gold);
+      }
+
+      .compose-option.selected {
+        border-color: var(--gold);
+        background: rgba(255, 215, 0, 0.1);
+      }
+
+      .compose-player-preview {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+      }
+
+      .compose-hint {
+        color: #888;
+        font-size: 0.8rem;
+        margin-top: 0.3rem;
+      }
+
+      .compose-details {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .reasons-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-height: 200px;
+        overflow-y: auto;
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+      }
+
+      .reason-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.85rem;
+        color: var(--silver);
+      }
+
+      .reason-item:hover {
+        background: rgba(255, 215, 0, 0.1);
+      }
+
+      .reason-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: var(--gold);
+      }
+
+      .reason-item input[type="checkbox"]:checked + span {
+        color: var(--gold);
+      }
+
+      /* Negotiation Chat Styles */
+      .chat-modal-content {
+        background: linear-gradient(145deg, #1a1a2e, #16213e);
+        border: 2px solid var(--gold);
+        border-radius: 15px;
+        max-width: 500px;
+        width: 95%;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .chat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid var(--gold);
+      }
+
+      .chat-player-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .chat-player-avatar {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(145deg, var(--gold), #b8860b);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+      }
+
+      .chat-player-name {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.1rem;
+        color: white;
+      }
+
+      .chat-close-btn {
+        background: rgba(255, 0, 0, 0.2);
+        border: 1px solid #ff4444;
+        color: #ff4444;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+      }
+
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        min-height: 200px;
+        max-height: 300px;
+      }
+
+      .chat-message {
+        max-width: 85%;
+        padding: 0.75rem 1rem;
+        border-radius: 15px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        animation: messageSlide 0.3s ease;
+      }
+
+      @keyframes messageSlide {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .chat-message.player {
+        background: linear-gradient(145deg, #2d5016, #1e3a0e);
+        border: 1px solid #4caf50;
+        color: #a5d6a7;
+        align-self: flex-start;
+        border-bottom-left-radius: 5px;
+      }
+
+      .chat-message.manager {
+        background: linear-gradient(145deg, #1a237e, #0d1442);
+        border: 1px solid #5c6bc0;
+        color: #9fa8da;
+        align-self: flex-end;
+        border-bottom-right-radius: 5px;
+      }
+
+      .chat-message.system {
+        background: rgba(255, 215, 0, 0.1);
+        border: 1px solid var(--gold);
+        color: var(--gold);
+        align-self: center;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+
+      .chat-reasons-panel {
+        padding: 0.75rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(255, 215, 0, 0.3);
+        max-height: 180px;
+        overflow-y: auto;
+      }
+
+      .chat-reasons-title {
+        color: var(--gold);
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+        font-family: "Orbitron", sans-serif;
+      }
+
+      .chat-reasons-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
+      }
+
+      .chat-reason-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.4rem;
+        padding: 0.4rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        color: var(--silver);
+        transition: all 0.2s ease;
+      }
+
+      .chat-reason-item:hover {
+        background: rgba(255, 215, 0, 0.1);
+      }
+
+      .chat-reason-item input {
+        margin-top: 2px;
+        accent-color: var(--gold);
+      }
+
+      .chat-reason-item.selected {
+        background: rgba(255, 215, 0, 0.2);
+        border: 1px solid var(--gold);
+      }
+
+      .chat-input-panel {
+        padding: 0.75rem;
+        background: rgba(0, 0, 0, 0.2);
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .chat-salary-input,
+      .chat-years-input {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .chat-salary-input input,
+      .chat-years-input input {
+        width: 100px;
+      }
+
+      .chat-actions {
+        padding: 0.75rem;
+        display: flex;
+        gap: 0.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(255, 215, 0, 0.3);
+      }
+
+      .chat-send-btn,
+      .chat-end-btn {
+        flex: 1;
+        padding: 0.75rem;
+        border-radius: 10px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .chat-send-btn {
+        background: linear-gradient(145deg, #1a5a1a, #0d3d0d);
+        border: 2px solid #4caf50;
+        color: #4caf50;
+      }
+
+      .chat-send-btn:hover:not(:disabled) {
+        background: linear-gradient(145deg, #2a7a2a, #1d5d1d);
+      }
+
+      .chat-send-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .chat-end-btn {
+        background: linear-gradient(145deg, #5a5a1a, #3d3d0d);
+        border: 2px solid var(--gold);
+        color: var(--gold);
+      }
+
+      .chat-typing {
+        display: flex;
+        gap: 4px;
+        padding: 0.5rem;
+      }
+
+      .chat-typing span {
+        width: 8px;
+        height: 8px;
+        background: var(--silver);
+        border-radius: 50%;
+        animation: typingBounce 1s infinite;
+      }
+
+      .chat-typing span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .chat-typing span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typingBounce {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-5px);
+        }
+      }
+
+      /* Injury styles */
+      .player-card.injured {
+        position: relative;
+      }
+
+      .player-card.injured::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 0, 0, 0.15);
+        border-radius: 12px;
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      .injury-badge {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: linear-gradient(145deg, #ff4444, #cc0000);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 5px;
+        font-size: 0.6rem;
+        font-weight: bold;
+        z-index: 10;
+        animation: injuryPulse 1.5s infinite;
+      }
+
+      @keyframes injuryPulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
     </style>
   </head>
   <body>
@@ -3298,11 +4291,21 @@
 
       <!-- Full squad display (shown after all cards) -->
       <div class="squad-reveal-full" id="squadRevealFull">
-        <div class="squad-reveal-title" data-t="squadTitle">TWÓJ SKŁAD</div>
+        <div
+          class="squad-reveal-title"
+          id="squadRevealMyName"
+          data-t="squadTitle"
+        >
+          TWÓJ SKŁAD
+        </div>
         <div class="squad-reveal-formation" id="squadRevealFormation">
           <!-- Formation rows will be generated -->
         </div>
         <div class="squad-reveal-vs">VS</div>
+        <div
+          class="squad-reveal-opponent-name"
+          id="squadRevealOpponentName"
+        ></div>
         <div
           class="squad-reveal-waiting"
           id="squadRevealWaiting"
@@ -3331,7 +4334,7 @@
 
       <div class="account-panel" id="accountPanel">
         <div class="account-header">
-          <div>
+          <div style="display: flex; align-items: center; gap: 10px">
             <input
               type="text"
               class="lobby-input"
@@ -3340,6 +4343,16 @@
               maxlength="15"
               style="margin-bottom: 0"
             />
+            <button
+              class="email-btn"
+              id="emailBtn"
+              onclick="showScreen('emailScreen')"
+            >
+              📧
+              <span class="email-badge" id="emailBadge" style="display: none"
+                >0</span
+              >
+            </button>
           </div>
           <div class="account-balance" id="accountBalance">10000</div>
         </div>
@@ -3443,6 +4456,206 @@
       >
         🔙 POWRÓT
       </button>
+    </div>
+
+    <!-- ==================== EMAIL SCREEN ==================== -->
+    <div class="screen" id="emailScreen">
+      <h1 class="game-title">
+        📧 <span data-t="emailTitle">SKRZYNKA ODBIORCZA</span>
+      </h1>
+
+      <div class="email-actions-bar">
+        <button
+          class="menu-btn gold"
+          onclick="openComposeEmail()"
+          data-t="composeEmail"
+        >
+          ✉️ WYŚLIJ WIADOMOŚĆ
+        </button>
+      </div>
+
+      <div class="email-container">
+        <div class="email-list" id="emailList">
+          <!-- Emails will be generated by JS -->
+        </div>
+        <div class="no-emails" id="noEmails" data-t="noEmails">
+          Brak wiadomości
+        </div>
+      </div>
+
+      <button
+        class="menu-btn"
+        onclick="showScreen('mainMenu')"
+        style="margin-top: 1rem"
+        data-t="back"
+      >
+        🔙 POWRÓT
+      </button>
+    </div>
+
+    <!-- ==================== EMAIL MODAL ==================== -->
+    <div class="modal-overlay" id="emailModal" style="display: none">
+      <div class="email-modal-content">
+        <div class="email-modal-header">
+          <div class="email-modal-subject" id="emailSubject"></div>
+          <div class="email-modal-from" id="emailFrom"></div>
+        </div>
+        <div class="email-modal-body" id="emailBody"></div>
+        <div class="email-modal-player" id="emailPlayerCard"></div>
+        <div class="email-modal-actions" id="emailActions">
+          <!-- Buttons will be generated -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== COMPOSE EMAIL MODAL ==================== -->
+    <div class="modal-overlay" id="composeEmailModal" style="display: none">
+      <div class="email-modal-content">
+        <div class="email-modal-header">
+          <div class="email-modal-subject" data-t="composeEmail">
+            ✉️ WYŚLIJ WIADOMOŚĆ
+          </div>
+        </div>
+
+        <div class="compose-section">
+          <label data-t="selectPlayerEmail">Wybierz zawodnika:</label>
+          <select
+            id="composePlayerSelect"
+            class="compose-select"
+            onchange="updateComposePreview()"
+          >
+            <option value="" data-t="selectPlayerForAction">
+              -- Wybierz zawodnika --
+            </option>
+          </select>
+        </div>
+
+        <div
+          class="compose-player-preview"
+          id="composePlayerPreview"
+          style="display: none"
+        ></div>
+
+        <div class="compose-section">
+          <label data-t="messageType">Typ wiadomości:</label>
+          <div class="compose-options">
+            <button
+              class="compose-option"
+              onclick="selectComposeType('reduce_salary')"
+              id="optReduceSalary"
+            >
+              📉 <span data-t="reduceSalaryOption">Obniż pensję</span>
+            </button>
+            <button
+              class="compose-option"
+              onclick="selectComposeType('extend_contract')"
+              id="optExtendContract"
+            >
+              📝 <span data-t="extendContractOption">Przedłuż kontrakt</span>
+            </button>
+            <button
+              class="compose-option"
+              onclick="selectComposeType('raise_salary')"
+              id="optRaiseSalary"
+            >
+              📈 <span data-t="raiseSalaryOption">Podwyżka pensji</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="email-modal-actions">
+          <button
+            class="email-action-btn accept"
+            onclick="startNegotiationChat()"
+            id="composeSendBtn"
+            disabled
+          >
+            💬 <span data-t="startChat">ROZPOCZNIJ ROZMOWĘ</span>
+          </button>
+          <button class="email-action-btn close" onclick="closeComposeEmail()">
+            ❌ <span data-t="cancel">ANULUJ</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== NEGOTIATION CHAT MODAL ==================== -->
+    <div class="modal-overlay" id="negotiationChatModal" style="display: none">
+      <div class="chat-modal-content">
+        <div class="chat-header">
+          <div class="chat-player-info">
+            <div class="chat-player-avatar" id="chatPlayerAvatar">👤</div>
+            <div class="chat-player-name" id="chatPlayerName">Zawodnik</div>
+          </div>
+          <button class="chat-close-btn" onclick="closeNegotiationChat()">
+            ✕
+          </button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will be generated -->
+        </div>
+
+        <div
+          class="chat-reasons-panel"
+          id="chatReasonsPanel"
+          style="display: none"
+        >
+          <div class="chat-reasons-title" data-t="selectReasons">
+            Wybierz argumenty:
+          </div>
+          <div class="chat-reasons-list" id="chatReasonsList">
+            <!-- Reasons checkboxes -->
+          </div>
+        </div>
+
+        <div class="chat-input-panel" id="chatInputPanel" style="display: none">
+          <div class="chat-salary-input">
+            <label id="chatSalaryLabel">Pensja:</label>
+            <input
+              type="number"
+              id="chatSalaryInput"
+              class="compose-input"
+              min="100"
+            />
+            <span>€/tyg</span>
+          </div>
+          <div
+            class="chat-years-input"
+            id="chatYearsInput"
+            style="display: none"
+          >
+            <label data-t="years">Lata:</label>
+            <input
+              type="number"
+              id="chatContractYears"
+              class="compose-input"
+              min="1"
+              max="5"
+              value="2"
+            />
+          </div>
+        </div>
+
+        <div class="chat-actions" id="chatActions">
+          <button
+            class="chat-send-btn"
+            onclick="sendNegotiationMessage()"
+            id="chatSendBtn"
+            disabled
+          >
+            📤 <span data-t="sendMessage">WYŚLIJ</span>
+          </button>
+          <button
+            class="chat-end-btn"
+            onclick="endNegotiationChat()"
+            id="chatEndBtn"
+            style="display: none"
+          >
+            ✅ <span data-t="endChat">ZAKOŃCZ</span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- ==================== SETTINGS SCREEN ==================== -->
@@ -3737,12 +4950,12 @@
         <!-- Score -->
         <div class="penalty-score">
           <div class="penalty-team">
-            <span class="team-label">TY</span>
+            <span class="team-label" id="penaltyPlayerLabel">TY</span>
             <span class="team-score" id="penaltyScorePlayer">0</span>
           </div>
           <div class="penalty-round" id="penaltyRound">Runda 1/5</div>
           <div class="penalty-team">
-            <span class="team-label">PRZECIWNIK</span>
+            <span class="team-label" id="penaltyOpponentLabel">PRZECIWNIK</span>
             <span class="team-score" id="penaltyScoreOpponent">0</span>
           </div>
         </div>
@@ -3766,7 +4979,7 @@
         </div>
 
         <!-- Goal view -->
-        <div class="penalty-goal-view">
+        <div class="penalty-goal-view" id="penaltyGoalView">
           <div class="goal-frame-penalty">
             <div class="goal-zone left" data-zone="left"></div>
             <div class="goal-zone center" data-zone="center"></div>
@@ -3809,10 +5022,10 @@
 
         <!-- Surrender button -->
         <button
-          class="menu-btn"
-          onclick="surrenderPenalties()"
-          style="margin-top: 1rem; background: #4a1a1a"
+          class="surrender-btn"
           id="surrenderBtn"
+          onclick="surrenderPenalties()"
+          data-t="surrender"
         >
           🏳️ PODDAJ SIĘ
         </button>
@@ -3866,14 +5079,22 @@
           <div class="player-select-slot-info" id="slotInfo">Pozycja: ST</div>
         </div>
         <div class="player-select-tabs">
-          <button class="player-tab active" data-tab="squad">SKŁAD</button>
-          <button class="player-tab" data-tab="bench">ŁAWKA</button>
+          <button class="player-tab active" data-tab="squad" data-t="squadTab">
+            SKŁAD
+          </button>
+          <button class="player-tab" data-tab="bench" data-t="benchTab">
+            ŁAWKA
+          </button>
         </div>
         <div class="player-select-list" id="playerSelectList">
           <!-- Players will be generated by JS -->
         </div>
         <div class="player-select-buttons">
-          <button class="menu-btn" onclick="closePlayerSelect()">
+          <button
+            class="menu-btn"
+            onclick="closePlayerSelect()"
+            data-t="cancel"
+          >
             ❌ ANULUJ
           </button>
         </div>
@@ -4410,6 +5631,229 @@
           defeat: "😞 PORAŻKA",
           draw: "🤝 REMIS",
 
+          // Penalty
+          left: "LEWO",
+          center: "ŚRODEK",
+          right: "PRAWO",
+          miss: "💨 PUDŁO!",
+          saved: "🧤 OBRONIONE!",
+          goal: "⚽ GOOOL!",
+          opponentGoal: "⚽ GOL DLA PRZECIWNIKA",
+          youWin: "🏆 ZWYCIĘSTWO!",
+          youLose: "😞 PORAŻKA",
+          finalScore: "Wynik",
+          playAgain: "🔄 ZAGRAJ PONOWNIE",
+          mainMenu: "🏠 MENU GŁÓWNE",
+          rematch: "🔄 REWANŻ",
+          exitGame: "🚪 WYJDŹ",
+          shooterShoots: "Strzela",
+          opponentShoots: "Przeciwnik strzela",
+          chooseShot: "🎯 WYBIERZ KIERUNEK STRZAŁU",
+          chooseDefense: "🧤 WYBIERZ KIERUNEK OBRONY",
+          surrenderConfirm: "Czy na pewno chcesz się poddać?",
+          congrats: "Gratulacje! Wygrałeś!",
+          lost: "Przegrałeś...",
+          reward: "Nagroda",
+          consolation: "Pocieszenie",
+          roomReady: "Pokój gotowy! Czekam na przeciwnika...",
+          connectionError: "Błąd połączenia. Odśwież stronę.",
+          cannotConnect: "Nie można połączyć z pokojem.",
+          checkCode: "Sprawdź kod.",
+          wantRematch: "Przeciwnik chce rewanż. Zgadzasz się?",
+
+          // Emails
+          emailTitle: "SKRZYNKA ODBIORCZA",
+          noEmails: "Brak wiadomości",
+          contractExpiring: "Kontrakt wygasa!",
+          contractExpired: "Kontrakt wygasł",
+          raiseRequest: "Prośba o podwyżkę",
+          renewContract: "Odnów kontrakt",
+          fromAgent: "Od: Agent",
+          currentSalary: "Obecna pensja",
+          requestedSalary: "Żądana pensja",
+          contractLength: "Długość kontraktu",
+          yearsLeft: "Pozostało lat",
+          daysLeft: "Dni na decyzję",
+          accept: "✅ AKCEPTUJ",
+          negotiate: "💬 NEGOCJUJ",
+          reject: "❌ ODRZUĆ",
+          closeEmail: "ZAMKNIJ",
+          playerLeft: "opuścił klub!",
+          salaryPaid: "Wypłata pensji",
+          weeklyExpenses: "Wydatki tygodniowe",
+          negotiateRenewal: "Negocjuj odnowienie",
+          reduceSalary: "Obniż pensję",
+          selectPlayerForAction: "-- Wybierz zawodnika --",
+          noFundsForSalary: "Brak środków na pensję! Zawodnik może odejść.",
+          contractRenewed: "Kontrakt odnowiony!",
+          raiseAccepted: "Podwyżka zaakceptowana.",
+          raiseRejected: "Podwyżka odrzucona.",
+          playerUnhappy: "Gracz jest niezadowolony.",
+
+          // Compose email
+          composeEmail: "✉️ WYŚLIJ WIADOMOŚĆ",
+          selectPlayerEmail: "Wybierz zawodnika:",
+          messageType: "Typ wiadomości:",
+          reduceSalaryOption: "Obniż pensję",
+          extendContractOption: "Przedłuż kontrakt",
+          newSalary: "Nowa pensja (€/tyg):",
+          offerSalary: "Proponowana pensja (€/tyg):",
+          contractYearsLabel: "Długość kontraktu (lata):",
+          sendMessage: "WYŚLIJ",
+          currentSalaryIs: "Obecna pensja:",
+          contractEndsIn: "Kontrakt kończy się za:",
+          years: "lat",
+          messageSent: "Wiadomość wysłana! Oczekuj odpowiedzi.",
+          playerAccepted: "zaakceptował propozycję!",
+          playerRejected: "odrzucił propozycję.",
+          playerThinking: "rozważa twoją propozycję...",
+          responseTimeout: "Czas na odpowiedź minął.",
+          startNegotiation: "💬 NEGOCJUJ",
+          acceptDecision: "✅ ZAAKCEPTUJ DECYZJĘ",
+          startChat: "ROZPOCZNIJ ROZMOWĘ",
+          endChat: "ZAKOŃCZ",
+          raiseSalaryOption: "Podwyżka pensji",
+
+          // Chat messages
+          chatGreeting:
+            "Cześć, chciałem porozmawiać o twojej sytuacji w klubie.",
+          chatGreetingPlayer: "Jasne, słucham Panie Trenerze.",
+          chatReduceIntro:
+            "Muszę z tobą porozmawiać o pensji. Sytuacja klubu wymaga pewnych zmian.",
+          chatReducePlayerAsk: "O co dokładnie chodzi?",
+          chatExtendIntro:
+            "Chciałbym porozmawiać o przedłużeniu twojego kontraktu.",
+          chatExtendPlayerAsk: "Słucham, jaka jest propozycja?",
+          chatRaiseIntro:
+            "Doceniam twoją pracę i chciałbym porozmawiać o podwyżce.",
+          chatRaisePlayerAsk: "To miło słyszeć, co masz na myśli?",
+          chatSelectReasons: "Wybierz argumenty (min. 1):",
+          selectReasons: "Wybierz argumenty (min. 1):",
+          chatEnterOffer: "Teraz podaj swoją ofertę:",
+          chatPlayerThinking: "zastanawia się...",
+          chatPlayerAccepted:
+            "Zgadzam się na tę propozycję! Dziękuję za rozmowę.",
+          chatPlayerRejected:
+            "Niestety nie mogę się na to zgodzić. Ta oferta jest dla mnie nie do przyjęcia.",
+          chatPlayerCounter:
+            "Rozumiem twoje argumenty, ale oczekuję lepszych warunków.",
+          chatDealDone: "✅ Umowa została zawarta!",
+          chatDealFailed: "❌ Negocjacje zakończyły się niepowodzeniem.",
+          chatNewOffer: "Co powiesz na taką propozycję?",
+
+          // Reduce salary reasons (20)
+          reduceReason1: "Wyniki ostatnich meczów były słabe",
+          reduceReason2: "Klub ma problemy finansowe",
+          reduceReason3: "Pensja nie odpowiada poziomowi gry",
+          reduceReason4: "Młodsi zawodnicy czekają na szansę",
+          reduceReason5: "Restrukturyzacja płac w klubie",
+          reduceReason6: "Kontuzje ograniczyły twoją grę",
+          reduceReason7: "Inni gracze zarabiają mniej za podobną grę",
+          reduceReason8: "Potrzebujemy środków na transfery",
+          reduceReason9: "Twoja wartość rynkowa spadła",
+          reduceReason10: "Nowa strategia płacowa klubu",
+          reduceReason11: "Mniej minut na boisku w tym sezonie",
+          reduceReason12: "Liga stała się bardziej konkurencyjna",
+          reduceReason13: "Sponsorzy zmniejszyli budżet",
+          reduceReason14: "Musisz udowodnić swoją wartość",
+          reduceReason15: "Wiek wpływa na twoje możliwości",
+          reduceReason16: "Brak postępu w rozwoju umiejętności",
+          reduceReason17: "Konkurencja na twojej pozycji wzrosła",
+          reduceReason18: "Oczekiwania kibiców są wysokie",
+          reduceReason19: "Musimy zbalansować budżet",
+          reduceReason20: "To sprawiedliwa oferta rynkowa",
+
+          // Extend contract reasons (20)
+          extendReason1: "Jesteś kluczowym zawodnikiem drużyny",
+          extendReason2: "Twoje doświadczenie jest bezcenne",
+          extendReason3: "Kibice cię uwielbiają",
+          extendReason4: "Chcemy budować drużynę wokół ciebie",
+          extendReason5: "Twoja forma jest doskonała",
+          extendReason6: "Widzimy w tobie przyszłego kapitana",
+          extendReason7: "Masz świetne relacje z kolegami",
+          extendReason8: "Stabilność składu jest dla nas ważna",
+          extendReason9: "Doceniamy twoją lojalność",
+          extendReason10: "Masz duży potencjał rozwoju",
+          extendReason11: "Twoje statystyki są imponujące",
+          extendReason12: "Pasujemy do siebie taktycznie",
+          extendReason13: "Inwestujemy w twoją przyszłość",
+          extendReason14: "Chcemy uniknąć utraty za darmo",
+          extendReason15: "Jesteś wzorem dla młodych",
+          extendReason16: "Twoja mentalność jest wzorowa",
+          extendReason17: "Masz świetny wpływ na szatnię",
+          extendReason18: "Oferujemy stabilność finansową",
+          extendReason19: "Razem możemy osiągnąć sukces",
+          extendReason20: "To najlepsza oferta jaką możemy dać",
+
+          // Raise salary reasons (20)
+          raiseReason1: "Twoje wyniki są wybitne",
+          raiseReason2: "Zasługujesz na uznanie",
+          raiseReason3: "Chcemy pokazać że cię doceniamy",
+          raiseReason4: "Inflacja wymaga korekty pensji",
+          raiseReason5: "Twoja wartość rynkowa wzrosła",
+          raiseReason6: "Inne kluby oferują więcej",
+          raiseReason7: "Przeszedłeś wszystkie oczekiwania",
+          raiseReason8: "Twój wkład jest nieoceniony",
+          raiseReason9: "Chcemy zmotywować cię do dalszej pracy",
+          raiseReason10: "Klub rozwija się dzięki tobie",
+          raiseReason11: "Zasługujesz na sprawiedliwą płacę",
+          raiseReason12: "Twoje poświęcenie jest widoczne",
+          raiseReason13: "Chcemy zatrzymać cię na dłużej",
+          raiseReason14: "Budżet klubu pozwala na podwyżkę",
+          raiseReason15: "Jesteś niedoceniany finansowo",
+          raiseReason16: "To nagroda za ciężką pracę",
+          raiseReason17: "Chcemy wyrównać do innych graczy",
+          raiseReason18: "Twoja pozycja w drużynie wzrosła",
+          raiseReason19: "Sponsorzy doceniają twoją grę",
+          raiseReason20: "To inwestycja w przyszłość klubu",
+
+          // Match ratings
+          avgRating: "Średnia ocena",
+          matchRating: "Ocena meczowa",
+          goals: "Gole",
+          assists: "Asysty",
+          cleanSheets: "Czyste konta",
+          saves: "Obrony",
+          noRatings: "Brak ocen",
+
+          // Injury system
+          injured: "KONTUZJA",
+          injuryAlert:
+            "🏥 {player} doznał kontuzji! Będzie niedostępny przez 1 dzień.",
+          playerInjured: "KONTUZJOWANY",
+          injuryWarning:
+            "⚠️ {player} jest kontuzjowany! Czy na pewno chcesz go wystawić?",
+          injuryProtest: "😤 {player} protestuje przeciwko grze z kontuzją!",
+          wrongPositionWarning:
+            "⚠️ {player} gra na niewłaściwej pozycji ({current} zamiast {original})!",
+          wrongPositionProtest:
+            "😤 {player} protestuje przeciwko grze na złej pozycji!",
+          protestOptions: "Co chcesz zrobić?",
+          ignoreProtest: "🚫 Ignoruj protest",
+          acceptProtest: "✅ Zaakceptuj (zdejmij gracza)",
+          payFine: "💰 Zapłać grzywnę",
+          fineAmount: "Grzywna: €{amount}",
+          playerRefuses: "❌ {player} odmawia gry i żąda grzywny €{amount}!",
+          playerBanned:
+            "🚫 {player} nie zagra w tym meczu i nie może być zastąpiony!",
+          overallDropped:
+            "📉 {player} stracił {points} OVR przez grę na złej pozycji!",
+          injuryHealed: "✅ {player} wyzdrowiał z kontuzji!",
+          stillInjured:
+            "🏥 {player} nadal jest kontuzjowany ({hours}h pozostało)",
+
+          // Free kicks
+          freeKicks: "⚽ RZUTY WOLNE",
+          penaltiesMode: "⚽ KARNE (DOGRYWKA)",
+          distance: "Odległość",
+          meters: "m",
+          curve: "ZAKRĘCENIE",
+          power: "SIŁA",
+          clickToAim: "KLIKNIJ GDZIE CELUJESZ",
+          setCurve: "KLIKNIJ ABY USTAWIĆ ZAKRĘCENIE",
+          setPower: "KLIKNIJ ABY USTAWIĆ SIŁĘ",
+          tiebreaker: "REMIS! DOGRYWKA - KARNE",
+
           // Upgrade modal
           upgradePlayer: "ULEPSZ ZAWODNIKA",
           currentStats: "Obecne statystyki",
@@ -4613,6 +6057,228 @@
           defeat: "😞 DEFEAT",
           draw: "🤝 DRAW",
 
+          // Penalty
+          left: "LEFT",
+          center: "CENTER",
+          right: "RIGHT",
+          miss: "💨 MISS!",
+          saved: "🧤 SAVED!",
+          goal: "⚽ GOAAL!",
+          opponentGoal: "⚽ OPPONENT SCORES",
+          youWin: "🏆 VICTORY!",
+          youLose: "😞 DEFEAT",
+          finalScore: "Score",
+          playAgain: "🔄 PLAY AGAIN",
+          mainMenu: "🏠 MAIN MENU",
+          rematch: "🔄 REMATCH",
+          exitGame: "🚪 EXIT",
+          shooterShoots: "Shoots",
+          opponentShoots: "Opponent shoots",
+          chooseShot: "🎯 CHOOSE SHOT DIRECTION",
+          chooseDefense: "🧤 CHOOSE SAVE DIRECTION",
+          surrenderConfirm: "Are you sure you want to surrender?",
+          congrats: "Congratulations! You won!",
+          lost: "You lost...",
+          reward: "Reward",
+          consolation: "Consolation",
+          roomReady: "Room ready! Waiting for opponent...",
+          connectionError: "Connection error. Refresh the page.",
+          cannotConnect: "Cannot connect to room.",
+          checkCode: "Check the code.",
+          wantRematch: "Opponent wants rematch. Accept?",
+
+          // Emails
+          emailTitle: "INBOX",
+          noEmails: "No messages",
+          contractExpiring: "Contract expiring!",
+          contractExpired: "Contract expired",
+          raiseRequest: "Raise request",
+          renewContract: "Renew contract",
+          fromAgent: "From: Agent",
+          currentSalary: "Current salary",
+          requestedSalary: "Requested salary",
+          contractLength: "Contract length",
+          yearsLeft: "Years left",
+          daysLeft: "Days to decide",
+          accept: "✅ ACCEPT",
+          negotiate: "💬 NEGOTIATE",
+          reject: "❌ REJECT",
+          closeEmail: "CLOSE",
+          playerLeft: "left the club!",
+          salaryPaid: "Salary payment",
+          weeklyExpenses: "Weekly expenses",
+          negotiateRenewal: "Negotiate renewal",
+          reduceSalary: "Reduce salary",
+          selectPlayerForAction: "-- Select player --",
+          noFundsForSalary: "No funds for salary! Player may leave.",
+          contractRenewed: "Contract renewed!",
+          raiseAccepted: "Raise accepted.",
+          raiseRejected: "Raise rejected.",
+          playerUnhappy: "Player is unhappy.",
+
+          // Compose email
+          composeEmail: "✉️ SEND MESSAGE",
+          selectPlayerEmail: "Select player:",
+          messageType: "Message type:",
+          reduceSalaryOption: "Reduce salary",
+          extendContractOption: "Extend contract",
+          newSalary: "New salary (€/week):",
+          offerSalary: "Offered salary (€/week):",
+          contractYearsLabel: "Contract length (years):",
+          sendMessage: "SEND",
+          currentSalaryIs: "Current salary:",
+          contractEndsIn: "Contract ends in:",
+          years: "years",
+          messageSent: "Message sent! Awaiting response.",
+          playerAccepted: "accepted the offer!",
+          playerRejected: "rejected the offer.",
+          playerThinking: "is considering your offer...",
+          responseTimeout: "Response time expired.",
+          startNegotiation: "💬 NEGOTIATE",
+          acceptDecision: "✅ ACCEPT DECISION",
+          startChat: "START CONVERSATION",
+          endChat: "FINISH",
+          raiseSalaryOption: "Salary raise",
+
+          // Chat messages
+          chatGreeting:
+            "Hi, I wanted to talk about your situation at the club.",
+          chatGreetingPlayer: "Sure, I'm listening Coach.",
+          chatReduceIntro:
+            "I need to talk to you about your salary. The club situation requires some changes.",
+          chatReducePlayerAsk: "What exactly do you mean?",
+          chatExtendIntro: "I'd like to discuss extending your contract.",
+          chatExtendPlayerAsk: "I'm listening, what's the offer?",
+          chatRaiseIntro:
+            "I appreciate your work and would like to discuss a raise.",
+          chatRaisePlayerAsk: "That's nice to hear, what do you have in mind?",
+          chatSelectReasons: "Select your arguments (min. 1):",
+          selectReasons: "Select your arguments (min. 1):",
+          chatEnterOffer: "Now enter your offer:",
+          chatPlayerThinking: "is thinking...",
+          chatPlayerAccepted:
+            "I agree to this proposal! Thank you for the conversation.",
+          chatPlayerRejected:
+            "Unfortunately I cannot agree to this. This offer is unacceptable to me.",
+          chatPlayerCounter:
+            "I understand your arguments, but I expect better terms.",
+          chatDealDone: "✅ Deal has been made!",
+          chatDealFailed: "❌ Negotiations have failed.",
+          chatNewOffer: "What do you think about this proposal?",
+
+          // Reduce salary reasons (20)
+          reduceReason1: "Recent match performances were poor",
+          reduceReason2: "Club is facing financial issues",
+          reduceReason3: "Salary doesn't match performance level",
+          reduceReason4: "Younger players are waiting for a chance",
+          reduceReason5: "Club wage restructuring",
+          reduceReason6: "Injuries have limited your playing time",
+          reduceReason7: "Other players earn less for similar performance",
+          reduceReason8: "We need funds for transfers",
+          reduceReason9: "Your market value has dropped",
+          reduceReason10: "New club salary policy",
+          reduceReason11: "Less minutes on the pitch this season",
+          reduceReason12: "The league has become more competitive",
+          reduceReason13: "Sponsors have reduced the budget",
+          reduceReason14: "You need to prove your worth",
+          reduceReason15: "Age is affecting your abilities",
+          reduceReason16: "Lack of progress in skill development",
+          reduceReason17: "Competition for your position has increased",
+          reduceReason18: "Fan expectations are high",
+          reduceReason19: "We need to balance the budget",
+          reduceReason20: "This is a fair market offer",
+
+          // Extend contract reasons (20)
+          extendReason1: "You are a key player for the team",
+          extendReason2: "Your experience is invaluable",
+          extendReason3: "Fans love you",
+          extendReason4: "We want to build the team around you",
+          extendReason5: "Your form is excellent",
+          extendReason6: "We see you as a future captain",
+          extendReason7: "You have great relationships with teammates",
+          extendReason8: "Squad stability is important to us",
+          extendReason9: "We appreciate your loyalty",
+          extendReason10: "You have great development potential",
+          extendReason11: "Your statistics are impressive",
+          extendReason12: "We fit together tactically",
+          extendReason13: "We're investing in your future",
+          extendReason14: "We want to avoid losing you for free",
+          extendReason15: "You're a role model for the youth",
+          extendReason16: "Your mentality is exemplary",
+          extendReason17: "You have great influence in the locker room",
+          extendReason18: "We offer financial stability",
+          extendReason19: "Together we can achieve success",
+          extendReason20: "This is the best offer we can give",
+
+          // Raise salary reasons (20)
+          raiseReason1: "Your results are outstanding",
+          raiseReason2: "You deserve recognition",
+          raiseReason3: "We want to show we appreciate you",
+          raiseReason4: "Inflation requires salary adjustment",
+          raiseReason5: "Your market value has increased",
+          raiseReason6: "Other clubs are offering more",
+          raiseReason7: "You've exceeded all expectations",
+          raiseReason8: "Your contribution is invaluable",
+          raiseReason9: "We want to motivate you to continue",
+          raiseReason10: "The club is growing because of you",
+          raiseReason11: "You deserve fair pay",
+          raiseReason12: "Your dedication is visible",
+          raiseReason13: "We want to keep you longer",
+          raiseReason14: "Club budget allows for a raise",
+          raiseReason15: "You are financially undervalued",
+          raiseReason16: "This is a reward for hard work",
+          raiseReason17: "We want to match other players",
+          raiseReason18: "Your position in the team has grown",
+          raiseReason19: "Sponsors appreciate your play",
+          raiseReason20: "This is an investment in the club's future",
+
+          // Match ratings
+          avgRating: "Avg rating",
+          matchRating: "Match rating",
+          goals: "Goals",
+          assists: "Assists",
+          cleanSheets: "Clean sheets",
+          saves: "Saves",
+          noRatings: "No ratings",
+
+          // Injury system
+          injured: "INJURED",
+          injuryAlert:
+            "🏥 {player} got injured! Will be unavailable for 1 day.",
+          playerInjured: "INJURED",
+          injuryWarning:
+            "⚠️ {player} is injured! Are you sure you want to play him?",
+          injuryProtest: "😤 {player} protests against playing while injured!",
+          wrongPositionWarning:
+            "⚠️ {player} is playing in wrong position ({current} instead of {original})!",
+          wrongPositionProtest:
+            "😤 {player} protests against playing in wrong position!",
+          protestOptions: "What do you want to do?",
+          ignoreProtest: "🚫 Ignore protest",
+          acceptProtest: "✅ Accept (remove player)",
+          payFine: "💰 Pay fine",
+          fineAmount: "Fine: €{amount}",
+          playerRefuses:
+            "❌ {player} refuses to play and demands €{amount} fine!",
+          playerBanned:
+            "🚫 {player} won't play this match and cannot be replaced!",
+          overallDropped:
+            "📉 {player} lost {points} OVR from playing wrong position!",
+          injuryHealed: "✅ {player} has recovered from injury!",
+          stillInjured: "🏥 {player} is still injured ({hours}h remaining)",
+
+          // Free kicks
+          freeKicks: "⚽ FREE KICKS",
+          penaltiesMode: "⚽ PENALTIES (TIEBREAKER)",
+          distance: "Distance",
+          meters: "m",
+          curve: "CURVE",
+          power: "POWER",
+          clickToAim: "CLICK WHERE TO AIM",
+          setCurve: "CLICK TO SET CURVE",
+          setPower: "CLICK TO SET POWER",
+          tiebreaker: "DRAW! TIEBREAKER - PENALTIES",
+
           // Upgrade modal
           upgradePlayer: "UPGRADE PLAYER",
           currentStats: "Current stats",
@@ -4672,7 +6338,7 @@
         market: {
           cards: [],
           lastRefresh: null,
-          refreshInterval: 5 * 60 * 60 * 1000, // 5 hours
+          refreshInterval: 10 * 60 * 1000, // 10 minutes
         },
         match: {
           mode: null,
@@ -4691,9 +6357,12 @@
           goalsConceded: 0,
         },
         legends: [], // Retired legends collection
+        emails: [], // Email inbox
+        lastWeekCheck: null, // For weekly salary/contract check
         gameTime: {
           startDate: null, // When game started
           yearLength: 17.5 * 24 * 60 * 60 * 1000, // 2.5 weeks = 17.5 days in ms
+          weekLength: 2.5 * 24 * 60 * 60 * 1000, // 2.5 days = 1 week in game
           lastAgeCheck: null,
         },
       };
@@ -4733,6 +6402,1144 @@
         }
       }, 60000);
 
+      // Check for weekly events every 30 seconds
+      setInterval(() => {
+        checkWeeklyEvents();
+      }, 30000);
+
+      // ==================== EMAIL & CONTRACT SYSTEM ====================
+
+      function checkWeeklyEvents() {
+        if (!GameState.lastWeekCheck) {
+          GameState.lastWeekCheck = Date.now();
+          return;
+        }
+
+        const elapsed = Date.now() - GameState.lastWeekCheck;
+        const weekLength =
+          GameState.gameTime.weekLength || 2.5 * 24 * 60 * 60 * 1000;
+
+        if (elapsed >= weekLength) {
+          GameState.lastWeekCheck = Date.now();
+          processWeeklyEvents();
+        }
+      }
+
+      function processWeeklyEvents() {
+        // Pay salaries
+        let totalSalary = 0;
+        const allPlayers = [
+          ...(GameState.squad.players || []),
+          ...(GameState.squad.bench || []),
+        ].filter((p) => p);
+
+        allPlayers.forEach((player) => {
+          if (player.salary) {
+            totalSalary += player.salary;
+          }
+
+          // Decrease contract years (52 weeks per year, so 1/52 per week)
+          if (player.contractYears) {
+            player.contractYears -= 1 / 52;
+
+            // Check for expiring contracts
+            if (player.contractYears <= 0.1 && player.contractYears > 0) {
+              // 3 days warning
+              sendContractExpiringEmail(player);
+            } else if (player.contractYears <= 0) {
+              // Contract expired
+              removePlayerFromClub(player, "expired");
+            }
+          }
+        });
+
+        // Deduct salary
+        if (totalSalary > 0) {
+          if (GameState.manager.balance >= totalSalary) {
+            GameState.manager.balance -= totalSalary;
+            updateAccountDisplay();
+            autoSave();
+          } else {
+            // Not enough money - players may leave
+            sendNoFundsEmail(totalSalary);
+          }
+        }
+
+        // Random raise request (10% chance per week)
+        if (Math.random() < 0.1 && allPlayers.length > 0) {
+          const randomPlayer =
+            allPlayers[Math.floor(Math.random() * allPlayers.length)];
+          if (randomPlayer && randomPlayer.salary) {
+            sendRaiseRequestEmail(randomPlayer);
+          }
+        }
+      }
+
+      function sendContractExpiringEmail(player) {
+        // Check if email already sent
+        const existing = GameState.emails.find(
+          (e) =>
+            e.type === "contract_expiring" &&
+            e.playerId === player.id &&
+            !e.resolved
+        );
+        if (existing) return;
+
+        const email = {
+          id: Date.now() + Math.random(),
+          type: "contract_expiring",
+          playerId: player.id,
+          playerName: player.name,
+          player: player,
+          subject: t("contractExpiring"),
+          urgent: true,
+          unread: true,
+          resolved: false,
+          timestamp: Date.now(),
+          requestedSalary: Math.floor(
+            player.salary * (1 + Math.random() * 0.3)
+          ), // 0-30% raise
+          requestedYears: Math.floor(Math.random() * 3) + 1,
+        };
+
+        GameState.emails.unshift(email);
+        updateEmailBadge();
+        autoSave();
+      }
+
+      function sendRaiseRequestEmail(player) {
+        // Check if email already sent recently
+        const existing = GameState.emails.find(
+          (e) =>
+            e.type === "raise_request" &&
+            e.playerId === player.id &&
+            !e.resolved
+        );
+        if (existing) return;
+
+        const raisePercent = 10 + Math.floor(Math.random() * 30); // 10-40% raise
+
+        const email = {
+          id: Date.now() + Math.random(),
+          type: "raise_request",
+          playerId: player.id,
+          playerName: player.name,
+          player: player,
+          subject: t("raiseRequest"),
+          urgent: false,
+          unread: true,
+          resolved: false,
+          timestamp: Date.now(),
+          requestedSalary: Math.floor(player.salary * (1 + raisePercent / 100)),
+          raisePercent: raisePercent,
+        };
+
+        GameState.emails.unshift(email);
+        updateEmailBadge();
+        autoSave();
+      }
+
+      function sendNoFundsEmail(amount) {
+        const email = {
+          id: Date.now() + Math.random(),
+          type: "no_funds",
+          subject: t("noFundsForSalary"),
+          urgent: true,
+          unread: true,
+          resolved: false,
+          timestamp: Date.now(),
+          amount: amount,
+        };
+
+        GameState.emails.unshift(email);
+        updateEmailBadge();
+        autoSave();
+      }
+
+      function removePlayerFromClub(player, reason) {
+        // Remove from squad
+        GameState.squad.players = GameState.squad.players.map((p) =>
+          p && p.id === player.id ? null : p
+        );
+        GameState.squad.bench = GameState.squad.bench.filter(
+          (p) => p && p.id !== player.id
+        );
+
+        // Send notification email
+        const email = {
+          id: Date.now() + Math.random(),
+          type: "player_left",
+          playerId: player.id,
+          playerName: player.name,
+          player: player,
+          subject: `${player.name} ${t("playerLeft")}`,
+          urgent: false,
+          unread: true,
+          resolved: true,
+          timestamp: Date.now(),
+          reason: reason,
+        };
+
+        GameState.emails.unshift(email);
+        updateEmailBadge();
+        autoSave();
+      }
+
+      function updateEmailBadge() {
+        const unreadCount = GameState.emails.filter((e) => e.unread).length;
+        const badge = document.getElementById("emailBadge");
+
+        if (unreadCount > 0) {
+          badge.textContent = unreadCount > 9 ? "9+" : unreadCount;
+          badge.style.display = "flex";
+        } else {
+          badge.style.display = "none";
+        }
+      }
+
+      function renderEmails() {
+        const list = document.getElementById("emailList");
+        const noEmails = document.getElementById("noEmails");
+
+        if (!GameState.emails || GameState.emails.length === 0) {
+          list.innerHTML = "";
+          noEmails.style.display = "block";
+          return;
+        }
+
+        noEmails.style.display = "none";
+
+        list.innerHTML = GameState.emails
+          .map((email) => {
+            const icon =
+              email.type === "contract_expiring"
+                ? "📝"
+                : email.type === "raise_request"
+                ? "💰"
+                : email.type === "player_left"
+                ? "🚪"
+                : email.type === "no_funds"
+                ? "⚠️"
+                : "📧";
+
+            const timeAgo = getTimeAgo(email.timestamp);
+            const urgentClass = email.urgent ? "urgent" : "";
+            const unreadClass = email.unread ? "unread" : "";
+
+            return `
+                    <div class="email-item ${urgentClass} ${unreadClass}" onclick="openEmail('${
+              email.id
+            }')">
+                        <div class="email-icon">${icon}</div>
+                        <div class="email-content">
+                            <div class="email-subject">${email.subject}</div>
+                            <div class="email-preview">${
+                              email.playerName || t("fromAgent")
+                            }</div>
+                        </div>
+                        <div class="email-time">${timeAgo}</div>
+                    </div>
+                `;
+          })
+          .join("");
+      }
+
+      function getTimeAgo(timestamp) {
+        const diff = Date.now() - timestamp;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (days > 0)
+          return currentLang === "pl" ? `${days}d temu` : `${days}d ago`;
+        if (hours > 0)
+          return currentLang === "pl" ? `${hours}h temu` : `${hours}h ago`;
+        if (minutes > 0)
+          return currentLang === "pl" ? `${minutes}m temu` : `${minutes}m ago`;
+        return currentLang === "pl" ? "teraz" : "now";
+      }
+
+      let currentEmailId = null;
+
+      function openEmail(emailId) {
+        const email = GameState.emails.find((e) => e.id == emailId);
+        if (!email) return;
+
+        currentEmailId = emailId;
+        email.unread = false;
+        updateEmailBadge();
+
+        const modal = document.getElementById("emailModal");
+        const subject = document.getElementById("emailSubject");
+        const from = document.getElementById("emailFrom");
+        const body = document.getElementById("emailBody");
+        const playerCard = document.getElementById("emailPlayerCard");
+        const actions = document.getElementById("emailActions");
+
+        subject.textContent = email.subject;
+        from.textContent = email.playerName
+          ? `${t("fromAgent")} - ${email.playerName}`
+          : t("fromAgent");
+
+        // Generate body based on email type
+        let bodyText = "";
+
+        if (email.type === "contract_expiring") {
+          bodyText = getContractExpiringMessage(email);
+        } else if (email.type === "raise_request") {
+          bodyText = getRaiseRequestMessage(email);
+        } else if (email.type === "player_left") {
+          bodyText = getPlayerLeftMessage(email);
+        } else if (email.type === "no_funds") {
+          bodyText = getNoFundsMessage(email);
+        }
+
+        body.textContent = bodyText;
+
+        // Show player card if available
+        if (email.player) {
+          playerCard.innerHTML = renderPlayerCard(email.player, true);
+          playerCard.style.display = "flex";
+        } else {
+          playerCard.style.display = "none";
+        }
+
+        // Generate action buttons
+        if (email.resolved) {
+          actions.innerHTML = `
+                    <button class="email-action-btn close" onclick="closeEmail()">${t(
+                      "closeEmail"
+                    )}</button>
+                    <button class="email-action-btn reject" onclick="deleteEmail('${
+                      email.id
+                    }')">🗑️</button>
+                `;
+        } else if (email.type === "contract_expiring") {
+          actions.innerHTML = `
+                    <button class="email-action-btn accept" onclick="acceptContractRenewal('${
+                      email.id
+                    }')">${t("accept")}</button>
+                    <button class="email-action-btn negotiate" onclick="negotiateContract('${
+                      email.id
+                    }')">${t("negotiate")}</button>
+                    <button class="email-action-btn reject" onclick="rejectContract('${
+                      email.id
+                    }')">${t("reject")}</button>
+                `;
+        } else if (email.type === "raise_request") {
+          actions.innerHTML = `
+                    <button class="email-action-btn accept" onclick="acceptRaise('${
+                      email.id
+                    }')">${t("accept")}</button>
+                    <button class="email-action-btn reject" onclick="rejectRaise('${
+                      email.id
+                    }')">${t("reject")}</button>
+                `;
+        } else if (email.type === "offer_rejected") {
+          actions.innerHTML = `
+                    <button class="email-action-btn negotiate" onclick="negotiateRejectedOffer('${
+                      email.id
+                    }')">${t("startNegotiation")}</button>
+                    <button class="email-action-btn close" onclick="acceptRejection('${
+                      email.id
+                    }')">${t("acceptDecision")}</button>
+                `;
+        } else {
+          actions.innerHTML = `
+                    <button class="email-action-btn close" onclick="closeEmail()">${t(
+                      "closeEmail"
+                    )}</button>
+                `;
+        }
+
+        modal.style.display = "flex";
+        autoSave();
+      }
+
+      function getContractExpiringMessage(email) {
+        if (currentLang === "pl") {
+          return `Dzień dobry,
+
+Kontrakt mojego klienta ${email.playerName} niedługo wygasa. 
+
+Obecna pensja: €${email.player?.salary?.toLocaleString() || 0}/tyg
+Żądana pensja: €${email.requestedSalary?.toLocaleString() || 0}/tyg
+Proponowany kontrakt: ${email.requestedYears} lat
+
+Proszę o odpowiedź w ciągu 3 dni, w przeciwnym razie zawodnik odejdzie z klubu.
+
+Z poważaniem,
+Agent`;
+        } else {
+          return `Hello,
+
+My client ${email.playerName}'s contract is expiring soon.
+
+Current salary: €${email.player?.salary?.toLocaleString() || 0}/week
+Requested salary: €${email.requestedSalary?.toLocaleString() || 0}/week
+Proposed contract: ${email.requestedYears} years
+
+Please respond within 3 days, otherwise the player will leave the club.
+
+Best regards,
+Agent`;
+        }
+      }
+
+      function getRaiseRequestMessage(email) {
+        if (currentLang === "pl") {
+          return `Dzień dobry,
+
+Mój klient ${email.playerName} prosi o podwyżkę.
+
+Obecna pensja: €${email.player?.salary?.toLocaleString() || 0}/tyg
+Żądana pensja: €${email.requestedSalary?.toLocaleString() || 0}/tyg (+${
+            email.raisePercent
+          }%)
+
+Zawodnik uważa, że jego wkład w drużynę zasługuje na wyższą pensję.
+
+Z poważaniem,
+Agent`;
+        } else {
+          return `Hello,
+
+My client ${email.playerName} requests a raise.
+
+Current salary: €${email.player?.salary?.toLocaleString() || 0}/week
+Requested salary: €${email.requestedSalary?.toLocaleString() || 0}/week (+${
+            email.raisePercent
+          }%)
+
+The player believes his contribution deserves higher compensation.
+
+Best regards,
+Agent`;
+        }
+      }
+
+      function getPlayerLeftMessage(email) {
+        if (currentLang === "pl") {
+          return `${email.playerName} opuścił klub z powodu: ${
+            email.reason === "expired" ? "wygaśnięcie kontraktu" : email.reason
+          }.`;
+        } else {
+          return `${email.playerName} left the club due to: ${
+            email.reason === "expired" ? "contract expiration" : email.reason
+          }.`;
+        }
+      }
+
+      function getNoFundsMessage(email) {
+        if (currentLang === "pl") {
+          return `Uwaga! Nie masz wystarczających środków na wypłatę pensji (€${email.amount?.toLocaleString()}).
+
+Zawodnicy mogą być niezadowoleni i zacząć żądać transferów.`;
+        } else {
+          return `Warning! You don't have enough funds to pay salaries (€${email.amount?.toLocaleString()}).
+
+Players may become unhappy and start requesting transfers.`;
+        }
+      }
+
+      function closeEmail() {
+        document.getElementById("emailModal").style.display = "none";
+        currentEmailId = null;
+        renderEmails();
+      }
+
+      function deleteEmail(emailId) {
+        GameState.emails = GameState.emails.filter((e) => e.id != emailId);
+        closeEmail();
+        autoSave();
+      }
+
+      function acceptContractRenewal(emailId) {
+        const email = GameState.emails.find((e) => e.id == emailId);
+        if (!email) return;
+
+        // Find player and update contract
+        const player = findPlayerById(email.playerId);
+        if (player) {
+          player.salary = email.requestedSalary;
+          player.contractYears = email.requestedYears;
+        }
+
+        email.resolved = true;
+        alert(`✅ ${t("contractRenewed")}`);
+        closeEmail();
+        autoSave();
+      }
+
+      function negotiateContract(emailId) {
+        const email = GameState.emails.find((e) => e.id == emailId);
+        if (!email || !email.player) return;
+
+        // Open negotiation with this player
+        closeEmail();
+        showScreen("mainMenu");
+
+        // Start contract negotiation (reuse market negotiation system)
+        currentNegotiationPlayer = email.player;
+        negotiationPhase = "contract";
+        negotiationRound = 0;
+        negotiationTension = 20;
+        agreedPrice = 0; // No transfer fee for renewal
+        swapPlayer = null;
+
+        const modal = document.getElementById("negotiationModal");
+        document.getElementById("negotiationChat").innerHTML = "";
+        document.getElementById("negotiationPhase1").style.display = "none";
+        document.getElementById("negotiationPhase2").style.display = "block";
+
+        // Set default values
+        document.getElementById("offerSalary").value =
+          email.player.salary || 1000;
+        document.getElementById("offerLength").value = 2;
+        document.getElementById("offerBonus").value = "";
+        document.getElementById("offerClause").value = "";
+
+        updateTensionBar();
+        addChatMessage(
+          "agent",
+          getRandomMessage(getAgentMessages().greetingsPrice, {
+            player: email.player.name,
+            price: email.requestedSalary?.toLocaleString() || "0",
+          })
+        );
+
+        modal.style.display = "flex";
+
+        // Mark email as resolved
+        email.resolved = true;
+        autoSave();
+      }
+
+      function rejectContract(emailId) {
+        const email = GameState.emails.find((e) => e.id == emailId);
+        if (!email) return;
+
+        email.resolved = true;
+        // Player will leave when contract expires
+        closeEmail();
+        autoSave();
+      }
+
+      function acceptRaise(emailId) {
+        const email = GameState.emails.find((e) => e.id == emailId);
+        if (!email) return;
+
+        const player = findPlayerById(email.playerId);
+        if (player) {
+          player.salary = email.requestedSalary;
+        }
+
+        email.resolved = true;
+        alert(`✅ ${t("raiseAccepted")}`);
+        closeEmail();
+        autoSave();
+      }
+
+      function rejectRaise(emailId) {
+        const email = GameState.emails.find((e) => e.id == emailId);
+        if (!email) return;
+
+        email.resolved = true;
+        // Player becomes unhappy (could add mood system later)
+        alert(`❌ ${t("raiseRejected")} ${t("playerUnhappy")}`);
+        closeEmail();
+        autoSave();
+      }
+
+      function negotiateRejectedOffer(emailId) {
+        const email = GameState.emails.find((e) => e.id == emailId);
+        if (!email || !email.player) return;
+
+        // Mark as resolved
+        email.resolved = true;
+        closeEmail();
+
+        // Open compose email with this player pre-selected
+        setTimeout(() => {
+          openComposeEmail();
+
+          // Pre-select the player
+          const select = document.getElementById("composePlayerSelect");
+          select.value = email.playerId;
+          updateComposePreview();
+
+          // Pre-select the same type
+          if (email.originalOffer?.originalType === "reduce_salary") {
+            selectComposeType("reduce_salary");
+          } else if (email.originalOffer?.originalType === "extend_contract") {
+            selectComposeType("extend_contract");
+          }
+        }, 100);
+
+        autoSave();
+      }
+
+      function acceptRejection(emailId) {
+        const email = GameState.emails.find((e) => e.id == emailId);
+        if (!email) return;
+
+        email.resolved = true;
+        closeEmail();
+        autoSave();
+      }
+
+      function findPlayerById(playerId) {
+        const inSquad = GameState.squad.players.find(
+          (p) => p && p.id === playerId
+        );
+        if (inSquad) return inSquad;
+
+        const onBench = GameState.squad.bench.find(
+          (p) => p && p.id === playerId
+        );
+        return onBench;
+      }
+
+      // ==================== COMPOSE EMAIL SYSTEM ====================
+
+      let composeState = {
+        selectedPlayer: null,
+        messageType: null,
+        pendingMessages: [], // Messages awaiting response
+      };
+
+      function openComposeEmail() {
+        const modal = document.getElementById("composeEmailModal");
+        const select = document.getElementById("composePlayerSelect");
+
+        // Reset state
+        composeState.selectedPlayer = null;
+        composeState.messageType = null;
+
+        // Populate player list
+        const allPlayers = [
+          ...(GameState.squad.players || []),
+          ...(GameState.squad.bench || []),
+        ].filter((p) => p);
+
+        select.innerHTML =
+          `<option value="">${t("selectPlayerForAction")}</option>` +
+          allPlayers
+            .map(
+              (p) =>
+                `<option value="${p.id}">${p.name} (${p.position}, OVR ${p.overall})</option>`
+            )
+            .join("");
+
+        // Reset UI
+        document.getElementById("composePlayerPreview").style.display = "none";
+        document
+          .querySelectorAll(".compose-option")
+          .forEach((o) => o.classList.remove("selected"));
+        document.getElementById("composeSendBtn").disabled = true;
+
+        modal.style.display = "flex";
+      }
+
+      function closeComposeEmail() {
+        document.getElementById("composeEmailModal").style.display = "none";
+        composeState.messageType = null;
+        document
+          .querySelectorAll(".compose-option")
+          .forEach((o) => o.classList.remove("selected"));
+      }
+
+      function updateComposePreview() {
+        const select = document.getElementById("composePlayerSelect");
+        const preview = document.getElementById("composePlayerPreview");
+        const playerId = select.value;
+
+        if (!playerId) {
+          preview.style.display = "none";
+          composeState.selectedPlayer = null;
+          updateComposeSendButton();
+          return;
+        }
+
+        const player = findPlayerById(parseFloat(playerId));
+        if (!player) {
+          preview.style.display = "none";
+          composeState.selectedPlayer = null;
+          updateComposeSendButton();
+          return;
+        }
+
+        composeState.selectedPlayer = player;
+
+        // Show player card and info
+        const yearsLeft = player.contractYears
+          ? player.contractYears.toFixed(1)
+          : "?";
+        preview.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                    ${renderPlayerCard(player, true)}
+                    <div class="contract-info" style="min-width: 200px;">
+                        <div class="contract-row">
+                            <span class="contract-label">${t(
+                              "currentSalaryIs"
+                            )}</span>
+                            <span class="contract-value">€${
+                              player.salary?.toLocaleString() || 0
+                            }/tyg</span>
+                        </div>
+                        <div class="contract-row">
+                            <span class="contract-label">${t(
+                              "contractEndsIn"
+                            )}</span>
+                            <span class="contract-value ${
+                              yearsLeft < 0.5 ? "urgent" : ""
+                            }">${yearsLeft} ${t("years")}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        preview.style.display = "flex";
+
+        updateComposeSendButton();
+      }
+
+      function selectComposeType(type) {
+        composeState.messageType = type;
+
+        // Update UI
+        document
+          .querySelectorAll(".compose-option")
+          .forEach((o) => o.classList.remove("selected"));
+
+        if (type === "reduce_salary") {
+          document.getElementById("optReduceSalary").classList.add("selected");
+        } else if (type === "extend_contract") {
+          document
+            .getElementById("optExtendContract")
+            .classList.add("selected");
+        } else if (type === "raise_salary") {
+          document.getElementById("optRaiseSalary").classList.add("selected");
+        }
+
+        updateComposeSendButton();
+      }
+
+      function updateComposeSendButton() {
+        const canSend = composeState.selectedPlayer && composeState.messageType;
+        document.getElementById("composeSendBtn").disabled = !canSend;
+      }
+
+      // ==================== NEGOTIATION CHAT SYSTEM ====================
+
+      let chatState = {
+        player: null,
+        type: null, // 'reduce_salary', 'extend_contract', 'raise_salary'
+        phase: "greeting", // greeting, reasons, offer, response, done
+        messages: [],
+        selectedReasons: [],
+        offerSalary: 0,
+        offerYears: 2,
+        attempts: 0,
+        maxAttempts: 3,
+      };
+
+      function startNegotiationChat() {
+        if (!composeState.selectedPlayer || !composeState.messageType) return;
+
+        chatState = {
+          player: composeState.selectedPlayer,
+          type: composeState.messageType,
+          phase: "greeting",
+          messages: [],
+          selectedReasons: [],
+          offerSalary: composeState.selectedPlayer.salary,
+          offerYears: 2,
+          attempts: 0,
+          maxAttempts: 3,
+        };
+
+        closeComposeEmail();
+
+        // Setup chat modal
+        document.getElementById("chatPlayerName").textContent =
+          chatState.player.name;
+        document.getElementById("chatPlayerAvatar").textContent =
+          getPositionEmoji(chatState.player.position);
+        document.getElementById("chatMessages").innerHTML = "";
+        document.getElementById("chatReasonsPanel").style.display = "none";
+        document.getElementById("chatInputPanel").style.display = "none";
+        document.getElementById("chatSendBtn").style.display = "none";
+        document.getElementById("chatEndBtn").style.display = "none";
+
+        document.getElementById("negotiationChatModal").style.display = "flex";
+
+        // Start conversation immediately
+        startChatConversation();
+      }
+
+      function getPositionEmoji(pos) {
+        const emojis = {
+          GK: "🧤",
+          CB: "🛡️",
+          LB: "⬅️",
+          RB: "➡️",
+          CDM: "⚙️",
+          CM: "🎯",
+          CAM: "🎨",
+          LW: "💨",
+          RW: "💨",
+          ST: "⚽",
+        };
+        return emojis[pos] || "👤";
+      }
+
+      function startChatConversation() {
+        // Manager greeting
+        addPlayerChatMessage(t("chatGreeting"), "manager");
+        addPlayerChatMessage(t("chatGreetingPlayer"), "player");
+
+        // Type-specific intro
+        let intro = "";
+        let playerResponse = "";
+
+        if (chatState.type === "reduce_salary") {
+          intro = t("chatReduceIntro");
+          playerResponse = t("chatReducePlayerAsk");
+        } else if (chatState.type === "extend_contract") {
+          intro = t("chatExtendIntro");
+          playerResponse = t("chatExtendPlayerAsk");
+        } else if (chatState.type === "raise_salary") {
+          intro = t("chatRaiseIntro");
+          playerResponse = t("chatRaisePlayerAsk");
+        }
+
+        addPlayerChatMessage(intro, "manager");
+        addPlayerChatMessage(playerResponse, "player");
+
+        chatState.phase = "reasons";
+        showReasonsPanel();
+      }
+
+      function addPlayerChatMessage(text, sender) {
+        const container = document.getElementById("chatMessages");
+        if (!container) {
+          console.error("chatMessages container not found");
+          return;
+        }
+        const msg = document.createElement("div");
+        msg.className = `chat-message ${sender}`;
+        msg.textContent = text;
+        container.appendChild(msg);
+        container.scrollTop = container.scrollHeight;
+        chatState.messages.push({ text, sender });
+      }
+
+      function showTypingIndicator() {
+        const container = document.getElementById("chatMessages");
+        const typing = document.createElement("div");
+        typing.className = "chat-message player";
+        typing.id = "typingIndicator";
+        typing.innerHTML =
+          '<div class="chat-typing"><span></span><span></span><span></span></div>';
+        container.appendChild(typing);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      function removeTypingIndicator() {
+        const typing = document.getElementById("typingIndicator");
+        if (typing) typing.remove();
+      }
+
+      function showReasonsPanel() {
+        const panel = document.getElementById("chatReasonsPanel");
+        const list = document.getElementById("chatReasonsList");
+
+        // Get reasons based on type
+        let reasonPrefix = "";
+        if (chatState.type === "reduce_salary") reasonPrefix = "reduceReason";
+        else if (chatState.type === "extend_contract")
+          reasonPrefix = "extendReason";
+        else if (chatState.type === "raise_salary")
+          reasonPrefix = "raiseReason";
+
+        list.innerHTML = "";
+        for (let i = 1; i <= 20; i++) {
+          const reason = t(reasonPrefix + i);
+          const item = document.createElement("label");
+          item.className = "chat-reason-item";
+          item.innerHTML = `<input type="checkbox" value="${i}" onchange="updateChatReasons()"> <span>${reason}</span>`;
+          list.appendChild(item);
+        }
+
+        panel.style.display = "block";
+        document.getElementById("chatSendBtn").style.display = "block";
+        document.getElementById("chatSendBtn").disabled = true;
+
+        // Show input panel
+        showOfferInputs();
+      }
+
+      function showOfferInputs() {
+        const panel = document.getElementById("chatInputPanel");
+        const yearsInput = document.getElementById("chatYearsInput");
+        const salaryInput = document.getElementById("chatSalaryInput");
+        const salaryLabel = document.getElementById("chatSalaryLabel");
+
+        if (chatState.type === "reduce_salary") {
+          salaryLabel.textContent =
+            currentLang === "pl" ? "Nowa pensja:" : "New salary:";
+          salaryInput.value = Math.floor(chatState.player.salary * 0.8);
+          yearsInput.style.display = "none";
+        } else if (chatState.type === "extend_contract") {
+          salaryLabel.textContent =
+            currentLang === "pl" ? "Pensja:" : "Salary:";
+          salaryInput.value = chatState.player.salary;
+          yearsInput.style.display = "flex";
+        } else if (chatState.type === "raise_salary") {
+          salaryLabel.textContent =
+            currentLang === "pl" ? "Nowa pensja:" : "New salary:";
+          salaryInput.value = Math.floor(chatState.player.salary * 1.2);
+          yearsInput.style.display = "none";
+        }
+
+        panel.style.display = "flex";
+      }
+
+      function updateChatReasons() {
+        const selected = [];
+        document
+          .querySelectorAll("#chatReasonsList input:checked")
+          .forEach((cb) => {
+            selected.push(parseInt(cb.value));
+          });
+        chatState.selectedReasons = selected;
+
+        // Update send button
+        document.getElementById("chatSendBtn").disabled = selected.length === 0;
+      }
+
+      function sendNegotiationMessage() {
+        if (chatState.selectedReasons.length === 0) return;
+
+        const salary =
+          parseInt(document.getElementById("chatSalaryInput").value) || 0;
+        const years =
+          parseInt(document.getElementById("chatContractYears").value) || 2;
+
+        chatState.offerSalary = salary;
+        chatState.offerYears = years;
+        chatState.attempts++;
+
+        // Hide panels
+        document.getElementById("chatReasonsPanel").style.display = "none";
+        document.getElementById("chatInputPanel").style.display = "none";
+        document.getElementById("chatSendBtn").style.display = "none";
+
+        // Build manager's message with reasons
+        let reasonPrefix = "";
+        if (chatState.type === "reduce_salary") reasonPrefix = "reduceReason";
+        else if (chatState.type === "extend_contract")
+          reasonPrefix = "extendReason";
+        else if (chatState.type === "raise_salary")
+          reasonPrefix = "raiseReason";
+
+        const reasonTexts = chatState.selectedReasons
+          .map((i) => "• " + t(reasonPrefix + i))
+          .join("\n");
+        const managerMsg =
+          reasonTexts +
+          "\n\n" +
+          t("chatNewOffer") +
+          "\n💰 €" +
+          salary.toLocaleString() +
+          "/tyg" +
+          (chatState.type === "extend_contract"
+            ? "\n📅 " + years + " " + t("years")
+            : "");
+
+        addPlayerChatMessage(managerMsg, "manager");
+
+        // Player responds immediately
+        processPlayerChatResponse();
+      }
+
+      function processPlayerChatResponse() {
+        const player = chatState.player;
+        let accepted = false;
+        let counterOffer = false;
+
+        // Calculate acceptance chance
+        if (chatState.type === "reduce_salary") {
+          const reduction = 1 - chatState.offerSalary / player.salary;
+          let acceptChance =
+            reduction < 0.1 ? 0.7 : reduction < 0.2 ? 0.4 : 0.15;
+          acceptChance += chatState.selectedReasons.length * 0.025; // Each reason adds 2.5%
+          acceptChance = Math.min(0.9, acceptChance);
+
+          if (Math.random() < acceptChance) {
+            accepted = true;
+          } else if (
+            chatState.attempts < chatState.maxAttempts &&
+            Math.random() < 0.6
+          ) {
+            counterOffer = true;
+          }
+        } else if (chatState.type === "extend_contract") {
+          const expectedSalary = player.overall * 60;
+          const salaryRatio = chatState.offerSalary / expectedSalary;
+          let acceptChance = Math.min(0.85, salaryRatio * 0.6 + 0.15);
+          acceptChance += chatState.selectedReasons.length * 0.02;
+          acceptChance = Math.min(0.9, acceptChance);
+
+          if (Math.random() < acceptChance) {
+            accepted = true;
+          } else if (
+            chatState.attempts < chatState.maxAttempts &&
+            Math.random() < 0.6
+          ) {
+            counterOffer = true;
+          }
+        } else if (chatState.type === "raise_salary") {
+          const increase = chatState.offerSalary / player.salary - 1;
+          let acceptChance = increase > 0.3 ? 0.9 : increase > 0.15 ? 0.6 : 0.3;
+          acceptChance += chatState.selectedReasons.length * 0.02;
+          acceptChance = Math.min(0.95, acceptChance);
+
+          if (Math.random() < acceptChance) {
+            accepted = true;
+          } else if (
+            chatState.attempts < chatState.maxAttempts &&
+            Math.random() < 0.5
+          ) {
+            counterOffer = true;
+          }
+        }
+
+        if (accepted) {
+          addPlayerChatMessage(t("chatPlayerAccepted"), "player");
+          addPlayerChatMessage(t("chatDealDone"), "system");
+
+          // Apply changes
+          if (chatState.type === "reduce_salary") {
+            player.salary = chatState.offerSalary;
+          } else if (chatState.type === "extend_contract") {
+            player.salary = chatState.offerSalary;
+            player.contractYears = chatState.offerYears;
+          } else if (chatState.type === "raise_salary") {
+            player.salary = chatState.offerSalary;
+          }
+
+          chatState.phase = "done";
+          document.getElementById("chatEndBtn").style.display = "block";
+          autoSave();
+        } else if (counterOffer) {
+          addPlayerChatMessage(t("chatPlayerCounter"), "player");
+
+          // Reset for new attempt
+          chatState.selectedReasons = [];
+          document
+            .querySelectorAll("#chatReasonsList input")
+            .forEach((cb) => (cb.checked = false));
+          showReasonsPanel();
+        } else {
+          addPlayerChatMessage(t("chatPlayerRejected"), "player");
+          addPlayerChatMessage(t("chatDealFailed"), "system");
+          chatState.phase = "done";
+          document.getElementById("chatEndBtn").style.display = "block";
+        }
+      }
+
+      function closeNegotiationChat() {
+        document.getElementById("negotiationChatModal").style.display = "none";
+      }
+
+      function endNegotiationChat() {
+        closeNegotiationChat();
+      }
+
+      // Old function kept for compatibility
+      function sendComposeEmail() {
+        startNegotiationChat();
+      }
+
+      function schedulePlayerResponse(emailData) {
+        // Quick response: 5-10 seconds
+        const minTime = 5 * 1000; // 5 seconds
+        const maxTime = 10 * 1000; // 10 seconds
+
+        const responseTime = minTime + Math.random() * (maxTime - minTime);
+
+        setTimeout(() => {
+          processPlayerResponse(emailData);
+        }, responseTime);
+      }
+
+      function processPlayerResponse(emailData) {
+        const player = findPlayerById(emailData.playerId);
+        if (!player) return;
+
+        let accepted = false;
+
+        if (emailData.originalType === "reduce_salary") {
+          // Calculate acceptance chance based on salary reduction AND number of reasons
+          const reduction = 1 - emailData.newSalary / player.salary;
+          // Base chance: 80% if reduction < 10%, 50% if 10-20%, 20% if > 20%
+          let acceptChance =
+            reduction < 0.1 ? 0.8 : reduction < 0.2 ? 0.5 : 0.2;
+
+          // Bonus for more reasons (each reason adds 5%, max +50% from 10 reasons)
+          const reasonsBonus = (emailData.reasons?.length || 0) * 0.05;
+          acceptChance = Math.min(0.95, acceptChance + reasonsBonus);
+
+          accepted = Math.random() < acceptChance;
+        } else if (emailData.originalType === "extend_contract") {
+          // Calculate acceptance based on salary offer
+          const expectedSalary = player.overall * 60;
+          const salaryRatio = emailData.newSalary / expectedSalary;
+          // Higher salary = higher chance
+          const acceptChance = Math.min(0.9, salaryRatio * 0.7 + 0.2);
+          accepted = Math.random() < acceptChance;
+        }
+
+        // Create response email
+        const responseEmail = {
+          id: Date.now() + Math.random(),
+          type: accepted ? "offer_accepted" : "offer_rejected",
+          playerId: emailData.playerId,
+          playerName: emailData.playerName,
+          player: player,
+          subject: accepted
+            ? `✅ ${emailData.playerName} ${t("playerAccepted")}`
+            : `❌ ${emailData.playerName} ${t("playerRejected")}`,
+          urgent: false,
+          unread: true,
+          resolved: accepted, // Only resolved if accepted, rejected needs action
+          timestamp: Date.now(),
+          originalOffer: emailData,
+        };
+
+        // Apply changes if accepted
+        if (accepted) {
+          if (emailData.originalType === "reduce_salary") {
+            player.salary = emailData.newSalary;
+          } else if (emailData.originalType === "extend_contract") {
+            player.salary = emailData.newSalary;
+            player.contractYears = emailData.newYears;
+          }
+        }
+
+        // Add response to emails
+        GameState.emails.unshift(responseEmail);
+
+        // Remove from pending
+        composeState.pendingMessages = composeState.pendingMessages.filter(
+          (m) => m.id !== emailData.id
+        );
+
+        updateEmailBadge();
+        autoSave();
+      }
+
       // ==================== SAVE/LOAD SYSTEM ====================
       const SAVE_KEY = "footballManagerUltimate_save";
 
@@ -4749,6 +7556,8 @@
             },
             stats: GameState.stats,
             legends: GameState.legends,
+            emails: GameState.emails,
+            lastWeekCheck: GameState.lastWeekCheck,
             gameTime: GameState.gameTime,
           };
           localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
@@ -4780,6 +7589,12 @@
           }
           if (data.legends) {
             GameState.legends = data.legends || [];
+          }
+          if (data.emails) {
+            GameState.emails = data.emails || [];
+          }
+          if (data.lastWeekCheck) {
+            GameState.lastWeekCheck = data.lastWeekCheck;
           }
           if (data.gameTime) {
             GameState.gameTime = { ...GameState.gameTime, ...data.gameTime };
@@ -5915,6 +8730,13 @@
           styleOfPlay: null,
           age: playerAge,
           gamesPlayed: 0,
+          salary: Math.floor(overall * 50 + Math.random() * overall * 20), // Weekly salary based on overall
+          contractYears: 1 + Math.floor(Math.random() * 3), // 1-3 years
+          matchRatings: [], // Array of match ratings (0-10)
+          goals: 0, // Total goals scored
+          assists: 0, // Total assists
+          cleanSheets: 0, // For GK - clean sheets
+          saves: 0, // For GK - total saves
         };
       }
 
@@ -6106,10 +8928,35 @@
         const stats = player.stats || {};
         const age = player.age || 25;
 
+        // Get translated position name
+        const posFullName = getPositionFullName(player.position);
+        const positionsTranslated = positions
+          .map((p) => getPositionFullName(p))
+          .join(", ");
+
+        // Calculate average rating
+        const avgRating = getAverageRating(player);
+        const ratingDisplay = avgRating !== null ? avgRating.toFixed(1) : "-";
+        const ratingColor =
+          avgRating !== null ? getRatingColor(avgRating) : "#888";
+
+        // Check if injured
+        const injured = isPlayerInjured(player);
+        const injuryHours = injured ? getInjuryTimeRemaining(player) : 0;
+
         const html = `
-                <div class="player-card tier-${tier}" onclick="flipCard(this)">
+                <div class="player-card tier-${tier} ${
+          injured ? "injured" : ""
+        }" onclick="flipCard(this)">
                     <div class="player-card-inner">
                         <div class="player-card-front">
+                            ${
+                              injured
+                                ? `<div class="injury-badge">🏥 ${t(
+                                    "injured"
+                                  )}</div>`
+                                : ""
+                            }
                             <div style="display: flex; justify-content: space-between; width: 100%;">
                                 <div class="card-overall">${
                                   player.overall || 50
@@ -6145,21 +8992,116 @@
                               player.name || "Nieznany"
                             }</div>
                             <div class="card-details-back">
-                                ${player.country || "🌍"} | ${
-          Positions[player.position]?.fullName || player.position || "Zawodnik"
-        }
+                                ${player.country || "🌍"} | ${posFullName}
                             </div>
+                            ${
+                              injured
+                                ? `
+                                <div style="margin-top: 0.3rem; font-size: 0.7rem; color: #ff4444; font-weight: bold;">
+                                    🏥 ${t("playerInjured")} (${injuryHours}h)
+                                </div>
+                            `
+                                : ""
+                            }
                             <div style="margin-top: 0.3rem; font-size: 0.7rem; color: var(--gold);">
                                 ${t("age")}: ${age}
                             </div>
                             <div style="margin-top: 0.3rem; font-size: 0.7rem; color: var(--silver);">
-                                ${t("positions")}: ${positions.join(", ")}
+                                ${t("positions")}: ${positionsTranslated}
+                            </div>
+                            <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                                <div style="display: flex; justify-content: center; align-items: center; gap: 0.3rem;">
+                                    <span style="font-size: 0.65rem; color: var(--silver);">⭐ ${t(
+                                      "avgRating"
+                                    )}:</span>
+                                    <span style="font-size: 0.9rem; font-weight: bold; color: ${ratingColor};">${ratingDisplay}</span>
+                                </div>
+                                ${
+                                  player.position === "GK"
+                                    ? `
+                                    <div style="font-size: 0.6rem; color: #888; margin-top: 0.2rem;">
+                                        🧤 ${player.saves || 0} ${t(
+                                        "saves"
+                                      )} | 🚫 ${player.cleanSheets || 0} ${t(
+                                        "cleanSheets"
+                                      )}
+                                    </div>
+                                `
+                                    : `
+                                    <div style="font-size: 0.6rem; color: #888; margin-top: 0.2rem;">
+                                        ⚽ ${player.goals || 0} ${t(
+                                        "goals"
+                                      )} | 🅰️ ${player.assists || 0} ${t(
+                                        "assists"
+                                      )}
+                                    </div>
+                                `
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             `;
         return html;
+      }
+
+      function getAverageRating(player) {
+        if (!player.matchRatings || player.matchRatings.length === 0) {
+          return null;
+        }
+        const sum = player.matchRatings.reduce((a, b) => a + b, 0);
+        return sum / player.matchRatings.length;
+      }
+
+      function getRatingColor(rating) {
+        if (rating >= 8) return "#4CAF50"; // Green - excellent
+        if (rating >= 7) return "#8BC34A"; // Light green - good
+        if (rating >= 6) return "#FFC107"; // Yellow - average
+        if (rating >= 5) return "#FF9800"; // Orange - below average
+        return "#f44336"; // Red - poor
+      }
+
+      function getPositionFullName(pos) {
+        const positionNames = {
+          pl: {
+            GK: "Bramkarz",
+            CB: "Środkowy Obrońca",
+            LB: "Lewy Obrońca",
+            RB: "Prawy Obrońca",
+            LWB: "Lewy Wahadłowy",
+            RWB: "Prawy Wahadłowy",
+            CDM: "Defensywny Pomocnik",
+            CM: "Środkowy Pomocnik",
+            CAM: "Ofensywny Pomocnik",
+            LM: "Lewy Pomocnik",
+            RM: "Prawy Pomocnik",
+            LW: "Lewy Skrzydłowy",
+            RW: "Prawy Skrzydłowy",
+            ST: "Napastnik",
+            CF: "Środkowy Napastnik",
+          },
+          en: {
+            GK: "Goalkeeper",
+            CB: "Center Back",
+            LB: "Left Back",
+            RB: "Right Back",
+            LWB: "Left Wing Back",
+            RWB: "Right Wing Back",
+            CDM: "Defensive Midfielder",
+            CM: "Central Midfielder",
+            CAM: "Attacking Midfielder",
+            LM: "Left Midfielder",
+            RM: "Right Midfielder",
+            LW: "Left Winger",
+            RW: "Right Winger",
+            ST: "Striker",
+            CF: "Center Forward",
+          },
+        };
+
+        return (
+          positionNames[currentLang]?.[pos] || positionNames["en"][pos] || pos
+        );
       }
 
       function flipCard(element) {
@@ -6824,7 +9766,7 @@
 
         const sender = document.createElement("div");
         sender.className = "sender";
-        sender.textContent = type === "agent" ? "🤵 Agent" : "👤 Ty";
+        sender.textContent = type === "agent" ? "🤵 Agent" : "👤 " + t("you");
 
         const text = document.createElement("div");
         text.textContent = message;
@@ -6848,13 +9790,17 @@
         negotiationRound++;
 
         // Player message
-        let offerText = `Oferuję €${offeredPrice.toLocaleString()}`;
+        const offerWord = currentLang === "pl" ? "Oferuję" : "I offer";
+        const valueWord = currentLang === "pl" ? "wartość" : "value";
+        const totalWord = currentLang === "pl" ? "łącznie" : "total";
+
+        let offerText = `${offerWord} €${offeredPrice.toLocaleString()}`;
         if (swapPlayer) {
           offerText += ` + ${swapPlayer.name} (OVR ${
             swapPlayer.overall
-          }, wartość €${swapValue.toLocaleString()})`;
+          }, ${valueWord} €${swapValue.toLocaleString()})`;
         }
-        offerText += ` = łącznie €${totalOffer.toLocaleString()}`;
+        offerText += ` = ${totalWord} €${totalOffer.toLocaleString()}`;
         addChatMessage("player", offerText);
 
         // Check if can afford
@@ -6959,10 +9905,15 @@
         const totalCost = agreedPrice + bonus;
 
         if (totalCost > GameState.manager.balance) {
+          const salaryWord = currentLang === "pl" ? "Pensja" : "Salary";
+          const yearsWord = currentLang === "pl" ? "lat" : "years";
+          const bonusWord = currentLang === "pl" ? "bonus" : "bonus";
           addChatMessage(
             "player",
-            `Pensja €${salary.toLocaleString()}/tyg, ${length} lat` +
-              (bonus ? `, bonus €${bonus.toLocaleString()}` : "")
+            `${salaryWord} €${salary.toLocaleString()}/${
+              currentLang === "pl" ? "tyg" : "week"
+            }, ${length} ${yearsWord}` +
+              (bonus ? `, ${bonusWord} €${bonus.toLocaleString()}` : "")
           );
           setTimeout(() => {
             addChatMessage("agent", getAgentMessages().notEnoughMoney);
@@ -6975,9 +9926,17 @@
         negotiationRound++;
 
         // Player message
-        let offerText = `Pensja €${salary.toLocaleString()}/tyg, kontrakt ${length} lat`;
-        if (bonus > 0) offerText += `, bonus €${bonus.toLocaleString()}`;
-        if (clause > 0) offerText += `, klauzula €${clause.toLocaleString()}`;
+        const salaryWord = currentLang === "pl" ? "Pensja" : "Salary";
+        const contractWord = currentLang === "pl" ? "kontrakt" : "contract";
+        const yearsWord = currentLang === "pl" ? "lat" : "years";
+        const bonusWord = currentLang === "pl" ? "bonus" : "bonus";
+        const clauseWord = currentLang === "pl" ? "klauzula" : "clause";
+        const weekWord = currentLang === "pl" ? "tyg" : "week";
+
+        let offerText = `${salaryWord} €${salary.toLocaleString()}/${weekWord}, ${contractWord} ${length} ${yearsWord}`;
+        if (bonus > 0) offerText += `, ${bonusWord} €${bonus.toLocaleString()}`;
+        if (clause > 0)
+          offerText += `, ${clauseWord} €${clause.toLocaleString()}`;
         addChatMessage("player", offerText);
 
         // AI response
@@ -7267,7 +10226,41 @@
 
       function startPenalties(difficulty = "medium") {
         GameState.match.difficulty = difficulty;
+        GameState.match.bannedSlots = []; // Reset banned slots
 
+        // Check for protests before hard matches
+        if (difficulty === "hard") {
+          healInjuries(); // First heal any expired injuries
+          const issues = checkPreMatchProtests();
+
+          if (issues.length > 0) {
+            // Handle each issue one by one
+            handlePreMatchIssues(issues, 0, () => {
+              actuallyStartPenalties(difficulty);
+            });
+            return;
+          }
+        }
+
+        actuallyStartPenalties(difficulty);
+      }
+
+      function handlePreMatchIssues(issues, index, callback) {
+        if (index >= issues.length) {
+          callback();
+          return;
+        }
+
+        const issue = issues[index];
+        showProtestModal(issue);
+
+        // Continue to next issue after a delay
+        setTimeout(() => {
+          handlePreMatchIssues(issues, index + 1, callback);
+        }, 500);
+      }
+
+      function actuallyStartPenalties(difficulty) {
         // Reset state
         penaltyState = {
           round: 1,
@@ -7307,9 +10300,12 @@
                   currentLang === "pl" ? "PRAWO" : "RIGHT"
                 }</button>
             `;
+        buttons.style.display = "flex";
 
         // Show surrender button
-        document.getElementById("surrenderBtn").style.display = "block";
+        const surrenderBtn = document.getElementById("surrenderBtn");
+        surrenderBtn.style.display = "block";
+        surrenderBtn.onclick = surrenderPenalties;
 
         initCrowdSound();
         updatePenaltyUI();
@@ -7372,9 +10368,9 @@
           penaltyState.playerScore;
         document.getElementById("penaltyScoreOpponent").textContent =
           penaltyState.opponentScore;
-        document.getElementById(
-          "penaltyRound"
-        ).textContent = `Runda ${penaltyState.round}/${penaltyState.maxRounds}`;
+        document.getElementById("penaltyRound").textContent = `${t("round")} ${
+          penaltyState.round
+        }/${penaltyState.maxRounds}`;
 
         // Update dots
         const playerDots = document.querySelectorAll("#playerDots .dot");
@@ -7426,8 +10422,10 @@
             penaltyState.shooters[
               penaltyState.currentShooterIndex % penaltyState.shooters.length
             ];
-          actionEl.textContent = "🎯 WYBIERZ KIERUNEK STRZAŁU - 15s";
-          shooterName.textContent = shooter?.name || "Strzelec";
+          actionEl.textContent = t("chooseShot") + " - 15s";
+          shooterName.textContent =
+            (currentLang === "pl" ? "Strzela: " : "Shoots: ") +
+            (shooter?.name || "Strzelec");
           shooterStats.textContent = `SHO: ${
             shooter?.stats?.Shooting || shooter?.overall || 70
           }`;
@@ -7439,9 +10437,9 @@
             if (timerBar)
               timerBar.style.width = `${(penaltyState.timeLeft / 15) * 100}%`;
             if (timerText)
-              timerText.textContent = `STRZELAJ! - ${Math.ceil(
-                penaltyState.timeLeft
-              )}s`;
+              timerText.textContent = `${
+                currentLang === "pl" ? "STRZELAJ!" : "SHOOT!"
+              } - ${Math.ceil(penaltyState.timeLeft)}s`;
 
             if (penaltyState.timeLeft <= 0) {
               clearInterval(penaltyState.shootTimer);
@@ -7460,11 +10458,21 @@
               penaltyState.currentShooterIndex %
                 penaltyState.opponentShooters.length
             ];
-          actionEl.textContent = "🧤 WYBIERZ KIERUNEK OBRONY - 15s";
-          shooterName.textContent = `Strzela: ${shooter?.name || "Przeciwnik"}`;
-          shooterStats.textContent = `SHO: ${
-            shooter?.stats?.Shooting || shooter?.overall || 70
-          }`;
+
+          // Get your goalkeeper info
+          const yourGK = GameState.squad.players.find(
+            (p) => p && p.position === "GK"
+          );
+          const gkName =
+            yourGK?.name || (currentLang === "pl" ? "Bramkarz" : "Goalkeeper");
+          const gkDiving = yourGK?.stats?.Diving || yourGK?.overall || 50;
+
+          actionEl.textContent = t("chooseDefense") + " - 15s";
+          shooterName.textContent =
+            (currentLang === "pl" ? "Broni: " : "Saves: ") + gkName;
+          shooterStats.textContent = `DIV: ${gkDiving} | ${
+            currentLang === "pl" ? "Strzela" : "Shoots"
+          }: ${shooter?.name || "Przeciwnik"}`;
           shooterInfo.style.display = "block";
 
           // Start 15s timer
@@ -7473,9 +10481,9 @@
             if (timerBar)
               timerBar.style.width = `${(penaltyState.timeLeft / 15) * 100}%`;
             if (timerText)
-              timerText.textContent = `BROŃ! - ${Math.ceil(
-                penaltyState.timeLeft
-              )}s`;
+              timerText.textContent = `${
+                currentLang === "pl" ? "BROŃ!" : "SAVE!"
+              } - ${Math.ceil(penaltyState.timeLeft)}s`;
 
             if (penaltyState.timeLeft <= 0) {
               clearInterval(penaltyState.shootTimer);
@@ -7966,6 +10974,17 @@
 
         document.getElementById("shooterInfo").style.display = "none";
 
+        // Calculate match ratings and check for injuries only for HARD difficulty
+        if (GameState.match.difficulty === "hard") {
+          calculateMatchRatings(
+            won,
+            penaltyState.playerScore,
+            penaltyState.opponentScore
+          );
+          checkForInjuries();
+          checkWrongPositionPenalties();
+        }
+
         setTimeout(() => {
           alert(
             `${won ? t("congrats") : t("lost")}\n\n${
@@ -7975,6 +10994,399 @@
         }, 300);
 
         autoSave();
+      }
+
+      // ==================== INJURY & PROTEST SYSTEM ====================
+
+      function isPlayerInjured(player) {
+        if (!player || !player.injuredUntil) return false;
+        return Date.now() < player.injuredUntil;
+      }
+
+      function getInjuryTimeRemaining(player) {
+        if (!player || !player.injuredUntil) return 0;
+        const remaining = player.injuredUntil - Date.now();
+        return Math.max(0, Math.ceil(remaining / (1000 * 60 * 60))); // hours
+      }
+
+      function checkForInjuries() {
+        // 20% chance of injury after hard/online match
+        if (Math.random() > 0.2) return;
+
+        const allPlayers = GameState.squad.players.filter(
+          (p) => p && !isPlayerInjured(p)
+        );
+        if (allPlayers.length === 0) return;
+
+        // Random player gets injured
+        const injuredPlayer =
+          allPlayers[Math.floor(Math.random() * allPlayers.length)];
+
+        // Injury lasts 24 hours
+        injuredPlayer.injuredUntil = Date.now() + 24 * 60 * 60 * 1000;
+
+        setTimeout(() => {
+          alert(t("injuryAlert").replace("{player}", injuredPlayer.name));
+        }, 500);
+
+        autoSave();
+      }
+
+      function checkWrongPositionPenalties() {
+        // Check if any player played in wrong position
+        const squadPlayers = GameState.squad.players.filter((p) => p);
+
+        squadPlayers.forEach((player, index) => {
+          const requiredPosition = getRequiredPositionForSlot(index);
+          const isWrongPosition =
+            player.originalPosition !== requiredPosition &&
+            player.position !== requiredPosition;
+
+          if (isWrongPosition) {
+            player.wrongPositionMatches =
+              (player.wrongPositionMatches || 0) + 1;
+
+            // After 2+ consecutive matches in wrong position, lose OVR
+            if (player.wrongPositionMatches >= 2) {
+              const ovrLoss = Math.min(3, player.wrongPositionMatches - 1);
+              player.overall = Math.max(50, player.overall - ovrLoss);
+
+              setTimeout(() => {
+                alert(
+                  t("overallDropped")
+                    .replace("{player}", player.name)
+                    .replace("{points}", ovrLoss)
+                );
+              }, 1000);
+            }
+          } else {
+            player.wrongPositionMatches = 0;
+          }
+        });
+
+        autoSave();
+      }
+
+      function getRequiredPositionForSlot(slotIndex) {
+        const formation = GameState.squad.formation || "4-3-3";
+        const positions = {
+          "4-3-3": [
+            "GK",
+            "LB",
+            "CB",
+            "CB",
+            "RB",
+            "CM",
+            "CM",
+            "CM",
+            "LW",
+            "ST",
+            "RW",
+          ],
+          "4-4-2": [
+            "GK",
+            "LB",
+            "CB",
+            "CB",
+            "RB",
+            "LM",
+            "CM",
+            "CM",
+            "RM",
+            "ST",
+            "ST",
+          ],
+          "3-5-2": [
+            "GK",
+            "CB",
+            "CB",
+            "CB",
+            "CDM",
+            "LM",
+            "CM",
+            "RM",
+            "CAM",
+            "ST",
+            "ST",
+          ],
+          "4-2-3-1": [
+            "GK",
+            "LB",
+            "CB",
+            "CB",
+            "RB",
+            "CDM",
+            "CDM",
+            "LW",
+            "CAM",
+            "RW",
+            "ST",
+          ],
+          "5-3-2": [
+            "GK",
+            "LB",
+            "CB",
+            "CB",
+            "CB",
+            "RB",
+            "CM",
+            "CM",
+            "CM",
+            "ST",
+            "ST",
+          ],
+          "4-1-4-1": [
+            "GK",
+            "LB",
+            "CB",
+            "CB",
+            "RB",
+            "CDM",
+            "LM",
+            "CM",
+            "CM",
+            "RM",
+            "ST",
+          ],
+        };
+        return (positions[formation] || positions["4-3-3"])[slotIndex] || "CM";
+      }
+
+      let protestState = {
+        player: null,
+        type: null, // 'injury' or 'wrongPosition'
+        fineAmount: 0,
+        slotIndex: -1,
+      };
+
+      function checkPreMatchProtests() {
+        // Check all squad players before match
+        const issues = [];
+
+        GameState.squad.players.forEach((player, index) => {
+          if (!player) return;
+
+          // Check injury
+          if (isPlayerInjured(player)) {
+            issues.push({
+              player: player,
+              type: "injury",
+              slotIndex: index,
+              message: t("injuryWarning").replace("{player}", player.name),
+            });
+          }
+
+          // Check wrong position
+          const requiredPosition = getRequiredPositionForSlot(index);
+          if (
+            player.originalPosition !== requiredPosition &&
+            player.position !== requiredPosition
+          ) {
+            issues.push({
+              player: player,
+              type: "wrongPosition",
+              slotIndex: index,
+              message: t("wrongPositionWarning")
+                .replace("{player}", player.name)
+                .replace("{current}", requiredPosition)
+                .replace(
+                  "{original}",
+                  player.originalPosition || player.position
+                ),
+            });
+          }
+        });
+
+        return issues;
+      }
+
+      function showProtestModal(issue) {
+        protestState = {
+          player: issue.player,
+          type: issue.type,
+          slotIndex: issue.slotIndex,
+          fineAmount: Math.floor(issue.player.salary * 10), // 10 weeks salary as fine
+        };
+
+        const protestText =
+          issue.type === "injury"
+            ? t("injuryProtest").replace("{player}", issue.player.name)
+            : t("wrongPositionProtest").replace("{player}", issue.player.name);
+
+        const result = confirm(
+          `${protestText}\n\n` +
+            `${t("protestOptions")}\n\n` +
+            `${t("ignoreProtest")} - ${
+              currentLang === "pl"
+                ? "Gracz może odmówić i zażądać grzywny"
+                : "Player may refuse and demand fine"
+            }\n` +
+            `${t("acceptProtest")} - ${
+              currentLang === "pl"
+                ? "Zdejmij gracza ze składu"
+                : "Remove player from squad"
+            }\n\n` +
+            `${
+              currentLang === "pl"
+                ? "OK = Ignoruj, Anuluj = Zdejmij gracza"
+                : "OK = Ignore, Cancel = Remove player"
+            }`
+        );
+
+        if (result) {
+          // Ignore protest - player may refuse
+          handleIgnoredProtest();
+        } else {
+          // Accept - remove player
+          handleAcceptedProtest();
+        }
+      }
+
+      function handleIgnoredProtest() {
+        // 50% chance player refuses and demands fine
+        if (Math.random() < 0.5) {
+          const fineMsg = t("playerRefuses")
+            .replace("{player}", protestState.player.name)
+            .replace("{amount}", protestState.fineAmount.toLocaleString());
+
+          const payFine = confirm(
+            `${fineMsg}\n\n` +
+              `${t(
+                "payFine"
+              )}: €${protestState.fineAmount.toLocaleString()}\n\n` +
+              `${
+                currentLang === "pl"
+                  ? "OK = Zapłać, Anuluj = Odmów"
+                  : "OK = Pay, Cancel = Refuse"
+              }`
+          );
+
+          if (payFine && GameState.manager.balance >= protestState.fineAmount) {
+            GameState.manager.balance -= protestState.fineAmount;
+            updateAccountDisplay();
+            // Player still refuses to play
+            banPlayerFromMatch(protestState.slotIndex);
+          } else {
+            // Player banned, no replacement allowed
+            banPlayerFromMatch(protestState.slotIndex);
+          }
+        }
+        // Else player reluctantly plays
+      }
+
+      function handleAcceptedProtest() {
+        // Remove player from squad (move to bench)
+        const player = GameState.squad.players[protestState.slotIndex];
+        GameState.squad.players[protestState.slotIndex] = null;
+
+        // Try to add to bench
+        const emptyBenchSlot = GameState.squad.bench.findIndex((p) => !p);
+        if (emptyBenchSlot !== -1) {
+          GameState.squad.bench[emptyBenchSlot] = player;
+        }
+
+        autoSave();
+      }
+
+      function banPlayerFromMatch(slotIndex) {
+        // Mark slot as banned for this match
+        if (!GameState.match.bannedSlots) {
+          GameState.match.bannedSlots = [];
+        }
+        GameState.match.bannedSlots.push(slotIndex);
+
+        alert(t("playerBanned").replace("{player}", protestState.player.name));
+      }
+
+      function healInjuries() {
+        // Check and heal injuries (call this periodically or on game load)
+        const allPlayers = [
+          ...(GameState.squad.players || []),
+          ...(GameState.squad.bench || []),
+        ];
+
+        allPlayers.forEach((player) => {
+          if (!player) return;
+
+          if (player.injuredUntil && Date.now() >= player.injuredUntil) {
+            player.injuredUntil = null;
+            // Could show notification here
+          }
+        });
+      }
+
+      function calculateMatchRatings(won, playerScore, opponentScore) {
+        // Get all players in squad
+        const allPlayers = GameState.squad.players.filter((p) => p);
+        if (allPlayers.length === 0) return;
+
+        // Base rating depends on result
+        let baseRating = won ? 7.0 : 5.5;
+
+        // Adjust for goal difference
+        const goalDiff = playerScore - opponentScore;
+        baseRating += goalDiff * 0.3; // +0.3 per goal difference
+
+        // Clamp base
+        baseRating = Math.max(4, Math.min(9, baseRating));
+
+        // Calculate individual ratings
+        allPlayers.forEach((player) => {
+          if (!player) return;
+
+          // Initialize arrays if missing
+          if (!player.matchRatings) player.matchRatings = [];
+
+          let rating = baseRating;
+
+          // Random variation (-0.5 to +1.0)
+          rating += Math.random() * 1.5 - 0.5;
+
+          // Bonus for overall (better players tend to play better)
+          rating += (player.overall - 70) * 0.02;
+
+          // Check if player scored in this match
+          const scoredGoals =
+            penaltyState.playerShots?.filter(
+              (s) =>
+                s.scored &&
+                penaltyState.shooters?.[s.shooterIndex]?.id === player.id
+            ).length || 0;
+
+          if (scoredGoals > 0) {
+            player.goals = (player.goals || 0) + scoredGoals;
+            rating += scoredGoals * 0.5; // +0.5 per goal
+          }
+
+          // Goalkeeper bonuses
+          if (player.position === "GK") {
+            const savedShots =
+              penaltyState.opponentShots?.filter((s) => !s.scored).length || 0;
+            if (savedShots > 0) {
+              player.saves = (player.saves || 0) + savedShots;
+              rating += savedShots * 0.4; // +0.4 per save
+            }
+            if (opponentScore === 0) {
+              player.cleanSheets = (player.cleanSheets || 0) + 1;
+              rating += 1.0; // +1.0 for clean sheet
+            }
+          }
+
+          // Clamp final rating to 0-10
+          rating = Math.max(0, Math.min(10, rating));
+
+          // Round to 1 decimal
+          rating = Math.round(rating * 10) / 10;
+
+          // Add to ratings history (keep last 20 matches)
+          player.matchRatings.push(rating);
+          if (player.matchRatings.length > 20) {
+            player.matchRatings.shift();
+          }
+
+          // Increment games played
+          player.gamesPlayed = (player.gamesPlayed || 0) + 1;
+        });
       }
 
       function playAgain() {
@@ -8008,11 +11420,7 @@
 
       function createPenaltyRoom() {
         if (typeof Peer === "undefined") {
-          alert(
-            currentLang === "pl"
-              ? "Błąd połączenia. Odśwież stronę."
-              : "Connection error. Refresh the page."
-          );
+          alert(t("connectionError"));
           return;
         }
 
@@ -8038,7 +11446,7 @@
           const shareLink = currentUrl + "?room=" + id;
           document.getElementById("penaltyRoomCode").textContent = shareLink;
           document.getElementById("penaltyHostStatus").textContent =
-            t("waiting");
+            t("roomReady");
         });
 
         penaltyPeer.on("connection", (conn) => {
@@ -8056,21 +11464,14 @@
 
         penaltyPeer.on("error", (err) => {
           console.error("PeerJS error:", err);
-          const errorMsg =
-            currentLang === "pl"
-              ? "Błąd połączenia. Spróbuj ponownie."
-              : "Connection error. Try again.";
-          document.getElementById("penaltyHostStatus").textContent = errorMsg;
+          document.getElementById("penaltyHostStatus").textContent =
+            t("connectionError");
         });
       }
 
       function joinPenaltyRoom() {
         if (typeof Peer === "undefined") {
-          alert(
-            currentLang === "pl"
-              ? "Błąd połączenia. Odśwież stronę."
-              : "Connection error. Refresh the page."
-          );
+          alert(t("connectionError"));
           return;
         }
 
@@ -8125,22 +11526,15 @@
 
           penaltyConn.on("error", (err) => {
             console.error("Connection error:", err);
-            const errorMsg =
-              currentLang === "pl"
-                ? "Nie można połączyć z pokojem."
-                : "Cannot connect to room.";
             document.getElementById("penaltyGuestStatus").textContent =
-              errorMsg;
+              t("cannotConnect");
           });
         });
 
         penaltyPeer.on("error", (err) => {
           console.error("PeerJS error:", err);
-          const errorMsg =
-            currentLang === "pl"
-              ? "Błąd połączenia. Sprawdź kod."
-              : "Connection error. Check the code.";
-          document.getElementById("penaltyGuestStatus").textContent = errorMsg;
+          document.getElementById("penaltyGuestStatus").textContent =
+            t("connectionError") + " " + t("checkCode");
         });
       }
 
@@ -8164,13 +11558,17 @@
         showScreen("playMenu");
       }
 
+      // Opponent name
+      let opponentName = "";
+
       function startOnlinePenalty() {
         isOnlinePenalty = true;
 
-        // Send start signal with squad to guest
+        // Send start signal with squad and name to guest
         penaltyConn.send({
           type: "start_penalty",
           squad: getSquadForReveal(),
+          name: GameState.manager.name || "Manager",
         });
 
         // Start squad reveal animation
@@ -8208,6 +11606,7 @@
         isReady: false,
         opponentReady: false,
         opponentSquad: null,
+        opponentName: "",
       };
 
       function startSquadReveal(isHost) {
@@ -8328,6 +11727,14 @@
         document.getElementById("squadRevealProgress").style.display = "none";
         document.getElementById("squadRevealFull").style.display = "flex";
 
+        // Set names
+        const myName = GameState.manager.name || t("you");
+        const oppName =
+          squadRevealState.opponentName || opponentName || t("opponent");
+        document.getElementById("squadRevealMyName").textContent = myName;
+        document.getElementById("squadRevealOpponentName").textContent =
+          oppName;
+
         // Build formation display
         const squad = getSquadForReveal();
         const formationContainer = document.getElementById(
@@ -8419,6 +11826,18 @@
         };
 
         showScreen("penaltyScreen");
+
+        // Set player names
+        const myName = GameState.manager.name || t("you");
+        const oppName = opponentName || t("opponent");
+        document.getElementById("penaltyPlayerLabel").textContent = myName;
+        document.getElementById("penaltyOpponentLabel").textContent = oppName;
+
+        // Show surrender button
+        document.getElementById("surrenderBtn").style.display = "block";
+        document.getElementById("surrenderBtn").onclick =
+          surrenderOnlinePenalties;
+
         initCrowdSound();
         updatePenaltyUI();
         setupOnlinePenaltyPhase();
@@ -8428,13 +11847,29 @@
         if (data.type === "start_penalty") {
           isOnlinePenalty = true;
 
-          // Store opponent squad if sent
+          // Store opponent squad and name
           if (data.squad) {
             squadRevealState.opponentSquad = data.squad;
           }
+          if (data.name) {
+            opponentName = data.name;
+            squadRevealState.opponentName = data.name;
+          }
+
+          // Send my name back to host
+          penaltyConn.send({
+            type: "player_info",
+            name: GameState.manager.name || "Manager",
+          });
 
           // Start squad reveal for guest
           startSquadReveal(false);
+        }
+
+        if (data.type === "player_info") {
+          // Host receives guest name
+          opponentName = data.name || "Manager";
+          squadRevealState.opponentName = data.name || "Manager";
         }
 
         if (data.type === "squad_ready") {
@@ -8443,65 +11878,27 @@
         }
 
         if (data.type === "penalty_choice") {
+          // Opponent made their choice
           onlinePenaltyState.opponentChoice = data.direction;
 
-          // Only HOST resolves when both chose
-          if (onlinePenaltyState.myChoice && isPenaltyHost) {
-            resolveOnlinePenaltyAsHost();
-          }
-        }
-
-        if (data.type === "penalty_result") {
-          // Guest receives result from host
-          handlePenaltyResult(data);
-        }
-
-        if (data.type === "result_ready") {
-          // Host receives confirmation from guest
-          handleResultReady();
-        }
-
-        if (data.type === "next_round") {
-          penaltyState.round = data.round;
-          penaltyState.currentShooterIndex = data.shooterIndex;
-          penaltyState.playerScore = isPenaltyHost
-            ? data.hostScore
-            : data.guestScore;
-          penaltyState.opponentScore = isPenaltyHost
-            ? data.guestScore
-            : data.hostScore;
-
-          // Set phase from host
-          if (data.phase) {
-            // Guest has opposite phase
-            penaltyState.phase = isPenaltyHost
-              ? data.phase
-              : data.phase === "player_shoot"
-              ? "player_save"
-              : "player_shoot";
-          }
-
-          updatePenaltyUI();
-          setupOnlinePenaltyPhase();
-        }
-
-        if (data.type === "penalty_end") {
-          endOnlinePenalty(data.hostScore, data.guestScore);
+          // Check if both ready to show animation
+          checkBothPlayersReady();
         }
 
         if (data.type === "rematch_request") {
-          if (confirm(t("rematchRequest"))) {
+          if (confirm(t("wantRematch"))) {
             penaltyConn.send({ type: "rematch_accept" });
-            if (isPenaltyHost) {
-              startOnlinePenalty();
-            }
+            // Reset and restart
+            resetOnlinePenaltyState();
+            setupOnlinePenaltyPhase();
           } else {
             penaltyConn.send({ type: "rematch_decline" });
           }
         }
 
         if (data.type === "rematch_accept") {
-          startOnlinePenalty();
+          resetOnlinePenaltyState();
+          setupOnlinePenaltyPhase();
         }
 
         if (data.type === "rematch_decline") {
@@ -8509,11 +11906,30 @@
         }
 
         if (data.type === "surrender") {
-          // Opponent surrendered
-          const hostScore = isPenaltyHost ? 5 : 0;
-          const guestScore = isPenaltyHost ? 0 : 5;
-          endOnlinePenalty(hostScore, guestScore);
+          // Opponent surrendered - I win
+          penaltyState.playerScore = 5;
+          penaltyState.opponentScore = 0;
+          endOnlinePenaltyGame();
         }
+      }
+
+      function resetOnlinePenaltyState() {
+        penaltyState = {
+          round: 1,
+          maxRounds: 5,
+          playerScore: 0,
+          opponentScore: 0,
+          playerShots: [],
+          opponentShots: [],
+          phase: isPenaltyHost ? "player_shoot" : "player_save",
+          shooters: getPlayerShooters(),
+          opponentShooters: [],
+          currentShooterIndex: 0,
+          selectedDirection: null,
+        };
+        onlinePenaltyState.myChoice = null;
+        onlinePenaltyState.opponentChoice = null;
+        updatePenaltyUI();
       }
 
       function setupOnlinePenaltyPhase() {
@@ -8546,14 +11962,13 @@
               penaltyState.currentShooterIndex % penaltyState.shooters.length
             ];
           actionEl.textContent = t("chooseShot");
-          shooterName.textContent = shooter?.name || "Strzelec";
+          shooterName.textContent = shooter?.name || t("shooterShoots");
           shooterStats.textContent = `SHO: ${
             shooter?.stats?.Shooting || shooter?.overall || 70
           }`;
         } else {
           actionEl.textContent = t("chooseDefense");
-          shooterName.textContent =
-            currentLang === "pl" ? "Przeciwnik strzela" : "Opponent shoots";
+          shooterName.textContent = t("opponentShoots");
           shooterStats.textContent = "";
         }
 
@@ -8569,7 +11984,7 @@
 
         onlinePenaltyState.myChoice = direction;
 
-        // Highlight
+        // Highlight my choice
         document
           .querySelectorAll(".goal-zone")
           .forEach((z) => z.classList.remove("selected"));
@@ -8577,206 +11992,83 @@
           .querySelector(`.goal-zone.${direction}`)
           ?.classList.add("selected");
 
+        // Hide buttons, show waiting
         document.getElementById("penaltyButtons").style.display = "none";
         document.getElementById("penaltyAction").textContent =
           t("waitingOpponent");
 
-        // Send to opponent
+        // Send my choice to opponent
         penaltyConn.send({ type: "penalty_choice", direction: direction });
 
-        // Check if opponent already chose - only HOST resolves
-        if (onlinePenaltyState.opponentChoice && isPenaltyHost) {
-          resolveOnlinePenaltyAsHost();
-        }
+        // Check if both ready
+        checkBothPlayersReady();
       }
 
-      // HOST calculates result and sends to both
-      function resolveOnlinePenaltyAsHost() {
-        if (!isPenaltyHost) return;
-        if (onlinePenaltyState.resolved) return;
-        onlinePenaltyState.resolved = true;
-
-        // Host is always shooting first in odd rounds
-        let hostShootDir, guestShootDir, hostSaveDir, guestSaveDir;
-
-        if (penaltyState.phase === "player_shoot") {
-          // Host shoots
-          hostShootDir = onlinePenaltyState.myChoice;
-          guestSaveDir = onlinePenaltyState.opponentChoice;
-        } else {
-          // Guest shoots
-          guestShootDir = onlinePenaltyState.opponentChoice;
-          hostSaveDir = onlinePenaltyState.myChoice;
-        }
-
-        const shootDir = hostShootDir || guestShootDir;
-        const saveDir = hostSaveDir || guestSaveDir;
-
-        // Get shooter stats
-        const shooter =
-          penaltyState.shooters[
-            penaltyState.currentShooterIndex % penaltyState.shooters.length
-          ];
-        const shooting = shooter?.stats?.Shooting || shooter?.overall || 70;
-
-        // Calculate result (HOST decides - same for both)
-        const missRoll = Math.random();
-        const missChance = Math.max(0.02, (100 - shooting) / 500);
-        const didMiss = missRoll < missChance;
-
-        const saveRoll = Math.random();
-        const saved = shootDir === saveDir && saveRoll < 0.5;
-
-        const scored = !didMiss && !saved;
-
-        // Update scores
-        let hostScore = penaltyState.playerScore;
-        let guestScore = penaltyState.opponentScore;
-
-        if (penaltyState.phase === "player_shoot") {
-          // Host shot
-          if (scored) {
-            hostScore++;
-            penaltyState.playerScore++;
-            penaltyState.playerShots.push("scored");
-          } else {
-            penaltyState.playerShots.push("missed");
-          }
-        } else {
-          // Guest shot
-          if (scored) {
-            guestScore++;
-            penaltyState.opponentScore++;
-            penaltyState.opponentShots.push("scored");
-          } else {
-            penaltyState.opponentShots.push("missed");
-          }
-        }
-
-        // Store result for showing after sync
-        onlinePenaltyState.pendingResult = {
-          shootDir,
-          saveDir,
-          scored,
-          didMiss,
-          saved,
-          hostScore,
-          guestScore,
-        };
-
-        // Send result to guest - wait for confirmation before showing
-        penaltyConn.send({
-          type: "penalty_result",
-          shootDir: shootDir,
-          saveDir: saveDir,
-          scored: scored,
-          didMiss: didMiss,
-          saved: saved,
-          hostScore: hostScore,
-          guestScore: guestScore,
-          round: penaltyState.round,
-          phase: penaltyState.phase,
-        });
-
-        // Wait for guest confirmation, with timeout
-        onlinePenaltyState.waitingForSync = true;
-        setTimeout(() => {
-          // If guest hasn't confirmed in 2 seconds, show anyway
-          if (onlinePenaltyState.waitingForSync) {
-            onlinePenaltyState.waitingForSync = false;
-            const r = onlinePenaltyState.pendingResult;
-            showPenaltyResult(
-              r.shootDir,
-              r.saveDir,
-              r.scored,
-              r.didMiss,
-              r.saved,
-              true
-            );
-          }
-        }, 2000);
-      }
-
-      // Guest receives result from host
-      function handlePenaltyResult(data) {
-        // Update scores from host
-        penaltyState.playerScore = isPenaltyHost
-          ? data.hostScore
-          : data.guestScore;
-        penaltyState.opponentScore = isPenaltyHost
-          ? data.guestScore
-          : data.hostScore;
-
-        // Track shots
-        if (data.phase === "player_shoot") {
-          // Host shot
-          if (isPenaltyHost) {
-            penaltyState.playerShots.push(data.scored ? "scored" : "missed");
-          } else {
-            penaltyState.opponentShots.push(data.scored ? "scored" : "missed");
-          }
-        } else {
-          // Guest shot
-          if (isPenaltyHost) {
-            penaltyState.opponentShots.push(data.scored ? "scored" : "missed");
-          } else {
-            penaltyState.playerShots.push(data.scored ? "scored" : "missed");
-          }
-        }
-
-        // Send confirmation to host
-        penaltyConn.send({ type: "result_ready" });
-
-        // Show result immediately (host will show at same time after receiving confirmation)
-        showPenaltyResult(
-          data.shootDir,
-          data.saveDir,
-          data.scored,
-          data.didMiss,
-          data.saved,
-          false
-        );
-      }
-
-      // Host receives confirmation that guest is ready to show result
-      function handleResultReady() {
+      function checkBothPlayersReady() {
+        // Both players must have chosen
         if (
-          onlinePenaltyState.waitingForSync &&
-          onlinePenaltyState.pendingResult
+          !onlinePenaltyState.myChoice ||
+          !onlinePenaltyState.opponentChoice
         ) {
-          onlinePenaltyState.waitingForSync = false;
-          const r = onlinePenaltyState.pendingResult;
-          showPenaltyResult(
-            r.shootDir,
-            r.saveDir,
-            r.scored,
-            r.didMiss,
-            r.saved,
-            true
-          );
+          return; // Still waiting
         }
+
+        // Both chose! Now show animation
+        showOnlinePenaltyAnimation();
       }
 
-      function showPenaltyResult(
-        shootDir,
-        saveDir,
-        scored,
-        didMiss,
-        saved,
-        isHost
-      ) {
+      function showOnlinePenaltyAnimation() {
         const gk = document.getElementById("penaltyGK");
         const ball = document.getElementById("penaltyBall");
         const result = document.getElementById("penaltyResult");
 
-        // Animate
+        // Determine who shot and who saved based on phase
+        let shootDir, saveDir;
+
+        if (penaltyState.phase === "player_shoot") {
+          // I'm shooting, opponent is saving
+          shootDir = onlinePenaltyState.myChoice;
+          saveDir = onlinePenaltyState.opponentChoice;
+        } else {
+          // I'm saving, opponent is shooting
+          shootDir = onlinePenaltyState.opponentChoice;
+          saveDir = onlinePenaltyState.myChoice;
+        }
+
+        // Animate ball and goalkeeper
         ball.classList.add("shoot-" + shootDir);
         gk.classList.add("dive-" + saveDir);
 
+        // Calculate result after animation starts
         setTimeout(() => {
+          // Use deterministic result based on directions (same for both players!)
+          // Generate "random" seed from both choices combined
+          const seed = (shootDir + saveDir)
+            .split("")
+            .reduce((a, c) => a + c.charCodeAt(0), 0);
+          const pseudoRandom = ((seed * 9301 + 49297) % 233280) / 233280;
+
+          // Get shooter stats
+          const shooter =
+            penaltyState.shooters[
+              penaltyState.currentShooterIndex % penaltyState.shooters.length
+            ];
+          const shooting = shooter?.stats?.Shooting || shooter?.overall || 70;
+
+          // Miss chance based on shooting stat
+          const missChance = Math.max(0.02, (100 - shooting) / 500);
+          const didMiss = pseudoRandom < missChance;
+
+          // If same direction, 50% save chance
+          const saveChance = shootDir === saveDir ? 0.5 : 0;
+          const pseudoRandom2 = (((seed + 1) * 9301 + 49297) % 233280) / 233280;
+          const saved = !didMiss && pseudoRandom2 < saveChance;
+
+          const scored = !didMiss && !saved;
+
+          // Show result
           let resultText = "";
           let resultClass = "";
-
           const iWasShooter = penaltyState.phase === "player_shoot";
 
           if (didMiss) {
@@ -8787,7 +12079,7 @@
           } else if (saved) {
             resultText = t("saved");
             resultClass = iWasShooter ? "save" : "goal";
-          } else if (scored) {
+          } else {
             if (iWasShooter) {
               resultText = t("goal");
               resultClass = "goal";
@@ -8800,147 +12092,131 @@
           result.textContent = resultText;
           result.className = "penalty-result " + resultClass;
 
-          // Sound
+          // Update scores
           if (scored) {
+            if (iWasShooter) {
+              penaltyState.playerScore++;
+              penaltyState.playerShots.push("scored");
+            } else {
+              penaltyState.opponentScore++;
+              penaltyState.opponentShots.push("scored");
+            }
             playGoalSound();
           } else {
+            if (iWasShooter) {
+              penaltyState.playerShots.push("missed");
+            } else {
+              penaltyState.opponentShots.push("missed");
+            }
             playSaveSound();
           }
 
           updatePenaltyUI();
 
-          // Only HOST controls next round
-          if (isHost) {
-            setTimeout(() => {
-              const hostScore = penaltyState.playerScore;
-              const guestScore = penaltyState.opponentScore;
+          // Next round after delay
+          setTimeout(() => {
+            // Check if game ended
+            const totalShots =
+              penaltyState.playerShots.length +
+              penaltyState.opponentShots.length;
 
-              // Check end conditions
-              const totalShots =
-                penaltyState.playerShots.length +
-                penaltyState.opponentShots.length;
-
-              // After 10 shots (5 each), check for winner
-              if (totalShots >= 10) {
-                if (hostScore !== guestScore) {
-                  penaltyConn.send({
-                    type: "penalty_end",
-                    hostScore,
-                    guestScore,
-                  });
-                  endOnlinePenalty(hostScore, guestScore);
-                  return;
-                }
+            if (totalShots >= 10) {
+              // After 5 rounds each, check for winner
+              if (penaltyState.playerScore !== penaltyState.opponentScore) {
+                endOnlinePenaltyGame();
+                return;
               }
+            }
 
-              // Sudden death after 10 shots
-              if (totalShots >= 10 && totalShots % 2 === 0) {
-                if (hostScore !== guestScore) {
-                  penaltyConn.send({
-                    type: "penalty_end",
-                    hostScore,
-                    guestScore,
-                  });
-                  endOnlinePenalty(hostScore, guestScore);
-                  return;
-                }
+            // Sudden death check
+            if (totalShots >= 10 && totalShots % 2 === 0) {
+              if (penaltyState.playerScore !== penaltyState.opponentScore) {
+                endOnlinePenaltyGame();
+                return;
               }
+            }
 
-              // Next phase
-              let newRound = penaltyState.round;
-              let newShooterIndex = penaltyState.currentShooterIndex;
+            // Next phase
+            if (penaltyState.phase === "player_save") {
+              penaltyState.round++;
+              penaltyState.currentShooterIndex++;
+            }
 
-              if (penaltyState.phase === "player_save") {
-                newRound++;
-                newShooterIndex++;
-              }
+            penaltyState.phase =
+              penaltyState.phase === "player_shoot"
+                ? "player_save"
+                : "player_shoot";
 
-              const newPhase =
-                penaltyState.phase === "player_shoot"
-                  ? "player_save"
-                  : "player_shoot";
-
-              penaltyConn.send({
-                type: "next_round",
-                round: newRound,
-                shooterIndex: newShooterIndex,
-                hostScore: hostScore,
-                guestScore: guestScore,
-                phase: newPhase,
-              });
-
-              penaltyState.round = newRound;
-              penaltyState.currentShooterIndex = newShooterIndex;
-              penaltyState.phase = newPhase;
-
-              setupOnlinePenaltyPhase();
-            }, 2000);
-          }
-        }, 500);
+            // Reset and setup next round
+            setupOnlinePenaltyPhase();
+          }, 2500);
+        }, 600);
       }
 
-      function endOnlinePenalty(hostScore, guestScore) {
+      function endOnlinePenaltyGame() {
+        stopCrowdSound();
+
+        document.getElementById("surrenderBtn").style.display = "none";
+
         const result = document.getElementById("penaltyResult");
         const action = document.getElementById("penaltyAction");
         const buttons = document.getElementById("penaltyButtons");
 
-        stopCrowdSound();
+        const won = penaltyState.playerScore > penaltyState.opponentScore;
+        let bonus = won ? 5000 : 2000;
 
-        // Hide surrender button
-        document.getElementById("surrenderBtn").style.display = "none";
-
-        const myScore = isPenaltyHost ? hostScore : guestScore;
-        const oppScore = isPenaltyHost ? guestScore : hostScore;
-        const won = myScore > oppScore;
-
-        let bonus = 0;
         if (won) {
           result.textContent = t("youWin");
           result.className = "penalty-result goal";
-          bonus = 5000;
         } else {
           result.textContent = t("youLose");
           result.className = "penalty-result miss";
-          bonus = 2000;
         }
+
+        // Calculate match ratings for online match
+        calculateMatchRatings(
+          won,
+          penaltyState.playerScore,
+          penaltyState.opponentScore
+        );
+
+        // Check for injuries after online match (20% chance)
+        checkForInjuries();
+        checkWrongPositionPenalties();
 
         GameState.manager.balance += bonus;
         updateAccountDisplay();
+        autoSave();
 
-        action.textContent = `${t("finalScore")}: ${myScore} - ${oppScore}`;
+        action.textContent = `${t("finalScore")}: ${
+          penaltyState.playerScore
+        } - ${penaltyState.opponentScore}`;
 
-        // Show end buttons
+        // Show rematch/exit buttons
         buttons.innerHTML = `
-                <button class="penalty-btn" onclick="requestRematch()">${
-                  currentLang === "pl" ? "🔄 ZAGRAJ PONOWNIE" : "🔄 PLAY AGAIN"
-                }</button>
-                <button class="penalty-btn" onclick="exitOnlinePenalties()">${
-                  currentLang === "pl" ? "🏠 ROZŁĄCZ" : "🏠 DISCONNECT"
-                }</button>
+                <button class="penalty-btn" onclick="requestOnlineRematch()">🔄 ${t(
+                  "rematch"
+                )}</button>
+                <button class="penalty-btn" onclick="exitOnlinePenalty()">🚪 ${t(
+                  "exitGame"
+                )}</button>
             `;
         buttons.style.display = "flex";
-
-        document.getElementById("shooterInfo").style.display = "none";
-
-        setTimeout(() => {
-          alert(
-            `${won ? t("congrats") : t("lost")}\n\n${
-              won ? t("reward") : t("consolation")
-            }: €${bonus.toLocaleString()}`
-          );
-        }, 300);
-
-        autoSave();
       }
 
-      function requestRematch() {
-        if (penaltyConn && penaltyConn.open) {
-          penaltyConn.send({ type: "rematch_request" });
-          document.getElementById("penaltyAction").textContent =
-            currentLang === "pl"
-              ? "Czekam na przeciwnika..."
-              : "Waiting for opponent...";
-        }
+      function requestOnlineRematch() {
+        penaltyConn.send({ type: "rematch_request" });
+        document.getElementById("penaltyAction").textContent =
+          t("waitingOpponent");
+      }
+
+      function exitOnlinePenalty() {
+        if (penaltyConn) penaltyConn.close();
+        if (penaltyPeer) penaltyPeer.destroy();
+        penaltyConn = null;
+        penaltyPeer = null;
+        isOnlinePenalty = false;
+        showScreen("mainMenu");
       }
 
       function surrenderOnlinePenalties() {
@@ -8948,19 +12224,10 @@
           if (penaltyConn && penaltyConn.open) {
             penaltyConn.send({ type: "surrender" });
           }
-          // Opponent wins
-          const hostScore = isPenaltyHost
-            ? penaltyState.playerScore
-            : penaltyState.opponentScore;
-          const guestScore = isPenaltyHost
-            ? penaltyState.opponentScore
-            : penaltyState.playerScore;
-
-          if (isPenaltyHost) {
-            endOnlinePenalty(hostScore, guestScore + 5);
-          } else {
-            endOnlinePenalty(hostScore + 5, guestScore);
-          }
+          // I lose
+          penaltyState.playerScore = 0;
+          penaltyState.opponentScore = 5;
+          endOnlinePenaltyGame();
         }
       }
 
@@ -10547,6 +13814,8 @@
           renderLegends();
         } else if (screenId === "settingsScreen") {
           updateLanguageButtons();
+        } else if (screenId === "emailScreen") {
+          renderEmails();
         }
       }
 
@@ -10634,6 +13903,57 @@
         }
       }
 
+      function ensurePlayersHaveContracts() {
+        // Add contracts and stats to players who don't have them (migration for old saves)
+        const allPlayers = [
+          ...(GameState.squad.players || []),
+          ...(GameState.squad.bench || []),
+        ];
+
+        allPlayers.forEach((player) => {
+          if (!player) return;
+
+          if (!player.salary) {
+            player.salary = Math.floor(
+              player.overall * 50 + Math.random() * player.overall * 20
+            );
+          }
+          if (!player.contractYears) {
+            player.contractYears = 1 + Math.floor(Math.random() * 3);
+          }
+          if (!player.matchRatings) {
+            player.matchRatings = [];
+          }
+          if (player.goals === undefined) {
+            player.goals = 0;
+          }
+          if (player.assists === undefined) {
+            player.assists = 0;
+          }
+          if (player.cleanSheets === undefined) {
+            player.cleanSheets = 0;
+          }
+          if (player.saves === undefined) {
+            player.saves = 0;
+          }
+          // Injury system
+          if (player.injuredUntil === undefined) {
+            player.injuredUntil = null; // timestamp when injury ends
+          }
+          if (player.originalPosition === undefined) {
+            player.originalPosition = player.position; // save original position
+          }
+          if (player.wrongPositionMatches === undefined) {
+            player.wrongPositionMatches = 0; // consecutive matches in wrong position
+          }
+          if (player.originalOverall === undefined) {
+            player.originalOverall = player.overall; // save original overall
+          }
+        });
+
+        autoSave();
+      }
+
       // ==================== INITIALIZATION ====================
       document.addEventListener("DOMContentLoaded", () => {
         // Check for mobile device
@@ -10661,6 +13981,10 @@
         updateAccountDisplay();
         checkUrlForRoom();
         updateAllText();
+        updateEmailBadge();
+
+        // Ensure existing players have contracts
+        ensurePlayersHaveContracts();
 
         // Load/set manager name
         const nameInput = document.getElementById("managerName");
