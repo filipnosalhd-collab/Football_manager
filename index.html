@@ -12354,8 +12354,26 @@ Players may become unhappy and start requesting transfers.`;
           const marketPrice = currentNegotiationPlayer.price;
           const ratio = totalOffer / marketPrice;
 
-          if (ratio >= 0.95) {
-            // Accept price
+          if (ratio >= 1.0) {
+            // Full price or more - instant accept with enthusiasm!
+            agreedPrice = offeredPrice;
+            negotiationTension = 0;
+            updateTensionBar();
+
+            const enthusiasticMsg =
+              currentLang === "pl"
+                ? `Doskonała oferta! €${totalOffer.toLocaleString()} to więcej niż oczekiwaliśmy. Przechodzimy do kontraktu!`
+                : `Excellent offer! €${totalOffer.toLocaleString()} is more than we expected. Let's discuss the contract!`;
+            addChatMessage("agent", enthusiasticMsg);
+
+            // Move to contract phase
+            setTimeout(() => {
+              negotiationPhase = "contract";
+              document.getElementById("pricePhase").style.display = "none";
+              document.getElementById("contractPhase").style.display = "block";
+            }, 1000);
+          } else if (ratio >= 0.9) {
+            // Accept price (90-99%)
             agreedPrice = offeredPrice;
             negotiationTension = Math.max(0, negotiationTension - 20);
             updateTensionBar();
