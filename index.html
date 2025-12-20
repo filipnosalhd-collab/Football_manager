@@ -5883,7 +5883,7 @@
       </div>
 
       <div style="margin-top: 1rem">
-        <button class="menu-btn" onclick="showScreen('mainMenu')">
+        <button class="menu-btn" onclick="showScreen('mainMenu')" data-t="back">
           🔙 POWRÓT
         </button>
       </div>
@@ -5927,7 +5927,8 @@
         <div class="market-header">
           <div class="account-balance" id="marketBalance">10000</div>
           <div class="market-timer">
-            Nowe karty za: <span id="marketTimer">5:00:00</span>
+            <span data-t="refresh">Nowe karty za</span>:
+            <span id="marketTimer">5:00:00</span>
           </div>
         </div>
 
@@ -5937,7 +5938,7 @@
       </div>
 
       <div style="margin-top: 2rem">
-        <button class="menu-btn" onclick="showScreen('mainMenu')">
+        <button class="menu-btn" onclick="showScreen('mainMenu')" data-t="back">
           🔙 POWRÓT
         </button>
       </div>
@@ -6566,6 +6567,7 @@
           chatNewOffer: "Co powiesz na taką propozycję?",
 
           // Reduce salary reasons (20)
+          // Reduce salary reasons (50)
           reduceReason1: "Wyniki ostatnich meczów były słabe",
           reduceReason2: "Klub ma problemy finansowe",
           reduceReason3: "Pensja nie odpowiada poziomowi gry",
@@ -6586,8 +6588,38 @@
           reduceReason18: "Oczekiwania kibiców są wysokie",
           reduceReason19: "Musimy zbalansować budżet",
           reduceReason20: "To sprawiedliwa oferta rynkowa",
+          reduceReason21: "Twoja dyspozycja fizyczna spadła",
+          reduceReason22: "Brak bramek i asyst w ostatnim czasie",
+          reduceReason23: "Trener ma inne plany taktyczne",
+          reduceReason24: "Zespół gra lepiej bez ciebie na boisku",
+          reduceReason25: "Zarząd wymaga cięć kosztów",
+          reduceReason26: "Twoje zachowanie na boisku było krytykowane",
+          reduceReason27: "Oczekiwania transferowe się nie spełniły",
+          reduceReason28: "Musisz odbudować formę",
+          reduceReason29: "Rynek piłkarski się zmienił",
+          reduceReason30: "Twoja pensja jest najwyższa w zespole",
+          reduceReason31: "Brak zaangażowania na treningach",
+          reduceReason32: "Inne priorytety finansowe klubu",
+          reduceReason33: "Twoja pozycja w hierarchii spadła",
+          reduceReason34: "Musimy inwestować w młodzież",
+          reduceReason35: "Poprzedni kontrakt był zbyt hojny",
+          reduceReason36: "Wyniki drużyny są rozczarowujące",
+          reduceReason37: "Twoja skuteczność spadła",
+          reduceReason38: "Brak liderskich zachowań",
+          reduceReason39: "Regulamin finansowy ligi wymaga zmian",
+          reduceReason40: "Twoje żółte kartki kosztują zespół",
+          reduceReason41: "Mniej meczów w tym sezonie",
+          reduceReason42: "Inni zawodnicy awansowali ponad ciebie",
+          reduceReason43: "Potrzebujemy elastyczności budżetowej",
+          reduceReason44: "Twój wpływ na wyniki jest mniejszy",
+          reduceReason45: "Kryzys ekonomiczny dotknął klub",
+          reduceReason46: "Twoje statystyki nie imponują",
+          reduceReason47: "Czas na nowy rozdział w karierze",
+          reduceReason48: "Twoja motywacja wydaje się niższa",
+          reduceReason49: "Potrzebujemy funduszy na infrastrukturę",
+          reduceReason50: "To ostateczna oferta klubu",
 
-          // Extend contract reasons (20)
+          // Extend contract reasons (50)
           extendReason1: "Jesteś kluczowym zawodnikiem drużyny",
           extendReason2: "Twoje doświadczenie jest bezcenne",
           extendReason3: "Kibice cię uwielbiają",
@@ -6608,8 +6640,38 @@
           extendReason18: "Oferujemy stabilność finansową",
           extendReason19: "Razem możemy osiągnąć sukces",
           extendReason20: "To najlepsza oferta jaką możemy dać",
+          extendReason21: "Trener bardzo cię ceni",
+          extendReason22: "Twoje umiejętności są unikalne",
+          extendReason23: "Pasjonujesz się grą dla tego klubu",
+          extendReason24: "Masz świetną chemię z kolegami",
+          extendReason25: "Twoja wszechstronność jest cenna",
+          extendReason26: "Znasz nasz system gry doskonale",
+          extendReason27: "Jesteś profesjonalistą na i poza boiskiem",
+          extendReason28: "Twoja determinacja nas inspiruje",
+          extendReason29: "Masz jeszcze wiele do zaoferowania",
+          extendReason30: "Widzimy cię w długoterminowych planach",
+          extendReason31: "Twoja wartość dla klubu rośnie",
+          extendReason32: "Kibice chcą żebyś został",
+          extendReason33: "Masz świetne relacje z trenerem",
+          extendReason34: "Twoja etyka pracy jest wzorowa",
+          extendReason35: "Jesteś ambasadorem klubu",
+          extendReason36: "Twoje doświadczenie jest nieocenione",
+          extendReason37: "Sponsorzy doceniają twoją obecność",
+          extendReason38: "Twoja pozycja w zespole jest bezpieczna",
+          extendReason39: "Chcemy nagrodzić twoją wierność",
+          extendReason40: "Twój rozwój nas cieszy",
+          extendReason41: "Masz kluczową rolę w strategii",
+          extendReason42: "Twoja obecność podnosi morale zespołu",
+          extendReason43: "Chcemy zapewnić ci przyszłość",
+          extendReason44: "Jesteś częścią rodziny klubowej",
+          extendReason45: "Twoje osiągnięcia mówią same za siebie",
+          extendReason46: "Masz naturalne zdolności przywódcze",
+          extendReason47: "Chcemy zbudować legendę razem",
+          extendReason48: "Twoja jakość jest niepodważalna",
+          extendReason49: "Jesteś sercem tego zespołu",
+          extendReason50: "To oferta godna twojej klasy",
 
-          // Raise salary reasons (20)
+          // Raise salary reasons (50)
           raiseReason1: "Twoje wyniki są wybitne",
           raiseReason2: "Zasługujesz na uznanie",
           raiseReason3: "Chcemy pokazać że cię doceniamy",
@@ -6630,6 +6692,36 @@
           raiseReason18: "Twoja pozycja w drużynie wzrosła",
           raiseReason19: "Sponsorzy doceniają twoją grę",
           raiseReason20: "To inwestycja w przyszłość klubu",
+          raiseReason21: "Twoje bramki są kluczowe",
+          raiseReason22: "Twoja gra obronna jest solidna",
+          raiseReason23: "Masz najlepsze statystyki w zespole",
+          raiseReason24: "Twoja forma jest stabilna",
+          raiseReason25: "Kibice skandują twoje imię",
+          raiseReason26: "Twoje asysty zmieniają mecze",
+          raiseReason27: "Jesteś motorem napędowym drużyny",
+          raiseReason28: "Twoja kreatywność jest wyjątkowa",
+          raiseReason29: "Masz świetną etykę pracy",
+          raiseReason30: "Twoja charyzma jednoczy zespół",
+          raiseReason31: "Zasługujesz na wyższą pensję",
+          raiseReason32: "Twoja konsekwencja jest imponująca",
+          raiseReason33: "Rozwijasz się z każdym meczem",
+          raiseReason34: "Twoja inteligencja boiskowa jest wysoka",
+          raiseReason35: "Jesteś niezawodny w kluczowych momentach",
+          raiseReason36: "Twoja profesjonalność jest wzorowa",
+          raiseReason37: "Masz naturalny talent",
+          raiseReason38: "Twoje umiejętności techniczne rosną",
+          raiseReason39: "Jesteś liderem na boisku",
+          raiseReason40: "Twoja obecność dodaje pewności zespołowi",
+          raiseReason41: "Masz świetne zrozumienie gry",
+          raiseReason42: "Twoja wszechstronność jest cenna",
+          raiseReason43: "Jesteś jednym z najlepszych na pozycji",
+          raiseReason44: "Twoja determinacja jest inspirująca",
+          raiseReason45: "Masz wpływ na wyniki drużyny",
+          raiseReason46: "Zasłużyłeś na to ciężką pracą",
+          raiseReason47: "Twoje podania są precyzyjne",
+          raiseReason48: "Masz świetne wyczucie pozycji",
+          raiseReason49: "Jesteś perełką w naszym składzie",
+          raiseReason50: "Ta podwyżka to minimum co możemy zrobić",
 
           // Match ratings
           avgRating: "Średnia ocena",
@@ -6689,7 +6781,7 @@
           clickToFlip: "Kliknij kartę aby obrócić",
           alreadyListed: "Ten gracz jest już na liście transferowej",
 
-          // Sell negotiation reasons (20)
+          // Sell negotiation reasons (50)
           sellReason1: "Gracz jest kluczowy dla naszego składu",
           sellReason2: "Cena jest zbyt niska jak na jego talent",
           sellReason3: "Mamy długoterminowe plany z tym graczem",
@@ -6710,6 +6802,36 @@
           sellReason18: "Byłby stratą dla ligi",
           sellReason19: "Nie jesteśmy zdesperowani",
           sellReason20: "Cena musi odzwierciedlać jego klasę",
+          sellReason21: "To nasz najlepszy strzelec",
+          sellReason22: "Ma świetne statystyki w tym sezonie",
+          sellReason23: "Jest częścią naszego projektu sportowego",
+          sellReason24: "Jego umiejętności są unikalne",
+          sellReason25: "Dopiero co przedłużył kontrakt",
+          sellReason26: "Nie możemy go stracić w środku sezonu",
+          sellReason27: "Trener uważa go za niezbędnego",
+          sellReason28: "Ma świetną chemię z drużyną",
+          sellReason29: "Jest gwarancją bramek",
+          sellReason30: "Jego obrona jest kluczowa",
+          sellReason31: "Ma najlepsze podania w zespole",
+          sellReason32: "Jest naszym najszybszym graczem",
+          sellReason33: "Jego doświadczenie jest bezcenne",
+          sellReason34: "Młodzi gracze się od niego uczą",
+          sellReason35: "Jest twarzą naszego klubu",
+          sellReason36: "Sponsorzy podpisali z nim umowę",
+          sellReason37: "Nie znajdziemy godnego zastępcy",
+          sellReason38: "Rynek transferowy jest zamknięty",
+          sellReason39: "Mamy ambicje mistrzowskie",
+          sellReason40: "Jest w najlepszym wieku",
+          sellReason41: "Jego wartość tylko rośnie",
+          sellReason42: "Byłby to cios dla morale drużyny",
+          sellReason43: "Kibice by nas za to znienawidzili",
+          sellReason44: "Ma klauzulę wykupu wyższą od oferty",
+          sellReason45: "Jest niezawodny w kluczowych meczach",
+          sellReason46: "Jego etyka pracy jest wzorowa",
+          sellReason47: "Jest gwiazdą mediów społecznościowych",
+          sellReason48: "Rywale by zyskali za dużo",
+          sellReason49: "To strategiczny zawodnik dla nas",
+          sellReason50: "Ta oferta to obraza dla jego klasy",
 
           // Free kicks
           freeKicks: "⚽ RZUTY WOLNE",
@@ -7042,6 +7164,7 @@
           chatNewOffer: "What do you think about this proposal?",
 
           // Reduce salary reasons (20)
+          // Reduce salary reasons (50)
           reduceReason1: "Recent match performances were poor",
           reduceReason2: "Club is facing financial issues",
           reduceReason3: "Salary doesn't match performance level",
@@ -7062,8 +7185,38 @@
           reduceReason18: "Fan expectations are high",
           reduceReason19: "We need to balance the budget",
           reduceReason20: "This is a fair market offer",
+          reduceReason21: "Your physical condition has declined",
+          reduceReason22: "No goals or assists recently",
+          reduceReason23: "Coach has different tactical plans",
+          reduceReason24: "Team plays better without you on pitch",
+          reduceReason25: "Board demands cost cuts",
+          reduceReason26: "Your on-pitch behavior was criticized",
+          reduceReason27: "Transfer expectations weren't met",
+          reduceReason28: "You need to rebuild your form",
+          reduceReason29: "Football market has changed",
+          reduceReason30: "Your salary is the highest in the team",
+          reduceReason31: "Lack of training commitment",
+          reduceReason32: "Other financial priorities for the club",
+          reduceReason33: "Your position in hierarchy has dropped",
+          reduceReason34: "We must invest in youth",
+          reduceReason35: "Previous contract was too generous",
+          reduceReason36: "Team results are disappointing",
+          reduceReason37: "Your effectiveness has dropped",
+          reduceReason38: "Lack of leadership behavior",
+          reduceReason39: "League financial regulations require changes",
+          reduceReason40: "Your yellow cards cost the team",
+          reduceReason41: "Fewer matches this season",
+          reduceReason42: "Other players have advanced above you",
+          reduceReason43: "We need budget flexibility",
+          reduceReason44: "Your impact on results is smaller",
+          reduceReason45: "Economic crisis has hit the club",
+          reduceReason46: "Your statistics aren't impressive",
+          reduceReason47: "Time for a new chapter in your career",
+          reduceReason48: "Your motivation seems lower",
+          reduceReason49: "We need funds for infrastructure",
+          reduceReason50: "This is the club's final offer",
 
-          // Extend contract reasons (20)
+          // Extend contract reasons (50)
           extendReason1: "You are a key player for the team",
           extendReason2: "Your experience is invaluable",
           extendReason3: "Fans love you",
@@ -7084,8 +7237,38 @@
           extendReason18: "We offer financial stability",
           extendReason19: "Together we can achieve success",
           extendReason20: "This is the best offer we can give",
+          extendReason21: "The coach values you highly",
+          extendReason22: "Your skills are unique",
+          extendReason23: "You're passionate about playing for this club",
+          extendReason24: "You have great chemistry with teammates",
+          extendReason25: "Your versatility is valuable",
+          extendReason26: "You know our playing system perfectly",
+          extendReason27: "You're a professional on and off the pitch",
+          extendReason28: "Your determination inspires us",
+          extendReason29: "You still have much to offer",
+          extendReason30: "We see you in our long-term plans",
+          extendReason31: "Your value to the club is growing",
+          extendReason32: "Fans want you to stay",
+          extendReason33: "You have great relationship with the coach",
+          extendReason34: "Your work ethic is exemplary",
+          extendReason35: "You're a club ambassador",
+          extendReason36: "Your experience is priceless",
+          extendReason37: "Sponsors appreciate your presence",
+          extendReason38: "Your position in the team is secure",
+          extendReason39: "We want to reward your loyalty",
+          extendReason40: "Your development pleases us",
+          extendReason41: "You have a key role in our strategy",
+          extendReason42: "Your presence boosts team morale",
+          extendReason43: "We want to secure your future",
+          extendReason44: "You're part of the club family",
+          extendReason45: "Your achievements speak for themselves",
+          extendReason46: "You have natural leadership qualities",
+          extendReason47: "We want to build a legacy together",
+          extendReason48: "Your quality is undeniable",
+          extendReason49: "You are the heart of this team",
+          extendReason50: "This offer is worthy of your class",
 
-          // Raise salary reasons (20)
+          // Raise salary reasons (50)
           raiseReason1: "Your results are outstanding",
           raiseReason2: "You deserve recognition",
           raiseReason3: "We want to show we appreciate you",
@@ -7106,6 +7289,36 @@
           raiseReason18: "Your position in the team has grown",
           raiseReason19: "Sponsors appreciate your play",
           raiseReason20: "This is an investment in the club's future",
+          raiseReason21: "Your goals are crucial",
+          raiseReason22: "Your defensive work is solid",
+          raiseReason23: "You have the best stats in the team",
+          raiseReason24: "Your form is stable",
+          raiseReason25: "Fans chant your name",
+          raiseReason26: "Your assists change games",
+          raiseReason27: "You're the driving force of the team",
+          raiseReason28: "Your creativity is exceptional",
+          raiseReason29: "You have great work ethic",
+          raiseReason30: "Your charisma unites the team",
+          raiseReason31: "You deserve a higher salary",
+          raiseReason32: "Your consistency is impressive",
+          raiseReason33: "You improve with every match",
+          raiseReason34: "Your tactical intelligence is high",
+          raiseReason35: "You're reliable in key moments",
+          raiseReason36: "Your professionalism is exemplary",
+          raiseReason37: "You have natural talent",
+          raiseReason38: "Your technical skills are growing",
+          raiseReason39: "You're a leader on the pitch",
+          raiseReason40: "Your presence gives the team confidence",
+          raiseReason41: "You have great understanding of the game",
+          raiseReason42: "Your versatility is valuable",
+          raiseReason43: "You're one of the best in your position",
+          raiseReason44: "Your determination is inspiring",
+          raiseReason45: "You impact team results",
+          raiseReason46: "You've earned this through hard work",
+          raiseReason47: "Your passes are precise",
+          raiseReason48: "You have great positional sense",
+          raiseReason49: "You're a gem in our squad",
+          raiseReason50: "This raise is the minimum we can do",
 
           // Match ratings
           avgRating: "Avg rating",
@@ -7166,6 +7379,7 @@
           alreadyListed: "This player is already on the transfer list",
 
           // Sell negotiation reasons (20)
+          // Sell negotiation reasons (50)
           sellReason1: "Player is key to our squad",
           sellReason2: "Price is too low for his talent",
           sellReason3: "We have long-term plans with this player",
@@ -7186,6 +7400,36 @@
           sellReason18: "He would be a loss for the league",
           sellReason19: "We are not desperate",
           sellReason20: "Price must reflect his class",
+          sellReason21: "He is our top scorer",
+          sellReason22: "He has great stats this season",
+          sellReason23: "He is part of our sporting project",
+          sellReason24: "His skills are unique",
+          sellReason25: "He just renewed his contract",
+          sellReason26: "We cannot lose him mid-season",
+          sellReason27: "Coach considers him essential",
+          sellReason28: "He has great chemistry with the team",
+          sellReason29: "He is a goal guarantee",
+          sellReason30: "His defense is crucial",
+          sellReason31: "He has the best passes in the team",
+          sellReason32: "He is our fastest player",
+          sellReason33: "His experience is priceless",
+          sellReason34: "Young players learn from him",
+          sellReason35: "He is the face of our club",
+          sellReason36: "Sponsors signed a deal with him",
+          sellReason37: "We won't find a worthy replacement",
+          sellReason38: "Transfer window is closed",
+          sellReason39: "We have championship ambitions",
+          sellReason40: "He is in his prime age",
+          sellReason41: "His value only keeps rising",
+          sellReason42: "It would be a blow to team morale",
+          sellReason43: "Fans would hate us for this",
+          sellReason44: "His buyout clause is higher than the offer",
+          sellReason45: "He is reliable in crucial matches",
+          sellReason46: "His work ethic is exemplary",
+          sellReason47: "He is a social media star",
+          sellReason48: "Rivals would gain too much",
+          sellReason49: "He is a strategic player for us",
+          sellReason50: "This offer is an insult to his class",
 
           // Free kicks
           freeKicks: "⚽ FREE KICKS",
@@ -8174,23 +8418,31 @@ Players may become unhappy and start requesting transfers.`;
       function showReasonsPanel() {
         const panel = document.getElementById("chatReasonsPanel");
         const list = document.getElementById("chatReasonsList");
+        const player = chatState.player;
 
         // Get reasons based on type
         let reasonPrefix = "";
-        if (chatState.type === "reduce_salary") reasonPrefix = "reduceReason";
-        else if (chatState.type === "extend_contract")
+        let validReasons = [];
+
+        if (chatState.type === "reduce_salary") {
+          reasonPrefix = "reduceReason";
+          validReasons = getValidReduceReasons(player);
+        } else if (chatState.type === "extend_contract") {
           reasonPrefix = "extendReason";
-        else if (chatState.type === "raise_salary")
+          validReasons = getValidExtendReasons(player);
+        } else if (chatState.type === "raise_salary") {
           reasonPrefix = "raiseReason";
+          validReasons = getValidRaiseReasons(player);
+        }
 
         list.innerHTML = "";
-        for (let i = 1; i <= 20; i++) {
+        validReasons.forEach((i) => {
           const reason = t(reasonPrefix + i);
           const item = document.createElement("label");
           item.className = "chat-reason-item";
           item.innerHTML = `<input type="checkbox" value="${i}" onchange="updateChatReasons()"> <span>${reason}</span>`;
           list.appendChild(item);
-        }
+        });
 
         panel.style.display = "block";
         document.getElementById("chatSendBtn").style.display = "block";
@@ -8198,6 +8450,225 @@ Players may become unhappy and start requesting transfers.`;
 
         // Show input panel
         showOfferInputs();
+      }
+
+      // Valid reasons for salary reduction
+      function getValidReduceReasons(player) {
+        const validReasons = [];
+        const avgRating = getAverageRating(player);
+        const isInSquad = GameState.squad.players.some(
+          (p) => p && p.id === player.id
+        );
+        const totalSalary = [
+          ...GameState.squad.players,
+          ...GameState.squad.bench,
+        ]
+          .filter((p) => p && p.salary)
+          .reduce((sum, p) => sum + p.salary, 0);
+        const samePos = [
+          ...GameState.squad.players,
+          ...GameState.squad.bench,
+        ].filter((p) => p && p.position === player.position).length;
+        const playerStats = player.matchStats || {};
+        const goals = playerStats.goals || 0;
+
+        // 1-20: Original reasons
+        if (!avgRating || avgRating < 6.5) validReasons.push(1);
+        if (GameState.manager.balance < 50000) validReasons.push(2);
+        validReasons.push(3);
+        if (!avgRating || avgRating < 6.0) validReasons.push(4);
+        if (totalSalary > GameState.manager.balance * 0.5) validReasons.push(5);
+        validReasons.push(6);
+        validReasons.push(7);
+        if (!isInSquad || (avgRating && avgRating < 6.5)) validReasons.push(8);
+        if (GameState.manager.balance < 100000) validReasons.push(9);
+        validReasons.push(10);
+        if (samePos > 1) validReasons.push(11);
+        if (player.age > 30) validReasons.push(12);
+        if (player.injuredUntil) validReasons.push(13);
+        validReasons.push(14);
+        validReasons.push(15);
+        validReasons.push(16);
+        if (player.age > 28) validReasons.push(17);
+        if (GameState.manager.balance < player.salary * 52)
+          validReasons.push(18);
+        validReasons.push(19);
+        validReasons.push(20);
+        // 21-50: Extended reasons
+        if (player.stats && player.stats.Physical && player.stats.Physical < 70)
+          validReasons.push(21);
+        if (goals === 0 && ["ST", "CF", "LW", "RW"].includes(player.position))
+          validReasons.push(22);
+        validReasons.push(23);
+        if (!isInSquad) validReasons.push(24);
+        if (GameState.manager.balance < 30000) validReasons.push(25);
+        if (player.yellowCards && player.yellowCards > 3) validReasons.push(26);
+        if (player.overall < 70) validReasons.push(27);
+        if (avgRating && avgRating < 6.0) validReasons.push(28);
+        validReasons.push(29);
+        if (player.salary > 1000) validReasons.push(30);
+        if (!avgRating) validReasons.push(31);
+        if (GameState.manager.balance < 80000) validReasons.push(32);
+        if (!isInSquad) validReasons.push(33);
+        if (player.age > 27) validReasons.push(34);
+        validReasons.push(35);
+        if (avgRating && avgRating < 6.5) validReasons.push(36);
+        if (player.stats && player.stats.Shooting && player.stats.Shooting < 65)
+          validReasons.push(37);
+        if (player.age >= 30) validReasons.push(38);
+        validReasons.push(39);
+        if (player.yellowCards && player.yellowCards > 2) validReasons.push(40);
+        if (!avgRating) validReasons.push(41);
+        if (samePos > 2) validReasons.push(42);
+        if (GameState.manager.balance < 60000) validReasons.push(43);
+        if (!isInSquad) validReasons.push(44);
+        if (GameState.manager.balance < 40000) validReasons.push(45);
+        if (avgRating && avgRating < 6.8) validReasons.push(46);
+        if (player.age > 29) validReasons.push(47);
+        if (avgRating && avgRating < 6.3) validReasons.push(48);
+        if (GameState.manager.balance < 70000) validReasons.push(49);
+        validReasons.push(50);
+
+        return validReasons;
+      }
+
+      function getValidExtendReasons(player) {
+        const validReasons = [];
+        const avgRating = getAverageRating(player);
+        const isInSquad = GameState.squad.players.some(
+          (p) => p && p.id === player.id
+        );
+        const playerStats = player.matchStats || {};
+        const goals = playerStats.goals || 0;
+        const assists = playerStats.assists || 0;
+
+        // 1-20: Original reasons
+        if (isInSquad && player.overall >= 70) validReasons.push(1);
+        if (player.age < 30) validReasons.push(2);
+        if (avgRating && avgRating >= 7.0) validReasons.push(3);
+        if (player.overall >= 75) validReasons.push(4);
+        if (player.overall >= 80) validReasons.push(5);
+        validReasons.push(6);
+        if (player.age < 27) validReasons.push(7);
+        validReasons.push(8);
+        validReasons.push(9);
+        validReasons.push(10);
+        if (player.age < 26) validReasons.push(11);
+        if (player.age >= 27) validReasons.push(12);
+        validReasons.push(13);
+        if (isInSquad) validReasons.push(14);
+        validReasons.push(15);
+        if (avgRating) validReasons.push(16);
+        validReasons.push(17);
+        validReasons.push(18);
+        if (player.overall >= 70) validReasons.push(19);
+        validReasons.push(20);
+        // 21-50: Extended reasons
+        if (isInSquad && player.overall >= 72) validReasons.push(21);
+        if (player.overall >= 78) validReasons.push(22);
+        if (isInSquad) validReasons.push(23);
+        if (isInSquad) validReasons.push(24);
+        if (player.positions && player.positions.length > 1)
+          validReasons.push(25);
+        if (isInSquad) validReasons.push(26);
+        if (player.overall >= 70) validReasons.push(27);
+        if (avgRating && avgRating >= 6.8) validReasons.push(28);
+        if (player.age < 28) validReasons.push(29);
+        if (player.age < 29) validReasons.push(30);
+        if (player.age < 26 && player.overall >= 68) validReasons.push(31);
+        if (player.overall >= 77) validReasons.push(32);
+        if (isInSquad) validReasons.push(33);
+        if (avgRating && avgRating >= 6.5) validReasons.push(34);
+        if (player.overall >= 80) validReasons.push(35);
+        if (player.age >= 28) validReasons.push(36);
+        if (player.overall >= 82) validReasons.push(37);
+        if (isInSquad) validReasons.push(38);
+        validReasons.push(39);
+        if (player.age < 25) validReasons.push(40);
+        if (isInSquad && player.overall >= 73) validReasons.push(41);
+        if (player.overall >= 74) validReasons.push(42);
+        if (player.age < 28) validReasons.push(43);
+        validReasons.push(44);
+        if (goals >= 3 || assists >= 3) validReasons.push(45);
+        if (player.age >= 26) validReasons.push(46);
+        if (player.overall >= 75) validReasons.push(47);
+        if (player.overall >= 76) validReasons.push(48);
+        if (isInSquad && player.overall >= 74) validReasons.push(49);
+        validReasons.push(50);
+
+        return validReasons;
+      }
+
+      function getValidRaiseReasons(player) {
+        const validReasons = [];
+        const avgRating = getAverageRating(player);
+        const isInSquad = GameState.squad.players.some(
+          (p) => p && p.id === player.id
+        );
+        const playerStats = player.matchStats || {};
+        const goals = playerStats.goals || 0;
+        const assists = playerStats.assists || 0;
+
+        // 1-20: Original reasons
+        if (avgRating && avgRating >= 6.5) validReasons.push(1);
+        if (avgRating && avgRating >= 7.0) validReasons.push(2);
+        validReasons.push(3);
+        validReasons.push(4);
+        if (player.age < 28 && player.overall >= 70) validReasons.push(5);
+        if (GameState.manager.balance > 100000) validReasons.push(6);
+        if (isInSquad) validReasons.push(7);
+        validReasons.push(8);
+        validReasons.push(9);
+        validReasons.push(10);
+        if (player.age < 27) validReasons.push(11);
+        validReasons.push(12);
+        if (isInSquad) validReasons.push(13);
+        validReasons.push(14);
+        if (player.age < 28) validReasons.push(15);
+        if (player.overall >= 75) validReasons.push(16);
+        validReasons.push(17);
+        if (player.overall >= 78) validReasons.push(18);
+        if (GameState.manager.balance > 50000) validReasons.push(19);
+        validReasons.push(20);
+        // 21-50: Extended reasons
+        if (goals >= 3) validReasons.push(21);
+        if (
+          ["CB", "LB", "RB", "CDM", "GK"].includes(player.position) &&
+          isInSquad
+        )
+          validReasons.push(22);
+        if (avgRating && avgRating >= 7.2) validReasons.push(23);
+        if (avgRating && avgRating >= 6.8) validReasons.push(24);
+        if (player.overall >= 80) validReasons.push(25);
+        if (assists >= 3) validReasons.push(26);
+        if (isInSquad && player.overall >= 72) validReasons.push(27);
+        if (player.stats && player.stats.Dribbling >= 75) validReasons.push(28);
+        if (avgRating && avgRating >= 6.7) validReasons.push(29);
+        if (isInSquad && player.overall >= 74) validReasons.push(30);
+        if (player.overall >= 73) validReasons.push(31);
+        if (avgRating && avgRating >= 6.9) validReasons.push(32);
+        if (player.age < 26) validReasons.push(33);
+        if (player.stats && player.stats.Passing >= 72) validReasons.push(34);
+        if (avgRating && avgRating >= 7.0) validReasons.push(35);
+        if (player.overall >= 71) validReasons.push(36);
+        if (player.age < 25) validReasons.push(37);
+        if (player.overall >= 72) validReasons.push(38);
+        if (isInSquad && player.overall >= 73) validReasons.push(39);
+        if (isInSquad) validReasons.push(40);
+        if (player.stats && player.stats.Passing >= 70) validReasons.push(41);
+        if (player.positions && player.positions.length > 1)
+          validReasons.push(42);
+        if (player.overall >= 76) validReasons.push(43);
+        if (avgRating && avgRating >= 6.8) validReasons.push(44);
+        if (isInSquad && goals >= 1) validReasons.push(45);
+        if (avgRating && avgRating >= 6.6) validReasons.push(46);
+        if (player.stats && player.stats.Passing >= 73) validReasons.push(47);
+        if (["GK", "CB"].includes(player.position) && player.overall >= 70)
+          validReasons.push(48);
+        if (player.overall >= 74) validReasons.push(49);
+        validReasons.push(50);
+
+        return validReasons;
       }
 
       function showOfferInputs() {
@@ -9058,15 +9529,20 @@ Players may become unhappy and start requesting transfers.`;
       function showSellReasonsPanel() {
         const panel = document.getElementById("sellReasonsPanel");
         const list = document.getElementById("sellReasonsList");
+        const player = sellNegotiationState.player;
+        const offer = sellNegotiationState.offer;
+
+        // Get valid reasons for this player
+        const validReasons = getValidSellReasons(player, offer);
 
         list.innerHTML = "";
-        for (let i = 1; i <= 20; i++) {
-          const reason = t("sellReason" + i);
+        validReasons.forEach((reasonNum) => {
+          const reason = t("sellReason" + reasonNum);
           const item = document.createElement("label");
           item.className = "chat-reason-item";
-          item.innerHTML = `<input type="checkbox" value="${i}" onchange="updateSellReasons()"> <span>${reason}</span>`;
+          item.innerHTML = `<input type="checkbox" value="${reasonNum}" onchange="updateSellReasons()"> <span>${reason}</span>`;
           list.appendChild(item);
-        }
+        });
 
         panel.style.display = "block";
 
@@ -9080,6 +9556,141 @@ Players may become unhappy and start requesting transfers.`;
 
         document.getElementById("sellChatSendBtn").style.display = "block";
         document.getElementById("sellChatSendBtn").disabled = true;
+      }
+
+      function getValidSellReasons(player, offer) {
+        const validReasons = [];
+        const marketValue = player.overall * player.overall * 10;
+        const avgRating = getAverageRating(player);
+        const isInSquad = GameState.squad.players.some(
+          (p) => p && p.id === player.id
+        );
+        const squadCount = GameState.squad.players.filter((p) => p).length;
+        const samePositionCount = GameState.squad.players.filter(
+          (p) => p && p.position === player.position
+        ).length;
+        const hasUpgrades =
+          player.stats &&
+          Object.values(player.stats).some((v) => v > player.overall);
+        const playerStats = player.matchStats || {};
+        const goals = playerStats.goals || 0;
+        const assists = playerStats.assists || 0;
+
+        // 1: Gracz jest kluczowy dla składu
+        if (isInSquad && player.overall >= 70) validReasons.push(1);
+        // 2: Cena jest zbyt niska
+        if (offer && offer.offerAmount < marketValue * 0.9)
+          validReasons.push(2);
+        // 3: Mamy długoterminowe plany
+        if (player.age < 25 && player.overall >= 65) validReasons.push(3);
+        // 4: Kibice go uwielbiają
+        if (player.overall >= 80 || (avgRating && avgRating > 7.5))
+          validReasons.push(4);
+        // 5: Jest w szczytowej formie
+        if (avgRating && avgRating >= 7.0) validReasons.push(5);
+        // 6: Inne kluby oferowały więcej (blef)
+        validReasons.push(6);
+        // 7: Wartość rynkowa rośnie
+        if (player.age < 27 && player.overall >= 70) validReasons.push(7);
+        // 8: Potrzebujemy go do końca sezonu
+        if (isInSquad) validReasons.push(8);
+        // 9: To niesprawiedliwa oferta
+        if (offer && offer.offerAmount < marketValue * 0.8)
+          validReasons.push(9);
+        // 10: Ma duży potencjał rozwoju
+        if (player.age < 24) validReasons.push(10);
+        // 11: Trudno będzie go zastąpić
+        if (samePositionCount <= 1 && isInSquad) validReasons.push(11);
+        // 12: Kontrakt jest długoterminowy
+        if (player.contractYears && player.contractYears > 2)
+          validReasons.push(12);
+        // 13: Sponsor wymaga jego obecności
+        if (player.overall >= 85) validReasons.push(13);
+        // 14: Jest liderem szatni
+        if (player.age >= 28 && player.overall >= 75) validReasons.push(14);
+        // 15: Media go uwielbiają
+        if (player.overall >= 82) validReasons.push(15);
+        // 16: Statystyki mówią same za siebie
+        if (avgRating && avgRating >= 6.5) validReasons.push(16);
+        // 17: Inwestowaliśmy w jego rozwój
+        if (hasUpgrades) validReasons.push(17);
+        // 18: Byłby stratą dla ligi
+        if (player.overall >= 85) validReasons.push(18);
+        // 19: Nie jesteśmy zdesperowani
+        if (GameState.manager.balance > 100000) validReasons.push(19);
+        // 20: Cena musi odzwierciedlać jego klasę (zawsze)
+        validReasons.push(20);
+        // 21: To nasz najlepszy strzelec
+        if (goals >= 5) validReasons.push(21);
+        // 22: Ma świetne statystyki w tym sezonie
+        if (avgRating && avgRating >= 7.0) validReasons.push(22);
+        // 23: Jest częścią naszego projektu sportowego
+        if (player.contractYears && player.contractYears >= 2)
+          validReasons.push(23);
+        // 24: Jego umiejętności są unikalne
+        if (player.overall >= 78) validReasons.push(24);
+        // 25: Dopiero co przedłużył kontrakt
+        if (player.contractYears && player.contractYears >= 3)
+          validReasons.push(25);
+        // 26: Nie możemy go stracić w środku sezonu
+        if (isInSquad) validReasons.push(26);
+        // 27: Trener uważa go za niezbędnego
+        if (isInSquad && player.overall >= 72) validReasons.push(27);
+        // 28: Ma świetną chemię z drużyną
+        if (isInSquad) validReasons.push(28);
+        // 29: Jest gwarancją bramek
+        if (goals >= 3 && ["ST", "CF", "LW", "RW"].includes(player.position))
+          validReasons.push(29);
+        // 30: Jego obrona jest kluczowa
+        if (
+          ["CB", "LB", "RB", "CDM", "GK"].includes(player.position) &&
+          isInSquad
+        )
+          validReasons.push(30);
+        // 31: Ma najlepsze podania w zespole
+        if (player.stats && player.stats.Passing >= 75) validReasons.push(31);
+        // 32: Jest naszym najszybszym graczem
+        if (player.stats && player.stats.Pace >= 80) validReasons.push(32);
+        // 33: Jego doświadczenie jest bezcenne
+        if (player.age >= 28) validReasons.push(33);
+        // 34: Młodzi gracze się od niego uczą
+        if (player.age >= 30 && isInSquad) validReasons.push(34);
+        // 35: Jest twarzą naszego klubu
+        if (player.overall >= 85) validReasons.push(35);
+        // 36: Sponsorzy podpisali z nim umowę
+        if (player.overall >= 83) validReasons.push(36);
+        // 37: Nie znajdziemy godnego zastępcy
+        if (samePositionCount <= 1) validReasons.push(37);
+        // 38: Rynek transferowy jest zamknięty (blef)
+        validReasons.push(38);
+        // 39: Mamy ambicje mistrzowskie
+        if (GameState.manager.balance > 50000) validReasons.push(39);
+        // 40: Jest w najlepszym wieku
+        if (player.age >= 24 && player.age <= 29) validReasons.push(40);
+        // 41: Jego wartość tylko rośnie
+        if (player.age < 27) validReasons.push(41);
+        // 42: Byłby to cios dla morale drużyny
+        if (isInSquad && player.overall >= 75) validReasons.push(42);
+        // 43: Kibice by nas za to znienawidzili
+        if (player.overall >= 80) validReasons.push(43);
+        // 44: Ma klauzulę wykupu wyższą od oferty
+        if (offer && offer.offerAmount < marketValue * 1.2)
+          validReasons.push(44);
+        // 45: Jest niezawodny w kluczowych meczach
+        if (avgRating && avgRating >= 7.0) validReasons.push(45);
+        // 46: Jego etyka pracy jest wzorowa
+        if (player.overall >= 70) validReasons.push(46);
+        // 47: Jest gwiazdą mediów społecznościowych
+        if (player.overall >= 82) validReasons.push(47);
+        // 48: Rywale by zyskali za dużo
+        validReasons.push(48);
+        // 49: To strategiczny zawodnik dla nas
+        if (isInSquad) validReasons.push(49);
+        // 50: Ta oferta to obraza dla jego klasy
+        if (offer && offer.offerAmount < marketValue * 0.7)
+          validReasons.push(50);
+
+        return validReasons;
       }
 
       function updateSellReasons() {
@@ -15922,6 +16533,9 @@ Players may become unhappy and start requesting transfers.`;
           .forEach((s) => s.classList.remove("active"));
         const screen = document.getElementById(screenId);
         if (screen) screen.classList.add("active");
+
+        // Apply translations after showing screen
+        applyTranslations();
 
         if (screenId === "squadScreen") {
           renderPitch();
