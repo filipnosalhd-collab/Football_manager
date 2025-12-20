@@ -497,20 +497,43 @@
 
       .squad-overall {
         text-align: center;
-        padding: 1rem;
+        padding: 0.75rem;
         background: rgba(255, 215, 0, 0.1);
         border-radius: 10px;
       }
 
-      .squad-overall-value {
+      .squad-overall-stats {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .squad-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .squad-stat-value {
         font-family: "Russo One", sans-serif;
-        font-size: 3rem;
+        font-size: 1.5rem;
+        color: white;
+      }
+
+      .squad-stat.main .squad-stat-value {
+        font-size: 2.5rem;
         color: var(--gold);
       }
 
-      .squad-overall-label {
-        font-size: 0.9rem;
+      .squad-stat-label {
+        font-size: 0.7rem;
         color: var(--silver);
+      }
+
+      .squad-stat.main .squad-stat-label {
+        font-size: 0.85rem;
+        color: var(--gold);
       }
 
       /* ==================== PLAYER CARD ==================== */
@@ -3372,6 +3395,7 @@
         display: flex;
         gap: 0.5rem;
         justify-content: center;
+        flex-wrap: wrap;
       }
 
       .squad-reveal-row .player-card {
@@ -3395,6 +3419,107 @@
 
       .squad-reveal-row .card-stats-mini {
         display: none !important;
+      }
+
+      /* Mini card for opponent reveal */
+      .mini-reveal-card {
+        width: 70px;
+        height: 90px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "Orbitron", sans-serif;
+        border: 2px solid;
+      }
+
+      .mini-reveal-card.common {
+        background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
+        border-color: #666;
+      }
+      .mini-reveal-card.uncommon {
+        background: linear-gradient(145deg, #2e5a2e, #1a3a1a);
+        border-color: #4caf50;
+      }
+      .mini-reveal-card.rare {
+        background: linear-gradient(145deg, #1a3a5a, #0d2040);
+        border-color: #2196f3;
+      }
+      .mini-reveal-card.epic {
+        background: linear-gradient(145deg, #4a2a6a, #2a1a4a);
+        border-color: #9c27b0;
+      }
+      .mini-reveal-card.legendary {
+        background: linear-gradient(145deg, #5a4a1a, #3a2a0a);
+        border-color: #ffd700;
+      }
+      .mini-reveal-card.icon {
+        background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        border-color: #00bfff;
+      }
+
+      .mini-card-ovr {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+      }
+
+      .mini-card-pos {
+        font-size: 0.6rem;
+        color: var(--gold);
+        margin-top: 2px;
+      }
+
+      .mini-card-name {
+        font-size: 0.5rem;
+        color: white;
+        text-align: center;
+        margin-top: 4px;
+        max-width: 65px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* BIG ACTION INDICATOR */
+      .penalty-action-indicator {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px 40px;
+        border-radius: 15px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        z-index: 100;
+        animation: actionPulse 1s ease infinite;
+      }
+
+      .penalty-action-indicator.shooting {
+        background: linear-gradient(145deg, #ff6b00, #ff4500);
+        border: 3px solid #ffaa00;
+        color: white;
+        box-shadow: 0 0 30px rgba(255, 107, 0, 0.7);
+      }
+
+      .penalty-action-indicator.saving {
+        background: linear-gradient(145deg, #00a8ff, #0066cc);
+        border: 3px solid #00ddff;
+        color: white;
+        box-shadow: 0 0 30px rgba(0, 168, 255, 0.7);
+      }
+
+      @keyframes actionPulse {
+        0%,
+        100% {
+          transform: translateX(-50%) scale(1);
+        }
+        50% {
+          transform: translateX(-50%) scale(1.05);
+        }
       }
 
       .squad-reveal-vs {
@@ -4248,6 +4373,215 @@
         gap: 1rem;
       }
 
+      /* New transfer squad view */
+      .transfer-squad-view {
+        max-width: 1000px;
+        width: 95%;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 15px;
+        padding: 1rem;
+        border: 2px solid var(--gold);
+      }
+
+      .transfer-squad-view h3 {
+        color: var(--gold);
+        font-family: "Orbitron", sans-serif;
+        text-align: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .transfer-squad-grid,
+      .transfer-bench-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        padding: 0.5rem;
+      }
+
+      .transfer-card-slot {
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .transfer-card-slot:hover {
+        transform: scale(1.05);
+        z-index: 10;
+      }
+
+      .transfer-card-slot.listed {
+        opacity: 0.6;
+      }
+
+      .transfer-card-slot.listed::after {
+        content: "🏷️ NA LIŚCIE";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 215, 0, 0.9);
+        color: black;
+        padding: 0.25rem 0.5rem;
+        border-radius: 5px;
+        font-size: 0.7rem;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+
+      .transfer-offers-section {
+        max-width: 1000px;
+        width: 95%;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 15px;
+        padding: 1rem;
+        border: 2px solid var(--gold);
+      }
+
+      .transfer-offers-section h3 {
+        color: var(--gold);
+        font-family: "Orbitron", sans-serif;
+        text-align: center;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Sell card modal */
+      .sell-card-modal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .sell-card-container {
+        width: 200px;
+        height: 290px;
+        perspective: 1000px;
+        cursor: pointer;
+      }
+
+      .sell-card-container.flipped .sell-card-front {
+        transform: rotateY(180deg);
+      }
+
+      .sell-card-container.flipped .sell-card-back {
+        transform: rotateY(0deg);
+      }
+
+      .sell-card-front,
+      .sell-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        transition: transform 0.6s;
+        border-radius: 15px;
+      }
+
+      .sell-card-front {
+        transform: rotateY(0deg);
+      }
+
+      .sell-card-back {
+        transform: rotateY(-180deg);
+        background: linear-gradient(145deg, #1a1a2e, #16213e);
+        border: 3px solid var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .sell-card-back-content {
+        padding: 1rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .sell-card-title {
+        font-family: "Orbitron", sans-serif;
+        color: var(--gold);
+        font-size: 0.9rem;
+      }
+
+      .sell-card-price label {
+        display: block;
+        color: var(--silver);
+        font-size: 0.75rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .sell-price-input {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 8px;
+        border: 2px solid var(--gold);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      .sell-price-hint {
+        color: var(--silver);
+        font-size: 0.65rem;
+        margin-top: 0.25rem;
+      }
+
+      .sell-card-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .sell-btn {
+        padding: 0.5rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        border: none;
+        font-weight: bold;
+      }
+
+      .sell-btn.confirm {
+        background: linear-gradient(145deg, #2e7d32, #1b5e20);
+        color: white;
+      }
+
+      .sell-btn.cancel {
+        background: linear-gradient(145deg, #c62828, #8e0000);
+        color: white;
+      }
+
+      .sell-card-flip-hint {
+        color: var(--silver);
+        font-size: 0.8rem;
+      }
+
+      /* DRAG AND DROP */
+      .player-card.dragging {
+        opacity: 0.5;
+        transform: scale(1.1);
+        z-index: 1000;
+      }
+
+      .player-card.drag-over {
+        box-shadow: 0 0 20px var(--gold);
+        transform: scale(1.05);
+      }
+
+      .slot-wrapper {
+        position: relative;
+      }
+
+      .slot-wrapper.drag-over {
+        background: rgba(255, 215, 0, 0.2);
+        border-radius: 15px;
+      }
+
       .transfer-list-section {
         background: rgba(0, 0, 0, 0.5);
         border-radius: 15px;
@@ -4514,8 +4848,20 @@
           <div class="account-balance" id="accountBalance">10000</div>
         </div>
         <div class="squad-overall">
-          <div class="squad-overall-value" id="squadOverall">40</div>
-          <div class="squad-overall-label">OVERALL SKŁADU</div>
+          <div class="squad-overall-stats">
+            <div class="squad-stat">
+              <span class="squad-stat-value" id="squadATK">0</span>
+              <span class="squad-stat-label">⚽ ATK</span>
+            </div>
+            <div class="squad-stat">
+              <span class="squad-stat-value" id="squadDEF">0</span>
+              <span class="squad-stat-label">🛡️ DEF</span>
+            </div>
+            <div class="squad-stat main">
+              <span class="squad-stat-value" id="squadOverall">40</span>
+              <span class="squad-stat-label" data-t="squadOverall">OVR</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -4775,21 +5121,21 @@
 
         <div class="chat-input-panel" id="chatInputPanel" style="display: none">
           <div class="chat-salary-input">
-            <label id="chatSalaryLabel">Pensja:</label>
+            <label id="chatSalaryLabel" data-t="salary">Pensja:</label>
             <input
               type="number"
               id="chatSalaryInput"
               class="compose-input"
               min="100"
             />
-            <span>€/tyg</span>
+            <span id="chatSalaryUnit">€/tyg</span>
           </div>
           <div
             class="chat-years-input"
             id="chatYearsInput"
             style="display: none"
           >
-            <label data-t="years">Lata:</label>
+            <label data-t="contractYearsShort">Lata:</label>
             <input
               type="number"
               id="chatContractYears"
@@ -4989,20 +5335,31 @@
         <div class="account-balance" id="transferListBalance">€0</div>
       </div>
 
-      <div class="transfer-list-container">
-        <div class="transfer-list-section">
-          <h3 data-t="listedPlayers">Gracze na liście</h3>
-          <div class="listed-players-grid" id="listedPlayersGrid">
-            <!-- Listed players will appear here -->
-          </div>
+      <!-- Squad cards view for selling -->
+      <div class="transfer-squad-view">
+        <h3 data-t="squad">📋 SKŁAD</h3>
+        <p
+          style="color: var(--silver); font-size: 0.8rem; margin-bottom: 0.5rem"
+          data-t="clickToSell"
+        >
+          Kliknij kartę aby wystawić na sprzedaż
+        </p>
+        <div class="transfer-squad-grid" id="transferSquadGrid">
+          <!-- Squad cards will appear here -->
         </div>
 
-        <div class="transfer-list-section">
-          <h3 data-t="offersReceived">Otrzymane oferty</h3>
-          <div class="offers-list" id="offersListContainer">
-            <div class="no-offers" data-t="noOffersYet">
-              Brak ofert - poczekaj...
-            </div>
+        <h3 style="margin-top: 1.5rem" data-t="bench">🪑 ŁAWKA</h3>
+        <div class="transfer-bench-grid" id="transferBenchGrid">
+          <!-- Bench cards will appear here -->
+        </div>
+      </div>
+
+      <!-- Offers section -->
+      <div class="transfer-offers-section" style="margin-top: 1.5rem">
+        <h3 data-t="offersReceived">📬 Otrzymane oferty</h3>
+        <div class="offers-list" id="offersListContainer">
+          <div class="no-offers" data-t="noOffersYet">
+            Brak ofert - poczekaj...
           </div>
         </div>
       </div>
@@ -5017,7 +5374,46 @@
       </button>
     </div>
 
-    <!-- ==================== LIST PLAYER MODAL ==================== -->
+    <!-- ==================== SELL CARD MODAL ==================== -->
+    <div class="modal-overlay" id="sellCardModal" style="display: none">
+      <div class="sell-card-modal">
+        <div class="sell-card-container">
+          <div class="sell-card-front" id="sellCardFront">
+            <!-- Player card will appear here -->
+          </div>
+          <div class="sell-card-back" id="sellCardBack">
+            <div class="sell-card-back-content">
+              <div class="sell-card-title" data-t="listForSale">
+                WYSTAW NA SPRZEDAŻ
+              </div>
+              <div class="sell-card-price">
+                <label data-t="askingPrice">Cena wywoławcza:</label>
+                <input
+                  type="number"
+                  id="sellCardPrice"
+                  class="sell-price-input"
+                  min="1000"
+                />
+                <div class="sell-price-hint" id="sellCardHint"></div>
+              </div>
+              <div class="sell-card-actions">
+                <button class="sell-btn confirm" onclick="confirmSellCard()">
+                  ✅ <span data-t="listForSale">WYSTAW</span>
+                </button>
+                <button class="sell-btn cancel" onclick="closeSellCardModal()">
+                  ❌ <span data-t="cancel">ANULUJ</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sell-card-flip-hint" data-t="clickToFlip">
+          Kliknij kartę aby obrócić
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== LIST PLAYER MODAL (legacy - hidden) ==================== -->
     <div class="modal-overlay" id="listPlayerModal" style="display: none">
       <div class="email-modal-content">
         <div class="email-modal-header">
@@ -5273,6 +5669,14 @@
     <!-- ==================== PENALTY SHOOTOUT ==================== -->
     <div class="screen" id="penaltyScreen">
       <div class="penalty-container">
+        <!-- BIG ACTION INDICATOR -->
+        <div
+          class="penalty-action-indicator shooting"
+          id="penaltyActionIndicator"
+        >
+          ⚽ STRZELASZ!
+        </div>
+
         <!-- Score -->
         <div class="penalty-score">
           <div class="penalty-team">
@@ -6040,6 +6444,12 @@
           endChat: "ZAKOŃCZ",
           raiseSalaryOption: "Podwyżka pensji",
 
+          // Squad overall
+          squadOverall: "OVR",
+          salary: "Pensja:",
+          salaryPerWeek: "€/tyg",
+          contractYearsShort: "Lata:",
+
           // Chat messages
           chatGreeting:
             "Cześć, chciałem porozmawiać o twojej sytuacji w klubie.",
@@ -6185,6 +6595,9 @@
           offerAccepted: "✅ Sprzedałeś {player} do {club} za €{price}!",
           offerRejected: "❌ Odrzuciłeś ofertę od {club}",
           listedPlayers: "Gracze na liście",
+          clickToSell: "Kliknij kartę aby wystawić na sprzedaż",
+          clickToFlip: "Kliknij kartę aby obrócić",
+          alreadyListed: "Ten gracz jest już na liście transferowej",
 
           // Sell negotiation reasons (20)
           sellReason1: "Gracz jest kluczowy dla naszego składu",
@@ -6506,6 +6919,12 @@
           endChat: "FINISH",
           raiseSalaryOption: "Salary raise",
 
+          // Squad overall
+          squadOverall: "OVR",
+          salary: "Salary:",
+          salaryPerWeek: "€/wk",
+          contractYearsShort: "Years:",
+
           // Chat messages
           chatGreeting:
             "Hi, I wanted to talk about your situation at the club.",
@@ -6650,6 +7069,9 @@
           offerAccepted: "✅ You sold {player} to {club} for €{price}!",
           offerRejected: "❌ You rejected offer from {club}",
           listedPlayers: "Listed players",
+          clickToSell: "Click a card to list for sale",
+          clickToFlip: "Click card to flip",
+          alreadyListed: "This player is already on the transfer list",
 
           // Sell negotiation reasons (20)
           sellReason1: "Player is key to our squad",
@@ -7491,7 +7913,7 @@ Players may become unhappy and start requesting transfers.`;
                             )}</span>
                             <span class="contract-value">€${
                               player.salary?.toLocaleString() || 0
-                            }/tyg</span>
+                            }/${currentLang === "pl" ? "tyg" : "wk"}</span>
                         </div>
                         <div class="contract-row">
                             <span class="contract-label">${t(
@@ -7690,6 +8112,12 @@ Players may become unhappy and start requesting transfers.`;
         const yearsInput = document.getElementById("chatYearsInput");
         const salaryInput = document.getElementById("chatSalaryInput");
         const salaryLabel = document.getElementById("chatSalaryLabel");
+        const salaryUnit = document.getElementById("chatSalaryUnit");
+
+        // Update unit translation
+        if (salaryUnit) {
+          salaryUnit.textContent = currentLang === "pl" ? "€/tyg" : "€/wk";
+        }
 
         if (chatState.type === "reduce_salary") {
           salaryLabel.textContent =
@@ -7758,7 +8186,8 @@ Players may become unhappy and start requesting transfers.`;
           t("chatNewOffer") +
           "\n💰 €" +
           salary.toLocaleString() +
-          "/tyg" +
+          "/" +
+          (currentLang === "pl" ? "tyg" : "wk") +
           (chatState.type === "extend_contract"
             ? "\n📅 " + years + " " + t("years")
             : "");
@@ -7981,63 +8410,58 @@ Players may become unhappy and start requesting transfers.`;
         "Newcastle",
       ];
 
+      let currentSellPlayer = null;
+
       function openTransferList() {
         showScreen("transferListScreen");
         document.getElementById("transferListBalance").textContent =
           "€" + GameState.manager.balance.toLocaleString();
-        renderTransferList();
+        renderTransferSquadView();
+        renderTransferOffers();
         startOfferGeneration();
       }
 
-      function renderTransferList() {
-        const grid = document.getElementById("listedPlayersGrid");
-        const offersContainer = document.getElementById("offersListContainer");
+      function renderTransferSquadView() {
+        const squadGrid = document.getElementById("transferSquadGrid");
+        const benchGrid = document.getElementById("transferBenchGrid");
 
-        // Render listed players
-        if (transferListState.listedPlayers.length === 0) {
-          grid.innerHTML = `
-                    <div style="text-align: center; padding: 1rem; color: var(--silver);">
-                        ${
-                          currentLang === "pl"
-                            ? "Brak graczy na liście"
-                            : "No players listed"
-                        }
+        // Render squad cards
+        squadGrid.innerHTML = GameState.squad.players
+          .map((player, index) => {
+            if (!player) return "";
+            const isListed = transferListState.listedPlayers.some(
+              (l) => l.playerId === player.id
+            );
+            return `
+                    <div class="transfer-card-slot ${isListed ? "listed" : ""}" 
+                         onclick="openSellCardModal('${player.id}')"
+                         data-player-id="${player.id}">
+                        ${renderPlayerCard(player, true)}
                     </div>
-                    <button class="menu-btn" onclick="openListPlayerModal()" style="width: 100%;">
-                        🏷️ ${t("listForSale")}
-                    </button>
                 `;
-        } else {
-          grid.innerHTML =
-            transferListState.listedPlayers
-              .map((listing) => {
-                const player = findPlayerById(listing.playerId);
-                if (!player) return "";
-                return `
-                        <div class="listed-player-item">
-                            <div class="listed-player-info">
-                                <div class="listed-player-name">${
-                                  player.name
-                                } (${player.position}, OVR ${
-                  player.overall
-                })</div>
-                                <div class="listed-player-price">€${listing.askingPrice.toLocaleString()}</div>
-                            </div>
-                            <div class="listed-player-actions">
-                                <button onclick="unlistPlayer('${
-                                  listing.playerId
-                                }')">${t("removeFromList")}</button>
-                            </div>
-                        </div>
-                    `;
-              })
-              .join("") +
-            `
-                    <button class="menu-btn" onclick="openListPlayerModal()" style="width: 100%; margin-top: 0.5rem;">
-                        🏷️ ${t("listForSale")}
-                    </button>
+          })
+          .join("");
+
+        // Render bench cards
+        benchGrid.innerHTML = GameState.squad.bench
+          .map((player, index) => {
+            if (!player) return "";
+            const isListed = transferListState.listedPlayers.some(
+              (l) => l.playerId === player.id
+            );
+            return `
+                    <div class="transfer-card-slot ${isListed ? "listed" : ""}" 
+                         onclick="openSellCardModal('${player.id}')"
+                         data-player-id="${player.id}">
+                        ${renderPlayerCard(player, true)}
+                    </div>
                 `;
-        }
+          })
+          .join("");
+      }
+
+      function renderTransferOffers() {
+        const offersContainer = document.getElementById("offersListContainer");
 
         // Render offers
         if (transferListState.offers.length === 0) {
@@ -8062,21 +8486,118 @@ Players may become unhappy and start requesting transfers.`;
                 player.name
               } (${player.position})</div>
                             <div class="offer-actions">
-                                <button class="accept-btn" onclick="acceptTransferOffer('${
+                                <button class="offer-btn accept" onclick="acceptTransferOffer('${
                                   offer.id
-                                }')">${t("acceptOffer")}</button>
-                                <button class="negotiate-btn" onclick="negotiateTransferOffer('${
+                                }')">✅ ${t("acceptOffer")}</button>
+                                <button class="offer-btn reject" onclick="rejectTransferOffer('${
                                   offer.id
-                                }')">${t("negotiateOffer")}</button>
-                                <button class="reject-btn" onclick="rejectTransferOffer('${
+                                }')">❌ ${t("rejectOffer")}</button>
+                                <button class="offer-btn negotiate" onclick="negotiateTransferOffer('${
                                   offer.id
-                                }')">${t("rejectOffer")}</button>
+                                }')">💬 ${t("negotiateOffer")}</button>
                             </div>
                         </div>
                     `;
             })
             .join("");
         }
+      }
+
+      function openSellCardModal(playerId) {
+        const player = findPlayerById(playerId);
+        if (!player) return;
+
+        // Check if already listed
+        if (
+          transferListState.listedPlayers.some((l) => l.playerId === playerId)
+        ) {
+          // Already listed - ask to remove
+          if (
+            confirm(
+              currentLang === "pl"
+                ? "Usunąć gracza z listy transferowej?"
+                : "Remove player from transfer list?"
+            )
+          ) {
+            unlistPlayer(playerId);
+            renderTransferSquadView();
+          }
+          return;
+        }
+
+        currentSellPlayer = player;
+
+        // Show modal
+        const modal = document.getElementById("sellCardModal");
+        const front = document.getElementById("sellCardFront");
+        const container = modal.querySelector(".sell-card-container");
+        const priceInput = document.getElementById("sellCardPrice");
+        const hint = document.getElementById("sellCardHint");
+
+        // Reset flip state
+        container.classList.remove("flipped");
+
+        // Render player card
+        front.innerHTML = renderPlayerCard(player, false);
+
+        // Set suggested price
+        const suggestedPrice = Math.floor(player.overall * player.overall * 10);
+        priceInput.value = suggestedPrice;
+        hint.textContent =
+          currentLang === "pl"
+            ? `Sugerowana: €${suggestedPrice.toLocaleString()}`
+            : `Suggested: €${suggestedPrice.toLocaleString()}`;
+
+        // Add click to flip
+        container.onclick = (e) => {
+          if (e.target.tagName !== "INPUT" && e.target.tagName !== "BUTTON") {
+            container.classList.toggle("flipped");
+          }
+        };
+
+        modal.style.display = "flex";
+      }
+
+      function closeSellCardModal() {
+        document.getElementById("sellCardModal").style.display = "none";
+        currentSellPlayer = null;
+      }
+
+      function confirmSellCard() {
+        if (!currentSellPlayer) return;
+
+        const price = parseInt(document.getElementById("sellCardPrice").value);
+        if (!price || price < 1000) {
+          alert(
+            currentLang === "pl"
+              ? "Podaj prawidłową cenę (min. 1000)"
+              : "Enter valid price (min. 1000)"
+          );
+          return;
+        }
+
+        // Add to transfer list
+        transferListState.listedPlayers.push({
+          playerId: currentSellPlayer.id,
+          askingPrice: price,
+          listedAt: Date.now(),
+        });
+
+        alert(
+          t("playerListed")
+            .replace("{player}", currentSellPlayer.name)
+            .replace("{price}", price.toLocaleString())
+        );
+
+        closeSellCardModal();
+        renderTransferSquadView();
+        autoSave();
+      }
+
+      // Legacy function for compatibility
+      function renderTransferList() {
+        renderTransferSquadView();
+        renderTransferOffers();
       }
 
       function openListPlayerModal() {
@@ -8285,8 +8806,9 @@ Players may become unhappy and start requesting transfers.`;
             .replace("{price}", offer.offerAmount.toLocaleString())
         );
 
-        document.getElementById("transferListBalance").textContent =
-          "€" + GameState.manager.balance.toLocaleString();
+        // Update ALL balance displays
+        updateAccountDisplay();
+        updateSquadOverall();
         renderTransferList();
         autoSave();
       }
@@ -9918,17 +10440,71 @@ Players may become unhappy and start requesting transfers.`;
 
       // ==================== CALCULATE OVERALL ====================
       function updateSquadOverall() {
-        if (GameState.squad.players.length === 0) {
-          document.getElementById("squadOverall").textContent = "0";
+        const players = GameState.squad.players.filter((p) => p);
+
+        const atkEl = document.getElementById("squadATK");
+        const defEl = document.getElementById("squadDEF");
+        const ovrEl = document.getElementById("squadOverall");
+
+        if (!atkEl || !defEl || !ovrEl) return; // Elements not ready yet
+
+        if (players.length === 0) {
+          ovrEl.textContent = "0";
+          atkEl.textContent = "0";
+          defEl.textContent = "0";
           return;
         }
 
-        const totalOvr = GameState.squad.players.reduce(
-          (sum, p) => sum + p.overall,
-          0
-        );
-        const avgOvr = Math.round(totalOvr / GameState.squad.players.length);
-        document.getElementById("squadOverall").textContent = avgOvr;
+        // Calculate attack average (Pace, Shooting, Passing, Dribbling)
+        let totalATK = 0;
+        let atkCount = 0;
+
+        // Calculate defense average (Defending, Physical, GK stats)
+        let totalDEF = 0;
+        let defCount = 0;
+
+        players.forEach((p) => {
+          const stats = p.stats || {};
+
+          if (p.position === "GK") {
+            // GK contributes to DEF
+            const gkAvg =
+              ((stats.Diving || p.overall) +
+                (stats.Handling || p.overall) +
+                (stats.Reflexes || p.overall) +
+                (stats.Positioning || p.overall)) /
+              4;
+            totalDEF += gkAvg;
+            defCount++;
+          } else {
+            // Outfield: ATK stats
+            const atkAvg =
+              ((stats.Pace || p.overall) +
+                (stats.Shooting || p.overall) +
+                (stats.Passing || p.overall) +
+                (stats.Dribbling || p.overall)) /
+              4;
+            totalATK += atkAvg;
+            atkCount++;
+
+            // DEF stats
+            const defAvg =
+              ((stats.Defending || p.overall) + (stats.Physical || p.overall)) /
+              2;
+            totalDEF += defAvg;
+            defCount++;
+          }
+        });
+
+        const avgATK = atkCount > 0 ? Math.round(totalATK / atkCount) : 0;
+        const avgDEF = defCount > 0 ? Math.round(totalDEF / defCount) : 0;
+
+        // OVR = średnia z ATK i DEF (suma / 2)
+        const avgOVR = Math.round((avgATK + avgDEF) / 2);
+
+        atkEl.textContent = avgATK;
+        defEl.textContent = avgDEF;
+        ovrEl.textContent = avgOVR;
       }
 
       // ==================== RENDER PLAYER CARD ====================
@@ -10208,10 +10784,14 @@ Players may become unhappy and start requesting transfers.`;
           div.style.left = `${slot.x}%`;
           div.style.top = `${slot.y}%`;
           div.style.transform = "translate(-50%, -50%)";
+          div.dataset.slotIndex = index;
+          div.dataset.slotType = "squad";
 
           const player = GameState.squad.players[index];
           if (player) {
             div.classList.add("filled");
+            div.draggable = true;
+            div.dataset.playerId = player.id;
             const tier = getCardTier(player.overall);
 
             // Check if player is on wrong position
@@ -10231,9 +10811,18 @@ Players may become unhappy and start requesting transfers.`;
                         </div>
                         ${warningHTML}
                     `;
+
+            // Drag events
+            div.ondragstart = (e) => handleDragStart(e, "squad", index, player);
+            div.ondragend = handleDragEnd;
           } else {
             div.textContent = slot.pos;
           }
+
+          // Drop events (for all slots)
+          div.ondragover = (e) => handleDragOver(e);
+          div.ondragleave = handleDragLeave;
+          div.ondrop = (e) => handleDrop(e, "squad", index);
 
           div.onclick = () => selectSlot(index, slot.pos);
           container.appendChild(div);
@@ -10241,6 +10830,84 @@ Players may become unhappy and start requesting transfers.`;
 
         // Render bench
         renderBench();
+      }
+
+      // ==================== DRAG & DROP ====================
+      let draggedPlayer = null;
+      let draggedFrom = null;
+      let draggedIndex = null;
+
+      function handleDragStart(e, type, index, player) {
+        draggedPlayer = player;
+        draggedFrom = type;
+        draggedIndex = index;
+        e.target.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+      }
+
+      function handleDragEnd(e) {
+        e.target.classList.remove("dragging");
+        document
+          .querySelectorAll(".drag-over")
+          .forEach((el) => el.classList.remove("drag-over"));
+      }
+
+      function handleDragOver(e) {
+        e.preventDefault();
+        e.currentTarget.classList.add("drag-over");
+      }
+
+      function handleDragLeave(e) {
+        e.currentTarget.classList.remove("drag-over");
+      }
+
+      function handleDrop(e, targetType, targetIndex) {
+        e.preventDefault();
+        e.currentTarget.classList.remove("drag-over");
+
+        if (!draggedPlayer) return;
+
+        // Get target player (if any)
+        let targetPlayer = null;
+        if (targetType === "squad") {
+          targetPlayer = GameState.squad.players[targetIndex];
+        } else {
+          targetPlayer = GameState.squad.bench[targetIndex];
+        }
+
+        // Perform swap or move
+        if (draggedFrom === "squad" && targetType === "squad") {
+          // Squad to squad swap
+          GameState.squad.players[draggedIndex] = targetPlayer;
+          GameState.squad.players[targetIndex] = draggedPlayer;
+        } else if (draggedFrom === "bench" && targetType === "bench") {
+          // Bench to bench swap
+          GameState.squad.bench[draggedIndex] = targetPlayer;
+          GameState.squad.bench[targetIndex] = draggedPlayer;
+        } else if (draggedFrom === "squad" && targetType === "bench") {
+          // Squad to bench
+          GameState.squad.players[draggedIndex] = targetPlayer;
+          if (targetPlayer) {
+            GameState.squad.bench[targetIndex] = draggedPlayer;
+          } else {
+            // Empty bench slot - just move
+            GameState.squad.bench[targetIndex] = draggedPlayer;
+          }
+        } else if (draggedFrom === "bench" && targetType === "squad") {
+          // Bench to squad
+          GameState.squad.bench[draggedIndex] = targetPlayer;
+          GameState.squad.players[targetIndex] = draggedPlayer;
+        }
+
+        // Reset drag state
+        draggedPlayer = null;
+        draggedFrom = null;
+        draggedIndex = null;
+
+        // Re-render and save
+        renderPitch();
+        updateSquadOverall();
+        autoSave();
       }
 
       // ==================== RENDER BENCH ====================
@@ -10251,6 +10918,10 @@ Players may become unhappy and start requesting transfers.`;
         GameState.squad.bench.forEach((player, index) => {
           const div = document.createElement("div");
           div.className = "bench-slot filled";
+          div.dataset.slotIndex = index;
+          div.dataset.slotType = "bench";
+          div.draggable = true;
+          div.dataset.playerId = player.id;
           const tier = getCardTier(player.overall);
 
           div.innerHTML = `
@@ -10262,19 +10933,63 @@ Players may become unhappy and start requesting transfers.`;
                     </div>
                 `;
 
+          // Drag events
+          div.ondragstart = (e) => handleDragStart(e, "bench", index, player);
+          div.ondragend = handleDragEnd;
+          div.ondragover = (e) => handleDragOver(e);
+          div.ondragleave = handleDragLeave;
+          div.ondrop = (e) => handleDrop(e, "bench", index);
+
           div.onclick = () => selectBenchPlayer(index);
           container.appendChild(div);
         });
 
-        // Add empty slot for adding new players
-        if (GameState.squad.bench.length < 12) {
+        // Add empty slots for dropping
+        const maxBench = 12;
+        for (let i = GameState.squad.bench.length; i < maxBench; i++) {
           const emptySlot = document.createElement("div");
           emptySlot.className = "bench-slot";
+          emptySlot.dataset.slotIndex = i;
+          emptySlot.dataset.slotType = "bench";
           emptySlot.innerHTML = "+";
           emptySlot.style.fontSize = "1.5rem";
           emptySlot.style.color = "var(--gold)";
+
+          // Drop events for empty slots
+          emptySlot.ondragover = (e) => handleDragOver(e);
+          emptySlot.ondragleave = handleDragLeave;
+          emptySlot.ondrop = (e) => handleDropToEmptyBench(e, i);
+
           container.appendChild(emptySlot);
         }
+      }
+
+      function handleDropToEmptyBench(e, targetIndex) {
+        e.preventDefault();
+        e.currentTarget.classList.remove("drag-over");
+
+        if (!draggedPlayer) return;
+
+        if (draggedFrom === "squad") {
+          // Move from squad to empty bench slot
+          GameState.squad.players[draggedIndex] = null;
+          // Add to bench at end
+          GameState.squad.bench.push(draggedPlayer);
+        } else if (draggedFrom === "bench") {
+          // Reorder within bench - move to new position
+          GameState.squad.bench.splice(draggedIndex, 1);
+          GameState.squad.bench.splice(targetIndex, 0, draggedPlayer);
+        }
+
+        // Reset drag state
+        draggedPlayer = null;
+        draggedFrom = null;
+        draggedIndex = null;
+
+        // Re-render and save
+        renderPitch();
+        updateSquadOverall();
+        autoSave();
       }
 
       // ==================== PLAYER SELECTION ====================
@@ -11006,6 +11721,7 @@ Players may become unhappy and start requesting transfers.`;
               );
 
               updateAccountDisplay();
+              updateSquadOverall();
               autoSave();
 
               alert(`🎉 ${currentNegotiationPlayer.name} ${t("playerJoined")}`);
@@ -11488,18 +12204,25 @@ Players may become unhappy and start requesting transfers.`;
         if (penaltyState.shootTimer) clearInterval(penaltyState.shootTimer);
         penaltyState.timeLeft = 15;
 
+        // UPDATE BIG ACTION INDICATOR
+        const indicator = document.getElementById("penaltyActionIndicator");
+
         if (penaltyState.phase === "player_shoot") {
           // Select shooter based on stats (weighted random, no repeat)
           const shooter = selectNextShooter();
           penaltyState.currentShooter = shooter;
 
+          indicator.className = "penalty-action-indicator shooting";
+          indicator.textContent =
+            currentLang === "pl" ? "⚽ STRZELASZ!" : "⚽ SHOOT!";
+
           actionEl.textContent = t("chooseShot") + " - 15s";
           shooterName.textContent =
             (currentLang === "pl" ? "Strzela: " : "Shoots: ") +
             (shooter?.name || "Strzelec");
-          shooterStats.textContent = `SHO: ${
-            shooter?.stats?.Shooting || shooter?.overall || 70
-          }`;
+          shooterStats.textContent = `ATK: ${Math.round(
+            calculateAttackScore(shooter)
+          )}`;
           shooterInfo.style.display = "block";
 
           // Start 15s timer
@@ -11529,6 +12252,10 @@ Players may become unhappy and start requesting transfers.`;
               penaltyState.currentShooterIndex %
                 penaltyState.opponentShooters.length
             ];
+
+          indicator.className = "penalty-action-indicator saving";
+          indicator.textContent =
+            currentLang === "pl" ? "🧤 BRONISZ!" : "🧤 SAVE!";
 
           // Get your goalkeeper info
           const yourGK = GameState.squad.players.find(
@@ -12901,16 +13628,21 @@ Players may become unhappy and start requesting transfers.`;
         document.getElementById("squadRevealProgress").style.display = "none";
         document.getElementById("squadRevealFull").style.display = "flex";
 
-        // Set names
+        // Set names - showing OPPONENT's squad
         const myName = GameState.manager.name || t("you");
         const oppName =
           squadRevealState.opponentName || opponentName || t("opponent");
-        document.getElementById("squadRevealMyName").textContent = myName;
+        document.getElementById("squadRevealMyName").textContent = oppName; // Opponent's name as title
         document.getElementById("squadRevealOpponentName").textContent =
-          oppName;
+          currentLang === "pl" ? "Skład przeciwnika" : "Opponent Squad";
 
-        // Build formation display
-        const squad = getSquadForReveal();
+        // Build formation display using OPPONENT's squad
+        const squad = squadRevealState.opponentSquad || {
+          gk: [],
+          def: [],
+          mid: [],
+          att: [],
+        };
         const formationContainer = document.getElementById(
           "squadRevealFormation"
         );
@@ -12918,30 +13650,30 @@ Players may become unhappy and start requesting transfers.`;
         let html = "";
 
         // Attackers (top)
-        if (squad.att.length > 0) {
+        if (squad.att && squad.att.length > 0) {
           html += `<div class="squad-reveal-row">${squad.att
-            .map((p) => renderPlayerCard(p, true))
+            .map((p) => renderMiniCard(p))
             .join("")}</div>`;
         }
 
         // Midfielders
-        if (squad.mid.length > 0) {
+        if (squad.mid && squad.mid.length > 0) {
           html += `<div class="squad-reveal-row">${squad.mid
-            .map((p) => renderPlayerCard(p, true))
+            .map((p) => renderMiniCard(p))
             .join("")}</div>`;
         }
 
         // Defenders
-        if (squad.def.length > 0) {
+        if (squad.def && squad.def.length > 0) {
           html += `<div class="squad-reveal-row">${squad.def
-            .map((p) => renderPlayerCard(p, true))
+            .map((p) => renderMiniCard(p))
             .join("")}</div>`;
         }
 
         // Goalkeeper (bottom)
-        if (squad.gk.length > 0) {
+        if (squad.gk && squad.gk.length > 0) {
           html += `<div class="squad-reveal-row">${squad.gk
-            .map((p) => renderPlayerCard(p, true))
+            .map((p) => renderMiniCard(p))
             .join("")}</div>`;
         }
 
@@ -12951,6 +13683,21 @@ Players may become unhappy and start requesting transfers.`;
         document.getElementById("squadRevealReadyBtn").style.display = "block";
         document.getElementById("squadRevealReadyBtn").textContent = t("ready");
         document.getElementById("squadRevealWaiting").style.display = "none";
+      }
+
+      // Mini card for squad reveal (simpler than full card)
+      function renderMiniCard(player) {
+        if (!player) return "";
+        const rarity = getRarityFromOverall(player.overall);
+        return `
+                <div class="mini-reveal-card ${rarity}">
+                    <div class="mini-card-ovr">${player.overall}</div>
+                    <div class="mini-card-pos">${player.position}</div>
+                    <div class="mini-card-name">${
+                      player.name || "Unknown"
+                    }</div>
+                </div>
+            `;
       }
 
       function confirmSquadReady() {
@@ -13169,10 +13916,17 @@ Players may become unhappy and start requesting transfers.`;
             `;
         buttons.style.display = "flex";
 
+        // UPDATE BIG ACTION INDICATOR
+        const indicator = document.getElementById("penaltyActionIndicator");
+
         if (penaltyState.phase === "player_shoot") {
           // Select shooter based on attack stats
           const shooter = selectNextShooter();
           penaltyState.currentShooter = shooter;
+
+          indicator.className = "penalty-action-indicator shooting";
+          indicator.textContent =
+            currentLang === "pl" ? "⚽ STRZELASZ!" : "⚽ SHOOT!";
 
           actionEl.textContent = t("chooseShot");
           shooterName.textContent =
@@ -13182,6 +13936,10 @@ Players may become unhappy and start requesting transfers.`;
             calculateAttackScore(shooter)
           )}`;
         } else {
+          indicator.className = "penalty-action-indicator saving";
+          indicator.textContent =
+            currentLang === "pl" ? "🧤 BRONISZ!" : "🧤 SAVE!";
+
           actionEl.textContent = t("chooseDefense");
           shooterName.textContent = t("opponentShoots");
           shooterStats.textContent = "";
@@ -14967,6 +15725,7 @@ Players may become unhappy and start requesting transfers.`;
         currentUpgradePosition = null;
         updateUpgradeCost();
         updateAccountDisplay();
+        updateSquadOverall();
         autoSave(); // Save after upgrade
 
         // Update modal display
@@ -15085,10 +15844,16 @@ Players may become unhappy and start requesting transfers.`;
       }
 
       function updateAccountDisplay() {
-        document.getElementById("accountBalance").textContent =
-          GameState.manager.balance.toLocaleString();
-        document.getElementById("marketBalance").textContent =
-          GameState.manager.balance.toLocaleString();
+        const balance = GameState.manager.balance;
+        const balanceStr = balance.toLocaleString();
+
+        const accountEl = document.getElementById("accountBalance");
+        const marketEl = document.getElementById("marketBalance");
+        const transferEl = document.getElementById("transferListBalance");
+
+        if (accountEl) accountEl.textContent = balanceStr;
+        if (marketEl) marketEl.textContent = balanceStr;
+        if (transferEl) transferEl.textContent = "€" + balanceStr;
       }
 
       // ==================== FORMATION SELECTOR ====================
@@ -15195,6 +15960,7 @@ Players may become unhappy and start requesting transfers.`;
         initGameTime();
 
         updateAccountDisplay();
+        updateSquadOverall();
         checkUrlForRoom();
         updateAllText();
         updateEmailBadge();
