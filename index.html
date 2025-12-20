@@ -14365,24 +14365,24 @@ Players may become unhappy and start requesting transfers.`;
         document.getElementById("squadRevealPosition").style.display = "block";
         document.getElementById("squadRevealProgress").style.display = "flex";
 
-        // Use OPPONENT's squad (not your own - you already know yours!)
-        // For host: wait for guest's squad to arrive, for guest: use host's squad
-        const useOpponentSquad = () => {
-          const oppSquad = squadRevealState.opponentSquad;
-          if (!oppSquad) {
-            // No opponent squad yet, use placeholder
-            return { gk: [], def: [], mid: [], att: [] };
-          }
-          return oppSquad;
+        // Use OPPONENT's squad
+        const squad = squadRevealState.opponentSquad || {
+          gk: [],
+          def: [],
+          mid: [],
+          att: [],
         };
 
-        const squad = useOpponentSquad();
-
+        // Full reset of reveal state (but keep opponent data)
+        const oppSquad = squadRevealState.opponentSquad;
+        const oppName = squadRevealState.opponentName;
         squadRevealState.currentIndex = 0;
         squadRevealState.allPlayers = [];
         squadRevealState.positions = [];
         squadRevealState.isReady = false;
-        // Keep opponentSquad and opponentName
+        squadRevealState.opponentReady = false;
+        squadRevealState.opponentSquad = oppSquad;
+        squadRevealState.opponentName = oppName;
 
         // Add players with position labels
         if (squad.gk && squad.gk.length > 0) {
@@ -14410,7 +14410,7 @@ Players may become unhappy and start requesting transfers.`;
           });
         }
 
-        // If no players (host waiting for guest), show waiting message
+        // If no players, show waiting message
         if (squadRevealState.allPlayers.length === 0) {
           document.getElementById("squadRevealTitle").textContent =
             currentLang === "pl"
@@ -14420,7 +14420,6 @@ Players may become unhappy and start requesting transfers.`;
             "none";
           document.getElementById("squadRevealPosition").style.display = "none";
           document.getElementById("squadRevealProgress").style.display = "none";
-          // Will be updated when opponent squad arrives via startSquadReveal call
           return;
         }
 
@@ -14433,11 +14432,13 @@ Players may become unhappy and start requesting transfers.`;
           .join("");
 
         // Update title - showing OPPONENT's squad
-        const oppName =
+        const displayName =
           squadRevealState.opponentName ||
           (currentLang === "pl" ? "Przeciwnik" : "Opponent");
         document.getElementById("squadRevealTitle").textContent =
-          currentLang === "pl" ? `Skład: ${oppName}` : `Squad: ${oppName}`;
+          currentLang === "pl"
+            ? `Skład: ${displayName}`
+            : `Squad: ${displayName}`;
 
         // Start reveal
         revealNextCard();
@@ -14498,12 +14499,11 @@ Players may become unhappy and start requesting transfers.`;
         document.getElementById("squadRevealFull").style.display = "flex";
 
         // Set names - showing OPPONENT's squad
-        const myName = GameState.manager.name || t("you");
         const oppName =
           squadRevealState.opponentName || opponentName || t("opponent");
-        document.getElementById("squadRevealMyName").textContent = oppName; // Opponent's name as title
-        document.getElementById("squadRevealOpponentName").textContent =
-          currentLang === "pl" ? "Skład przeciwnika" : "Opponent Squad";
+        document.getElementById("squadRevealMyName").textContent =
+          currentLang === "pl" ? `Skład: ${oppName}` : `Squad: ${oppName}`;
+        document.getElementById("squadRevealOpponentName").textContent = "";
 
         // Build formation display using OPPONENT's squad
         const squad = squadRevealState.opponentSquad || {
@@ -14546,11 +14546,21 @@ Players may become unhappy and start requesting transfers.`;
             .join("")}</div>`;
         }
 
+        // If no players at all, show placeholder
+        if (html === "") {
+          html = `<div style="color: var(--silver); padding: 2rem;">${
+            currentLang === "pl" ? "Brak danych o składzie" : "No squad data"
+          }</div>`;
+        }
+
         formationContainer.innerHTML = html;
 
-        // Show ready button
-        document.getElementById("squadRevealReadyBtn").style.display = "block";
-        document.getElementById("squadRevealReadyBtn").textContent = t("ready");
+        // ALWAYS show ready button
+        const readyBtn = document.getElementById("squadRevealReadyBtn");
+        readyBtn.style.display = "block";
+        readyBtn.textContent = t("ready");
+        readyBtn.disabled = false;
+
         document.getElementById("squadRevealWaiting").style.display = "none";
       }
 
