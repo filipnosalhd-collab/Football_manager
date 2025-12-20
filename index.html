@@ -7487,6 +7487,48 @@
           }
         });
       }
+
+      // ==================== UI HELPERS ====================
+      function showScreen(screenId) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        const screen = document.getElementById(screenId);
+        if (screen) screen.classList.add("active");
+
+        // Apply translations after showing screen
+        updateAllText();
+
+        if (screenId === "squadScreen") {
+          if (typeof renderPitch === "function") renderPitch();
+        } else if (screenId === "marketScreen") {
+          if (
+            typeof generateMarketCards === "function" &&
+            typeof renderMarket === "function"
+          ) {
+            if (
+              !GameState.market.lastRefresh ||
+              Date.now() - GameState.market.lastRefresh >
+                GameState.market.refreshInterval
+            ) {
+              generateMarketCards();
+            } else {
+              renderMarket();
+            }
+          }
+        } else if (screenId === "upgradeScreen") {
+          if (typeof renderUpgradePlayers === "function")
+            renderUpgradePlayers();
+        } else if (screenId === "legendsScreen") {
+          if (typeof renderLegends === "function") renderLegends();
+        } else if (screenId === "settingsScreen") {
+          if (typeof updateLanguageButtons === "function")
+            updateLanguageButtons();
+        } else if (screenId === "emailScreen") {
+          if (typeof renderEmails === "function") renderEmails();
+        }
+      }
+
       // ==================== GAME STATE ====================
       const GameState = {
         manager: {
@@ -12475,8 +12517,15 @@ Players may become unhappy and start requesting transfers.`;
                 }
               }
 
-              // Add new player to bench
-              GameState.squad.bench.push(currentNegotiationPlayer);
+              // Add new player to bench with contract info
+              const newPlayer = {
+                ...currentNegotiationPlayer,
+                salary:
+                  parseInt(document.getElementById("offerSalary").value) || 0,
+                contractYears:
+                  parseInt(document.getElementById("offerLength").value) || 1,
+              };
+              GameState.squad.bench.push(newPlayer);
 
               // Remove from market
               GameState.market.cards = GameState.market.cards.filter(
@@ -13283,6 +13332,9 @@ Players may become unhappy and start requesting transfers.`;
             setTimeout(() => {
               let scored = false;
 
+              // Get opponent GK stats (based on match difficulty/opponent OVR)
+              const opponentGKstat = penaltyState.opponentOVR || 65;
+
               if (penaltyState.selectedDirection === gkDirection) {
                 // Same direction - środek = 100% obrona
                 let saveChance;
@@ -13292,7 +13344,13 @@ Players may become unhappy and start requesting transfers.`;
                 ) {
                   saveChance = 1.0;
                 } else {
-                  saveChance = 0.7 - shooting / 200;
+                  // Base 40% + GK bonus (up to +25%) - Shooter penalty (up to -20%)
+                  const gkBonus = (opponentGKstat - 50) / 200;
+                  const shooterPenalty = (shooting - 50) / 250;
+                  saveChance = Math.max(
+                    0.15,
+                    Math.min(0.85, 0.4 + gkBonus - shooterPenalty)
+                  );
                 }
 
                 if (Math.random() < saveChance) {
@@ -13403,7 +13461,24 @@ Players may become unhappy and start requesting transfers.`;
                 ) {
                   saveChance = 1.0;
                 } else {
-                  saveChance = 0.5 + gkOverall / 200 + defenseBonus / 100;
+                  // Get actual GK stats
+                  const gkStat = playerGK
+                    ? ((playerGK.stats?.Diving || playerGK.overall) +
+                        (playerGK.stats?.Reflexes || playerGK.overall) +
+                        (playerGK.stats?.Positioning || playerGK.overall)) /
+                      3
+                    : 60;
+
+                  // Base 40% + GK bonus (up to +25%) - Shooter penalty (up to -20%)
+                  const gkBonus = (gkStat - 50) / 200;
+                  const shooterPenalty = (shooting - 50) / 250;
+                  saveChance = Math.max(
+                    0.15,
+                    Math.min(
+                      0.85,
+                      0.4 + gkBonus - shooterPenalty + defenseBonus / 100
+                    )
+                  );
                 }
 
                 if (Math.random() < saveChance) {
@@ -14779,25 +14854,68 @@ Players may become unhappy and start requesting transfers.`;
         // Calculate result after animation starts
         setTimeout(() => {
           // Use deterministic result based on directions (same for both players!)
-          // Generate "random" seed from both choices combined
-          const seed = (shootDir + saveDir)
+          // Generate "random" seed from both choices combined + round number for variety
+          const roundSeed = penaltyState.currentShooterIndex || 0;
+          const seed = (shootDir + saveDir + roundSeed)
             .split("")
             .reduce((a, c) => a + c.charCodeAt(0), 0);
           const pseudoRandom = ((seed * 9301 + 49297) % 233280) / 233280;
 
           // Get shooter stats
-          const shooter =
-            penaltyState.shooters[
-              penaltyState.currentShooterIndex % penaltyState.shooters.length
-            ];
-          const shooting = shooter?.stats?.Shooting || shooter?.overall || 70;
+          const iWasShooter = penaltyState.phase === "player_shoot";
+          let shooter, gkPlayer;
 
-          // Miss chance based on shooting stat
-          const missChance = Math.max(0.02, (100 - shooting) / 500);
+          if (iWasShooter) {
+            // I'm shooting - get my shooter
+            shooter =
+              penaltyState.currentShooter ||
+              penaltyState.shooters[
+                penaltyState.currentShooterIndex % penaltyState.shooters.length
+              ];
+            // Opponent's GK - use their squad overall as estimate
+            gkPlayer = onlinePenaltyState.opponentSquad?.players?.find(
+              (p) => p?.position === "GK"
+            );
+          } else {
+            // Opponent is shooting - get their shooter
+            shooter = onlinePenaltyState.opponentShooters?.[
+              penaltyState.currentShooterIndex %
+                (onlinePenaltyState.opponentShooters?.length || 5)
+            ] || {
+              overall: onlinePenaltyState.opponentOVR || 70,
+              stats: { Shooting: onlinePenaltyState.opponentOVR || 70 },
+            };
+            // My GK
+            gkPlayer = GameState.squad.players.find(
+              (p) => p?.position === "GK"
+            );
+          }
+
+          const shooting = shooter?.stats?.Shooting || shooter?.overall || 70;
+          const gkStat = gkPlayer
+            ? ((gkPlayer.stats?.Diving || gkPlayer.overall) +
+                (gkPlayer.stats?.Reflexes || gkPlayer.overall) +
+                (gkPlayer.stats?.Positioning || gkPlayer.overall)) /
+              3
+            : 60;
+
+          // Miss chance based on shooting stat (higher shooting = lower miss chance)
+          const missChance = Math.max(0.02, (100 - shooting) / 400);
           const didMiss = pseudoRandom < missChance;
 
-          // If same direction, 50% save chance
-          const saveChance = shootDir === saveDir ? 0.5 : 0;
+          // If same direction, save chance based on GK stats vs shooter stats
+          // Base: 40% + GK bonus (up to +25%) - Shooter penalty (up to -20%)
+          const gkBonus = (gkStat - 50) / 200; // -0.25 to +0.25
+          const shooterPenalty = (shooting - 50) / 250; // -0.2 to +0.2
+          const baseSaveChance = 0.4;
+          const saveChance =
+            shootDir === saveDir
+              ? Math.max(
+                  0.15,
+                  Math.min(0.85, baseSaveChance + gkBonus - shooterPenalty)
+                )
+              : 0;
+
           const pseudoRandom2 = (((seed + 1) * 9301 + 49297) % 233280) / 233280;
           const saved = !didMiss && pseudoRandom2 < saveChance;
 
@@ -14806,7 +14924,6 @@ Players may become unhappy and start requesting transfers.`;
           // Show result
           let resultText = "";
           let resultClass = "";
-          const iWasShooter = penaltyState.phase === "player_shoot";
 
           if (didMiss) {
             ball.classList.remove("shoot-" + shootDir);
@@ -16526,40 +16643,6 @@ Players may become unhappy and start requesting transfers.`;
         renderUpgradePlayers();
       }
 
-      // ==================== UI HELPERS ====================
-      function showScreen(screenId) {
-        document
-          .querySelectorAll(".screen")
-          .forEach((s) => s.classList.remove("active"));
-        const screen = document.getElementById(screenId);
-        if (screen) screen.classList.add("active");
-
-        // Apply translations after showing screen
-        applyTranslations();
-
-        if (screenId === "squadScreen") {
-          renderPitch();
-        } else if (screenId === "marketScreen") {
-          if (
-            !GameState.market.lastRefresh ||
-            Date.now() - GameState.market.lastRefresh >
-              GameState.market.refreshInterval
-          ) {
-            generateMarketCards();
-          } else {
-            renderMarket();
-          }
-        } else if (screenId === "upgradeScreen") {
-          renderUpgradePlayers();
-        } else if (screenId === "legendsScreen") {
-          renderLegends();
-        } else if (screenId === "settingsScreen") {
-          updateLanguageButtons();
-        } else if (screenId === "emailScreen") {
-          renderEmails();
-        }
-      }
-
       function renderLegends() {
         const grid = document.getElementById("legendsGrid");
         const noLegends = document.getElementById("noLegends");
@@ -16730,6 +16813,9 @@ Players may become unhappy and start requesting transfers.`;
         checkUrlForRoom();
         updateAllText();
         updateEmailBadge();
+
+        // Render squad initially so it's ready when squadScreen is shown
+        renderPitch();
 
         // Ensure existing players have contracts
         ensurePlayersHaveContracts();
