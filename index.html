@@ -8232,6 +8232,17 @@
       }
 
       function playArenaMatch() {
+        // Check if squad has 11 players
+        const squadCount = GameState.squad.players.filter((p) => p).length;
+        if (squadCount < 11) {
+          alert(
+            currentLang === "pl"
+              ? `Nie możesz zagrać meczu! Masz tylko ${squadCount}/11 zawodników w składzie.`
+              : `Cannot play match! You only have ${squadCount}/11 players in squad.`
+          );
+          return;
+        }
+
         const arena = getCurrentArena();
         // Generate bot OVR based on arena
         const botOVR =
@@ -10110,6 +10121,36 @@ Players may become unhappy and start requesting transfers.`;
           return;
         }
 
+        // Check if can sell this player
+        const squadIndex = GameState.squad.players.findIndex(
+          (p) => p && String(p.id) === String(playerId)
+        );
+        const benchIndex = GameState.squad.bench.findIndex(
+          (p) => p && String(p.id) === String(playerId)
+        );
+
+        const squadCount = GameState.squad.players.filter((p) => p).length;
+        const benchCount = GameState.squad.bench.filter((p) => p).length;
+
+        // Warn if selling would leave squad/bench short
+        if (squadIndex !== -1 && squadCount <= 11) {
+          alert(
+            currentLang === "pl"
+              ? "Nie możesz sprzedać tego gracza! Musisz mieć 11 zawodników w składzie. Najpierw kup lub przenieś kogoś z ławki."
+              : "Cannot sell this player! You must have 11 players in squad. Buy or move someone from bench first."
+          );
+          return;
+        }
+
+        if (benchIndex !== -1 && benchCount <= 5) {
+          alert(
+            currentLang === "pl"
+              ? "Nie możesz sprzedać tego gracza! Musisz mieć minimum 5 zawodników na ławce."
+              : "Cannot sell this player! You must have at least 5 players on bench."
+          );
+          return;
+        }
+
         currentSellPlayer = player;
 
         // Show modal
@@ -10354,22 +10395,46 @@ Players may become unhappy and start requesting transfers.`;
         const player = findPlayerById(offer.playerId);
         if (!player) return;
 
+        // Check if player is in squad or bench
+        const squadIndex = GameState.squad.players.findIndex(
+          (p) => p && p.id === offer.playerId
+        );
+        const benchIndex = GameState.squad.bench.findIndex(
+          (p) => p && p.id === offer.playerId
+        );
+
+        // Count current players
+        const squadCount = GameState.squad.players.filter((p) => p).length;
+        const benchCount = GameState.squad.bench.filter((p) => p).length;
+
+        // Validate: must have 11 in squad
+        if (squadIndex !== -1 && squadCount <= 11) {
+          alert(
+            currentLang === "pl"
+              ? "Nie możesz sprzedać tego gracza! Musisz mieć 11 zawodników w składzie."
+              : "Cannot sell this player! You must have 11 players in squad."
+          );
+          return;
+        }
+
+        // Validate: must have at least 5 on bench
+        if (benchIndex !== -1 && benchCount <= 5) {
+          alert(
+            currentLang === "pl"
+              ? "Nie możesz sprzedać tego gracza! Musisz mieć minimum 5 zawodników na ławce."
+              : "Cannot sell this player! You must have at least 5 players on bench."
+          );
+          return;
+        }
+
         // Add money
         GameState.manager.balance += offer.offerAmount;
 
         // Remove player from squad
-        const squadIndex = GameState.squad.players.findIndex(
-          (p) => p && p.id === offer.playerId
-        );
         if (squadIndex !== -1) {
           GameState.squad.players[squadIndex] = null;
-        } else {
-          const benchIndex = GameState.squad.bench.findIndex(
-            (p) => p && p.id === offer.playerId
-          );
-          if (benchIndex !== -1) {
-            GameState.squad.bench[benchIndex] = null;
-          }
+        } else if (benchIndex !== -1) {
+          GameState.squad.bench.splice(benchIndex, 1); // Actually remove from bench
         }
 
         // Remove from transfer list
@@ -12169,15 +12234,15 @@ Players may become unhappy and start requesting transfers.`;
           "ST",
           "RW",
         ];
-        // Start with bronze players (40-50 OVR)
+        // Start with all 40 OVR players
         GameState.squad.players = positions.map((pos) =>
-          generatePlayer(40 + Math.floor(Math.random() * 11), pos)
+          generatePlayer(40, pos)
         );
 
-        // Bench players - also bronze
+        // Bench players - also 40 OVR
         const benchPositions = ["GK", "CB", "CM", "CM", "ST", "LW", "RW"];
         GameState.squad.bench = benchPositions.map((pos) =>
-          generatePlayer(40 + Math.floor(Math.random() * 11), pos)
+          generatePlayer(40, pos)
         );
 
         // Reset training points for new game
