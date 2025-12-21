@@ -5510,6 +5510,35 @@
             </button>
           </div>
         </div>
+
+        <div
+          class="settings-section"
+          style="
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid #ff4444;
+          "
+        >
+          <div
+            class="settings-label"
+            style="color: #ff4444; margin-bottom: 0.5rem"
+          >
+            ⚠️ STREFA ZAGROŻENIA
+          </div>
+          <button
+            class="menu-btn"
+            onclick="resetGame()"
+            style="
+              background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+              width: 100%;
+            "
+            data-t="reset"
+          >
+            🗑️ RESETUJ POSTĘPY
+          </button>
+        </div>
       </div>
 
       <button
@@ -10924,7 +10953,6 @@ Players may become unhappy and start requesting transfers.`;
 
           const data = JSON.parse(saved);
 
-          // Restore state
           if (data.manager) {
             GameState.manager = { ...GameState.manager, ...data.manager };
           }
@@ -10969,7 +10997,11 @@ Players may become unhappy and start requesting transfers.`;
       }
 
       function resetGame() {
-        if (confirm(t("resetConfirm"))) {
+        const msg =
+          currentLang === "pl"
+            ? "Czy na pewno chcesz zresetować wszystkie postępy? Stracisz cały postęp!"
+            : "Are you sure you want to reset all progress? You will lose everything!";
+        if (confirm(msg)) {
           localStorage.removeItem(SAVE_KEY);
           location.reload();
         }
@@ -14814,9 +14846,6 @@ Players may become unhappy and start requesting transfers.`;
 
         // Show end buttons
         buttons.innerHTML = `
-                <button class="penalty-btn" onclick="playAgain()">${
-                  currentLang === "pl" ? "🔄 ZAGRAJ PONOWNIE" : "🔄 PLAY AGAIN"
-                }</button>
                 <button class="penalty-btn" onclick="exitPenalties()">${
                   currentLang === "pl" ? "🏠 MENU GŁÓWNE" : "🏠 MAIN MENU"
                 }</button>
@@ -16390,22 +16419,13 @@ Players may become unhappy and start requesting transfers.`;
           penaltyState.playerScore
         } - ${penaltyState.opponentScore}`;
 
-        // Show rematch/exit buttons
+        // Show exit button only
         buttons.innerHTML = `
-                <button class="penalty-btn" onclick="requestOnlineRematch()">🔄 ${t(
-                  "rematch"
-                )}</button>
                 <button class="penalty-btn" onclick="exitOnlinePenalty()">🚪 ${t(
                   "exitGame"
                 )}</button>
             `;
         buttons.style.display = "flex";
-      }
-
-      function requestOnlineRematch() {
-        penaltyConn.send({ type: "rematch_request" });
-        document.getElementById("penaltyAction").textContent =
-          t("waitingOpponent");
       }
 
       function exitOnlinePenalty() {
