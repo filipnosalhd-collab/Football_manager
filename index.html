@@ -10908,6 +10908,8 @@ Players may become unhappy and start requesting transfers.`;
               listedPlayers: transferListState.listedPlayers,
               offers: transferListState.offers,
             },
+            arena: GameState.arena,
+            trainingPoints: GameState.trainingPoints,
           };
           localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
         } catch (e) {}
@@ -10952,6 +10954,12 @@ Players may become unhappy and start requesting transfers.`;
             transferListState.listedPlayers =
               data.transferList.listedPlayers || [];
             transferListState.offers = data.transferList.offers || [];
+          }
+          if (data.arena) {
+            GameState.arena = { ...GameState.arena, ...data.arena };
+          }
+          if (data.trainingPoints !== undefined) {
+            GameState.trainingPoints = data.trainingPoints;
           }
 
           return true;
